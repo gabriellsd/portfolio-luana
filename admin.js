@@ -39,17 +39,32 @@ const sliderOpacidadeFoto = document.getElementById("foto-opacidade");
 const labelOpacidadeFoto = document.getElementById("foto-opacidade-valor");
 
 // Estilos
-const toggleEstilos = document.getElementById("toggle-estilos");
-const estilosSection = document.getElementById("estilos-section");
-const fonteTitulos = document.getElementById("fonte-titulos");
-const fonteTexto = document.getElementById("fonte-texto");
+const toggleEstilos  = document.getElementById("toggle-estilos");
+const modalEstilos   = document.getElementById("modal-estilos");
+const modalOverlay   = document.getElementById("modal-overlay");
+const fecharEstilos  = document.getElementById("fechar-estilos");
+const fonteTitulos   = document.getElementById("fonte-titulos");
+const fonteTexto     = document.getElementById("fonte-texto");
+const salvarEstilos  = document.getElementById("salvar-estilos");
+
+// Todos os color pickers
+const coresCfg = [
+  { id: "cor-primaria",      hex: "cor-primaria-hex",      css: "--primary-sage",   def: "#8DAA91" },
+  { id: "cor-titulos",       hex: "cor-titulos-hex",        css: "--cor-titulos",    def: "#2D2D2D" },
+  { id: "cor-texto",         hex: "cor-texto-hex",          css: "--text-dark",      def: "#4A4A4A" },
+  { id: "cor-texto-claro",   hex: "cor-texto-claro-hex",    css: "--cor-texto-claro",def: "#6B7280" },
+  { id: "cor-fundo",         hex: "cor-fundo-hex",          css: "--soft-cream",     def: "#F9F7F2" },
+  { id: "cor-fundo-alt",     hex: "cor-fundo-alt-hex",      css: "--cor-fundo-alt",  def: "#F5F5F4" },
+  { id: "cor-fundo-contato", hex: "cor-fundo-contato-hex",  css: "--cor-contato",    def: "#8DAA91" },
+  { id: "cor-botao",         hex: "cor-botao-hex",          css: "--cor-botao",      def: "#8DAA91" },
+  { id: "cor-botao-texto",   hex: "cor-botao-texto-hex",    css: "--cor-botao-texto",def: "#FFFFFF" },
+];
 const corPrimaria = document.getElementById("cor-primaria");
 const corPrimariaHex = document.getElementById("cor-primaria-hex");
 const corTexto = document.getElementById("cor-texto");
 const corTextoHex = document.getElementById("cor-texto-hex");
 const corFundo = document.getElementById("cor-fundo");
 const corFundoHex = document.getElementById("cor-fundo-hex");
-const salvarEstilos = document.getElementById("salvar-estilos");
 
 const CLOUDINARY_CLOUD = "gabriellsd";
 const CLOUDINARY_PRESET = "portfolio-luana";
@@ -263,29 +278,52 @@ async function uploadBanner(file) {
 }
 
 // Aplica estilos (fontes e cores) no preview do admin
-function aplicarEstilos({ fonteTitulosVal, fonteTextoVal, corPrimariaVal, corTextoVal, corFundoVal }) {
+function aplicarEstilos(estilos = {}) {
   const root = document.documentElement;
-  if (fonteTitulosVal) {
+
+  // Fontes
+  if (estilos.fonteTitulos) {
     document.querySelectorAll("h1,h2,h3,.font-serif").forEach(el => {
-      el.style.fontFamily = `'${fonteTitulosVal}', serif`;
+      el.style.fontFamily = `'${estilos.fonteTitulos}', serif`;
     });
+    const prevTitulo = document.getElementById("prev-titulo");
+    if (prevTitulo) prevTitulo.style.fontFamily = `'${estilos.fonteTitulos}', serif`;
   }
-  if (fonteTextoVal) {
-    document.querySelectorAll("p,span,a,li,label,button:not(.font-serif)").forEach(el => {
-      el.style.fontFamily = `'${fonteTextoVal}', sans-serif`;
+  if (estilos.fonteTexto) {
+    document.querySelectorAll("p,span:not(.text-sage)").forEach(el => {
+      el.style.fontFamily = `'${estilos.fonteTexto}', sans-serif`;
     });
+    const prevTexto = document.getElementById("prev-texto");
+    if (prevTexto) prevTexto.style.fontFamily = `'${estilos.fonteTexto}', sans-serif`;
   }
-  if (corPrimariaVal) {
-    root.style.setProperty("--primary-sage", corPrimariaVal);
+
+  // Aplica cada cor via CSS var
+  coresCfg.forEach(({ id, css, def }) => {
+    const val = estilos[id] || def;
+    root.style.setProperty(css, val);
+  });
+
+  // Atualiza elementos do preview do modal
+  const prevTitulo = document.getElementById("prev-titulo");
+  const prevTexto  = document.getElementById("prev-texto");
+  const prevBotao  = document.getElementById("prev-botao");
+  if (prevTitulo && estilos["cor-titulos"]) prevTitulo.style.color = estilos["cor-titulos"];
+  if (prevTexto  && estilos["cor-texto"])   prevTexto.style.color  = estilos["cor-texto"];
+  if (prevBotao) {
+    if (estilos["cor-botao"])       prevBotao.style.background = estilos["cor-botao"];
+    if (estilos["cor-botao-texto"]) prevBotao.style.color      = estilos["cor-botao-texto"];
   }
-  if (corTextoVal) {
-    root.style.setProperty("--text-dark", corTextoVal);
+
+  // Seção contato
+  const previewContato = document.getElementById("preview-contato");
+  if (previewContato && estilos["cor-fundo-contato"]) {
+    previewContato.style.backgroundColor = estilos["cor-fundo-contato"];
   }
-  if (corFundoVal) {
-    root.style.setProperty("--soft-cream", corFundoVal);
-    document.querySelectorAll(".hero-gradient, #preview-hero").forEach(el => {
-      el.style.backgroundColor = corFundoVal;
-    });
+
+  // Fundo alternado (sessões)
+  const previewSessoes = document.getElementById("preview-sessoes");
+  if (previewSessoes && estilos["cor-fundo-alt"]) {
+    previewSessoes.style.backgroundColor = estilos["cor-fundo-alt"];
   }
 }
 
@@ -293,26 +331,31 @@ function aplicarEstilos({ fonteTitulosVal, fonteTextoVal, corPrimariaVal, corTex
 function preencherEstilos(estilos) {
   if (!estilos) return;
   if (estilos.fonteTitulos && fonteTitulos) fonteTitulos.value = estilos.fonteTitulos;
-  if (estilos.fonteTexto && fonteTexto) fonteTexto.value = estilos.fonteTexto;
-  if (estilos.corPrimaria && corPrimaria) {
-    corPrimaria.value = estilos.corPrimaria;
-    if (corPrimariaHex) corPrimariaHex.textContent = estilos.corPrimaria;
-  }
-  if (estilos.corTexto && corTexto) {
-    corTexto.value = estilos.corTexto;
-    if (corTextoHex) corTextoHex.textContent = estilos.corTexto;
-  }
-  if (estilos.corFundo && corFundo) {
-    corFundo.value = estilos.corFundo;
-    if (corFundoHex) corFundoHex.textContent = estilos.corFundo;
-  }
-  aplicarEstilos({
-    fonteTitulosVal: estilos.fonteTitulos,
-    fonteTextoVal: estilos.fonteTexto,
-    corPrimariaVal: estilos.corPrimaria,
-    corTextoVal: estilos.corTexto,
-    corFundoVal: estilos.corFundo,
+  if (estilos.fonteTexto   && fonteTexto)   fonteTexto.value   = estilos.fonteTexto;
+
+  coresCfg.forEach(({ id, hex }) => {
+    const input = document.getElementById(id);
+    const label = document.getElementById(hex);
+    if (input && estilos[id]) {
+      input.value = estilos[id];
+      if (label) label.textContent = estilos[id];
+    }
   });
+
+  aplicarEstilos(estilos);
+}
+
+// Lê todos os valores do modal e retorna objeto de estilos
+function lerEstilosDoModal() {
+  const estilos = {
+    fonteTitulos: fonteTitulos?.value || "Playfair Display",
+    fonteTexto:   fonteTexto?.value   || "Inter",
+  };
+  coresCfg.forEach(({ id, def }) => {
+    const input = document.getElementById(id);
+    estilos[id] = input ? input.value : def;
+  });
+  return estilos;
 }
 
 async function carregarDadosIniciais() {
@@ -394,56 +437,40 @@ onAuthStateChanged(auth, async (user) => {
       });
     }
 
-    // Toggle painel de estilos
+    // Abre / fecha modal de estilos
     if (toggleEstilos) {
       toggleEstilos.classList.remove("hidden");
-      toggleEstilos.addEventListener("click", () => {
-        estilosSection.classList.toggle("hidden");
-      });
+      toggleEstilos.addEventListener("click", () => modalEstilos.classList.remove("hidden"));
     }
+    if (fecharEstilos)  fecharEstilos.addEventListener("click",  () => modalEstilos.classList.add("hidden"));
+    if (modalOverlay)   modalOverlay.addEventListener("click",   () => modalEstilos.classList.add("hidden"));
 
-    // Preview em tempo real das cores
-    [
-      [corPrimaria, corPrimariaHex, "corPrimaria"],
-      [corTexto, corTextoHex, "corTexto"],
-      [corFundo, corFundoHex, "corFundo"],
-    ].forEach(([input, label]) => {
+    // Preview em tempo real: color pickers
+    coresCfg.forEach(({ id, hex }) => {
+      const input = document.getElementById(id);
+      const label = document.getElementById(hex);
       if (!input) return;
       input.addEventListener("input", () => {
         if (label) label.textContent = input.value;
-        aplicarEstilos({
-          corPrimariaVal: corPrimaria?.value,
-          corTextoVal: corTexto?.value,
-          corFundoVal: corFundo?.value,
-        });
+        aplicarEstilos(lerEstilosDoModal());
       });
     });
 
-    // Preview em tempo real das fontes
+    // Preview em tempo real: fontes
     [fonteTitulos, fonteTexto].forEach(sel => {
       if (!sel) return;
-      sel.addEventListener("change", () => {
-        aplicarEstilos({
-          fonteTitulosVal: fonteTitulos?.value,
-          fonteTextoVal: fonteTexto?.value,
-        });
-      });
+      sel.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
     });
 
     // Salvar estilos
     if (salvarEstilos) {
       salvarEstilos.addEventListener("click", async () => {
         try {
-          const estilos = {
-            fonteTitulos: fonteTitulos?.value || "Playfair Display",
-            fonteTexto: fonteTexto?.value || "Inter",
-            corPrimaria: corPrimaria?.value || "#8DAA91",
-            corTexto: corTexto?.value || "#4A4A4A",
-            corFundo: corFundo?.value || "#F9F7F2",
-          };
+          const estilos = lerEstilosDoModal();
           const ref = doc(db, "portfolios", "principal");
           await setDoc(ref, { estilos }, { merge: true });
           mostrarMensagem("Estilos salvos com sucesso!");
+          modalEstilos.classList.add("hidden");
         } catch (err) {
           console.error(err);
           mostrarMensagem("Erro ao salvar estilos.", "erro");

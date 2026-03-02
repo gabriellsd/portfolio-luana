@@ -43,12 +43,58 @@ async function carregarConteudo() {
       const e = data.estilos;
       const root = document.documentElement;
 
-      if (e.corPrimaria) root.style.setProperty("--primary-sage", e.corPrimaria);
-      if (e.corTexto)    root.style.setProperty("--text-dark", e.corTexto);
-      if (e.corFundo)    root.style.setProperty("--soft-cream", e.corFundo);
+      // Cores via CSS custom properties
+      const mapaCSS = {
+        "cor-primaria":      "--primary-sage",
+        "cor-titulos":       "--cor-titulos",
+        "cor-texto":         "--text-dark",
+        "cor-texto-claro":   "--cor-texto-claro",
+        "cor-fundo":         "--soft-cream",
+        "cor-fundo-alt":     "--cor-fundo-alt",
+        "cor-fundo-contato": "--cor-contato",
+        "cor-botao":         "--cor-botao",
+        "cor-botao-texto":   "--cor-botao-texto",
+      };
+      Object.entries(mapaCSS).forEach(([key, css]) => {
+        if (e[key]) root.style.setProperty(css, e[key]);
+      });
+
+      // Aplica cor de fundo alternado às seções
+      if (e["cor-fundo-alt"]) {
+        document.querySelectorAll("section.bg-stone-50, section.bg-\\[var\\(--cor-fundo-alt\\)\\]").forEach(el => {
+          el.style.backgroundColor = e["cor-fundo-alt"];
+        });
+      }
+      // Aplica cor de fundo da seção contato
+      if (e["cor-fundo-contato"]) {
+        const secContato = document.querySelector("section.bg-sage, #contato");
+        if (secContato) secContato.style.backgroundColor = e["cor-fundo-contato"];
+      }
+      // Aplica cor de botões
+      if (e["cor-botao"]) {
+        document.querySelectorAll(".bg-sage, button.rounded-full").forEach(el => {
+          el.style.backgroundColor = e["cor-botao"];
+        });
+      }
+      if (e["cor-botao-texto"]) {
+        document.querySelectorAll(".bg-sage, button.rounded-full").forEach(el => {
+          el.style.color = e["cor-botao-texto"];
+        });
+      }
+      // Cor dos títulos
+      if (e["cor-titulos"]) {
+        document.querySelectorAll("h1,h2,h3").forEach(el => {
+          el.style.color = e["cor-titulos"];
+        });
+      }
+      // Cor do texto claro
+      if (e["cor-texto-claro"]) {
+        document.querySelectorAll(".text-gray-500, .text-slate-500").forEach(el => {
+          el.style.color = e["cor-texto-claro"];
+        });
+      }
 
       if (e.fonteTitulos || e.fonteTexto) {
-        // Carrega as fontes via Google Fonts dinamicamente
         const fonts = [
           e.fonteTitulos && `family=${e.fonteTitulos.replace(/ /g, "+")}:ital,wght@0,400;0,600;1,400`,
           e.fonteTexto   && `family=${e.fonteTexto.replace(/ /g, "+")}:wght@300;400;500;600`,
