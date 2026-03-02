@@ -31,7 +31,8 @@ const previewFoto = document.getElementById("preview-foto");
 const btnUploadFoto = document.getElementById("btn-upload-foto");
 const inputFoto = document.getElementById("input-foto");
 const previewHero = document.getElementById("preview-hero");
-const btnUploadBanner = document.getElementById("btn-upload-banner");
+const btnUploadBanner      = document.getElementById("btn-upload-banner");
+const btnUploadBannerModal = document.getElementById("btn-upload-banner-modal");
 const inputBanner = document.getElementById("input-banner");
 const sliderOpacidade = document.getElementById("banner-opacidade");
 const labelOpacidade = document.getElementById("banner-opacidade-valor");
@@ -574,16 +575,15 @@ onAuthStateChanged(auth, async (user) => {
 
     // Mapeamento: qual seção mostra quais cards do modal
     const TODOS_CARDS = [
-      "modal-tipografia","modal-cores","modal-botoes","modal-nav",
-      "modal-fundos","modal-sobre","modal-cards","modal-footer",
+      "modal-hero","modal-tipografia","modal-cores","modal-botoes","modal-nav",
+      "modal-fundos","modal-contato","modal-sobre","modal-cards","modal-footer",
       "modal-layout","modal-efeitos","modal-preview",
     ];
     const SECAO_MAP = {
-      // Cada seção: [cards específicos da seção] + tipografia + tamanhos + cores do texto
       "modal-nav":        { titulo: "Barra de navegação",
                             cards: ["modal-nav", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-tipografia": { titulo: "Fontes",
-                            cards: ["modal-tipografia", "modal-layout"] },
+      "modal-hero":       { titulo: "Hero / Banner",
+                            cards: ["modal-hero", "modal-tipografia", "modal-layout", "modal-cores"] },
       "modal-sobre":      { titulo: "Seção Sobre mim",
                             cards: ["modal-sobre", "modal-efeitos", "modal-tipografia", "modal-layout", "modal-cores"] },
       "modal-cards":      { titulo: "Cards das sessões",
@@ -591,9 +591,11 @@ onAuthStateChanged(auth, async (user) => {
       "modal-cores":      { titulo: "Seção Públicos",
                             cards: ["modal-tipografia", "modal-layout", "modal-cores"] },
       "modal-fundos":     { titulo: "Seção Contato",
-                            cards: ["modal-fundos", "modal-botoes", "modal-tipografia", "modal-layout", "modal-cores"] },
+                            cards: ["modal-contato", "modal-fundos", "modal-botoes", "modal-tipografia", "modal-layout", "modal-cores"] },
       "modal-footer":     { titulo: "Rodapé",
                             cards: ["modal-footer", "modal-tipografia", "modal-cores"] },
+      "modal-tipografia": { titulo: "Fontes",
+                            cards: ["modal-tipografia", "modal-layout"] },
       "modal-botoes":     { titulo: "Botões",
                             cards: ["modal-botoes", "modal-tipografia", "modal-cores"] },
       "modal-layout":     { titulo: "Layout",
@@ -746,7 +748,10 @@ onAuthStateChanged(auth, async (user) => {
       });
     }
 
-    // Configura botão de upload do banner
+    // Configura botão de upload do banner (preview e modal)
+    if (btnUploadBannerModal && inputBanner) {
+      btnUploadBannerModal.addEventListener("click", () => inputBanner.click());
+    }
     if (btnUploadBanner && inputBanner) {
       btnUploadBanner.addEventListener("click", () => inputBanner.click());
       inputBanner.addEventListener("change", async (e) => {
