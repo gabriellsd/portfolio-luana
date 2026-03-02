@@ -307,24 +307,38 @@ async function uploadLogo(file) {
   }
 }
 
+// Carrega uma fonte do Google Fonts dinamicamente
+function carregarFonte(nomeFonte) {
+  if (!nomeFonte) return;
+  const id = `gfont-${nomeFonte.replace(/\s+/g, "-")}`;
+  if (document.getElementById(id)) return; // já carregada
+  const link = document.createElement("link");
+  link.id   = id;
+  link.rel  = "stylesheet";
+  link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(nomeFonte)}:wght@400;500;600;700&display=swap`;
+  document.head.appendChild(link);
+}
+
 // Aplica estilos (fontes e cores) no preview do admin
 function aplicarEstilos(estilos = {}) {
   const root = document.documentElement;
 
-  // Fontes
+  // Fontes — carrega do Google Fonts se necessário
+  const prevTitulo = document.getElementById("prev-titulo");
+  const prevTexto  = document.getElementById("prev-texto");
+  const prevBotao  = document.getElementById("prev-botao");
+
   if (estilos.fonteTitulos) {
-    document.querySelectorAll("h1,h2,h3,.font-serif").forEach(el => {
-      el.style.fontFamily = `'${estilos.fonteTitulos}', serif`;
-    });
-    const prevTitulo = document.getElementById("prev-titulo");
-    if (prevTitulo) prevTitulo.style.fontFamily = `'${estilos.fonteTitulos}', serif`;
+    carregarFonte(estilos.fonteTitulos);
+    const ff = `'${estilos.fonteTitulos}', serif`;
+    document.querySelectorAll("h1,h2,h3,.font-serif").forEach(el => el.style.fontFamily = ff);
+    if (prevTitulo) prevTitulo.style.fontFamily = ff;
   }
   if (estilos.fonteTexto) {
-    document.querySelectorAll("p,span:not(.text-sage)").forEach(el => {
-      el.style.fontFamily = `'${estilos.fonteTexto}', sans-serif`;
-    });
-    const prevTexto = document.getElementById("prev-texto");
-    if (prevTexto) prevTexto.style.fontFamily = `'${estilos.fonteTexto}', sans-serif`;
+    carregarFonte(estilos.fonteTexto);
+    const ff = `'${estilos.fonteTexto}', sans-serif`;
+    document.querySelectorAll("p,span:not(.text-sage)").forEach(el => el.style.fontFamily = ff);
+    if (prevTexto) prevTexto.style.fontFamily = ff;
   }
 
   // Aplica cada cor via CSS var
@@ -333,16 +347,10 @@ function aplicarEstilos(estilos = {}) {
     root.style.setProperty(css, val);
   });
 
-  // Atualiza elementos do preview do modal
-  const prevTitulo = document.getElementById("prev-titulo");
-  const prevTexto  = document.getElementById("prev-texto");
-  const prevBotao  = document.getElementById("prev-botao");
-  if (prevTitulo && estilos["cor-titulos"]) prevTitulo.style.color = estilos["cor-titulos"];
-  if (prevTexto  && estilos["cor-texto"])   prevTexto.style.color  = estilos["cor-texto"];
-  if (prevBotao) {
-    if (estilos["cor-botao"])       prevBotao.style.background = estilos["cor-botao"];
-    if (estilos["cor-botao-texto"]) prevBotao.style.color      = estilos["cor-botao-texto"];
-  }
+  // As cores do preview atualizam via CSS vars automaticamente.
+  // Só precisamos aplicar as fontes via JS pois não há CSS var para font-family.
+  if (prevTitulo && estilos.fonteTitulos) prevTitulo.style.fontFamily = `'${estilos.fonteTitulos}', serif`;
+  if (prevTexto  && estilos.fonteTexto)   prevTexto.style.fontFamily  = `'${estilos.fonteTexto}', sans-serif`;
 
   // Seção contato
   const previewContato = document.getElementById("preview-contato");
