@@ -43,6 +43,16 @@ async function carregarConteudo() {
       const foto = document.querySelector("[data-foto]");
       if (foto) foto.src = data.fotoUrl;
     }
+
+    // Banner do hero vindo do Cloudinary
+    if (data.bannerUrl) {
+      const hero = document.querySelector(".hero-gradient");
+      if (hero) {
+        hero.style.backgroundImage = `linear-gradient(rgba(249,247,242,0.8), rgba(249,247,242,0.8)), url('${data.bannerUrl}')`;
+        hero.style.backgroundSize = "cover";
+        hero.style.backgroundPosition = "center";
+      }
+    }
   } catch (err) {
     console.error("Erro ao carregar conteúdo:", err);
   }
