@@ -38,25 +38,23 @@ async function carregarConteudo() {
       }
     });
 
-    // Foto de perfil vinda do Cloudinary
-    if (data.fotoUrl) {
-      const foto = document.querySelector("[data-foto]");
-      if (foto) {
-        foto.src = data.fotoUrl;
-        const opacidadeFoto = data.fotoOpacidade !== undefined ? data.fotoOpacidade : 100;
-        foto.style.opacity = opacidadeFoto / 100;
-      }
+    // Foto de perfil: troca imagem (se tiver) e aplica opacidade sempre
+    const foto = document.querySelector("[data-foto]");
+    if (foto) {
+      if (data.fotoUrl) foto.src = data.fotoUrl;
+      foto.style.opacity = data.fotoOpacidade !== undefined ? data.fotoOpacidade / 100 : 1;
     }
 
-    // Banner do hero vindo do Cloudinary
-    if (data.bannerUrl) {
-      const hero = document.querySelector(".hero-gradient");
-      if (hero) {
-        const opacidade = data.bannerOpacidade !== undefined ? data.bannerOpacidade / 100 : 0.8;
-        hero.style.backgroundImage = `linear-gradient(rgba(249,247,242,${opacidade}), rgba(249,247,242,${opacidade})), url('${data.bannerUrl}')`;
-        hero.style.backgroundSize = "cover";
-        hero.style.backgroundPosition = "center";
-      }
+    // Banner do hero: troca imagem (se tiver) e aplica opacidade sempre
+    const hero = document.querySelector(".hero-gradient");
+    if (hero) {
+      const opacidade = data.bannerOpacidade !== undefined ? data.bannerOpacidade / 100 : 0.8;
+      const bgUrl = data.bannerUrl ||
+        "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070";
+      hero.style.backgroundImage =
+        `linear-gradient(rgba(249,247,242,${opacidade}), rgba(249,247,242,${opacidade})), url('${bgUrl}')`;
+      hero.style.backgroundSize = "cover";
+      hero.style.backgroundPosition = "center";
     }
   } catch (err) {
     console.error("Erro ao carregar conteúdo:", err);
