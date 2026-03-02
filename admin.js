@@ -576,32 +576,31 @@ onAuthStateChanged(auth, async (user) => {
     // Mapeamento: qual seção mostra quais cards do modal
     const TODOS_CARDS = [
       "modal-hero","modal-tipografia","modal-cores","modal-botoes","modal-nav",
-      "modal-fundos","modal-contato","modal-sobre","modal-cards","modal-footer",
-      "modal-layout","modal-efeitos","modal-preview",
+      "modal-fundos","modal-contato","modal-sobre","modal-cards","modal-publicos",
+      "modal-footer","modal-layout","modal-efeitos","modal-preview",
     ];
     const SECAO_MAP = {
-      "modal-nav":        { titulo: "Barra de navegação",
-                            cards: ["modal-nav", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-hero":       { titulo: "Hero / Banner",
-                            cards: ["modal-hero", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-sobre":      { titulo: "Seção Sobre mim",
-                            cards: ["modal-sobre", "modal-efeitos", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-cards":      { titulo: "Cards das sessões",
-                            cards: ["modal-cards", "modal-fundos", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-cores":      { titulo: "Seção Públicos",
-                            cards: ["modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-fundos":     { titulo: "Seção Contato",
-                            cards: ["modal-contato", "modal-fundos", "modal-botoes", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-footer":     { titulo: "Rodapé",
-                            cards: ["modal-footer", "modal-tipografia", "modal-cores"] },
-      "modal-tipografia": { titulo: "Fontes",
-                            cards: ["modal-tipografia", "modal-layout"] },
-      "modal-botoes":     { titulo: "Botões",
-                            cards: ["modal-botoes", "modal-tipografia", "modal-cores"] },
-      "modal-layout":     { titulo: "Layout",
-                            cards: ["modal-layout", "modal-tipografia"] },
-      "modal-efeitos":    { titulo: "Efeitos",
-                            cards: ["modal-efeitos"] },
+      // Cada chave corresponde ao data-abrir-estilo do botão na seção
+      "modal-nav":      { titulo: "Barra de navegação",
+                          cards: ["modal-nav", "modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-hero":     { titulo: "Hero / Banner",
+                          cards: ["modal-hero", "modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-sobre":    { titulo: "Sobre mim",
+                          cards: ["modal-sobre", "modal-efeitos", "modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-cards":    { titulo: "Sessões de atendimento",
+                          cards: ["modal-cards", "modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-publicos": { titulo: "Seção Públicos",
+                          cards: ["modal-publicos", "modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-contato":  { titulo: "Seção Contato",
+                          cards: ["modal-contato", "modal-botoes", "modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-footer":   { titulo: "Rodapé",
+                          cards: ["modal-footer", "modal-tipografia", "modal-cores"] },
+      // Entradas auxiliares (abertas pelo botão "Ver todas" ou direto)
+      "modal-tipografia": { titulo: "Fontes",       cards: ["modal-tipografia", "modal-layout"] },
+      "modal-botoes":     { titulo: "Botões",        cards: ["modal-botoes", "modal-tipografia", "modal-cores"] },
+      "modal-layout":     { titulo: "Layout",        cards: ["modal-layout", "modal-tipografia"] },
+      "modal-efeitos":    { titulo: "Efeitos",       cards: ["modal-efeitos"] },
+      "modal-fundos":     { titulo: "Fundo geral",   cards: ["modal-fundos"] },
     };
     const modalTitulo  = document.getElementById("modal-titulo");
     const btnVerTudo   = document.getElementById("btn-ver-tudo");
@@ -749,11 +748,12 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     // Configura botão de upload do banner (preview e modal)
-    if (btnUploadBannerModal && inputBanner) {
-      btnUploadBannerModal.addEventListener("click", () => inputBanner.click());
-    }
-    if (btnUploadBanner && inputBanner) {
-      btnUploadBanner.addEventListener("click", () => inputBanner.click());
+    // Botões de upload do banner (modal e legado) acionam o mesmo input
+    if (btnUploadBannerModal) btnUploadBannerModal.addEventListener("click", () => inputBanner?.click());
+    if (btnUploadBanner)      btnUploadBanner.addEventListener("click",      () => inputBanner?.click());
+
+    // Listener do input fica sempre registrado, independente de qual botão acionar
+    if (inputBanner) {
       inputBanner.addEventListener("change", async (e) => {
         const file = e.target.files[0];
         if (!file) return;
