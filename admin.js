@@ -564,25 +564,75 @@ onAuthStateChanged(auth, async (user) => {
       });
     }
 
+    // Mapeamento: qual seção mostra quais cards do modal
+    const TODOS_CARDS = [
+      "modal-tipografia","modal-cores","modal-botoes","modal-nav",
+      "modal-fundos","modal-sobre","modal-cards","modal-footer",
+      "modal-layout","modal-efeitos","modal-preview",
+    ];
+    const SECAO_MAP = {
+      "modal-nav":        { titulo: "Barra de navegação",   cards: ["modal-nav", "modal-tipografia"] },
+      "modal-tipografia": { titulo: "Fontes & Hero",         cards: ["modal-tipografia", "modal-layout"] },
+      "modal-sobre":      { titulo: "Seção Sobre mim",       cards: ["modal-sobre", "modal-efeitos"] },
+      "modal-cards":      { titulo: "Cards das sessões",     cards: ["modal-fundos", "modal-cards"] },
+      "modal-cores":      { titulo: "Seção Públicos",        cards: ["modal-cores"] },
+      "modal-fundos":     { titulo: "Seção Contato",         cards: ["modal-fundos", "modal-botoes"] },
+      "modal-footer":     { titulo: "Rodapé",                cards: ["modal-footer"] },
+      "modal-botoes":     { titulo: "Botões",                cards: ["modal-botoes"] },
+      "modal-layout":     { titulo: "Layout",                cards: ["modal-layout"] },
+      "modal-efeitos":    { titulo: "Efeitos",               cards: ["modal-efeitos"] },
+    };
+    const modalTitulo  = document.getElementById("modal-titulo");
+    const btnVerTudo   = document.getElementById("btn-ver-tudo");
+
+    function abrirModalEstilos(alvoId) {
+      if (!modalEstilos) return;
+      modalEstilos.classList.remove("hidden");
+      const config = SECAO_MAP[alvoId];
+      const esTudo = !config;
+
+      // Título
+      if (modalTitulo) modalTitulo.textContent = esTudo ? "Fontes e Cores" : config.titulo;
+
+      // Mostrar/esconder cards
+      TODOS_CARDS.forEach(id => {
+        const card = document.getElementById(id);
+        if (!card) return;
+        if (esTudo || id === "modal-preview") {
+          card.classList.remove("hidden");
+        } else {
+          card.classList.toggle("hidden", !config.cards.includes(id));
+        }
+      });
+
+      // Botão "Ver tudo"
+      if (btnVerTudo) {
+        if (esTudo) {
+          btnVerTudo.classList.add("hidden");
+        } else {
+          btnVerTudo.classList.remove("hidden");
+          btnVerTudo.onclick = () => abrirModalEstilos(null);
+        }
+      }
+
+      // Scroll ao topo do modal
+      const scroll = modalEstilos.querySelector(".overflow-y-auto");
+      if (scroll) scroll.scrollTop = 0;
+    }
+
     // Abre / fecha modal de estilos
     if (toggleEstilos) {
       toggleEstilos.classList.remove("hidden");
-      toggleEstilos.addEventListener("click", () => modalEstilos.classList.remove("hidden"));
+      toggleEstilos.addEventListener("click", () => abrirModalEstilos(null));
     }
     if (fecharEstilos)  fecharEstilos.addEventListener("click",  () => modalEstilos.classList.add("hidden"));
     if (modalOverlay)   modalOverlay.addEventListener("click",   () => modalEstilos.classList.add("hidden"));
 
-    // Botões "Editar cores" no hover das seções — abre modal e rola até a seção correta
+    // Botões "Editar" no hover das seções — abre modal contextual
     document.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-abrir-estilo]");
       if (!btn) return;
-      const alvoId = btn.dataset.abrirEstilo;
-      if (modalEstilos) modalEstilos.classList.remove("hidden");
-      const alvo = document.getElementById(alvoId);
-      if (alvo) {
-        // Pequeno delay para o modal abrir antes de rolar
-        setTimeout(() => alvo.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
-      }
+      abrirModalEstilos(btn.dataset.abrirEstilo);
     });
 
     // Preview em tempo real: color pickers
