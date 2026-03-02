@@ -60,8 +60,35 @@
       <!-- Seção do formulário (aparece só depois do login) -->
       <section id="app-section" class="hidden">
 
+      <!-- Preview visual - Hero (Topo) -->
+      <section class="py-10 px-4 bg-white mb-8 border border-slate-100 rounded-2xl shadow-sm">
+        <div class="max-w-4xl mx-auto text-center space-y-4">
+          <p
+            class="text-xs tracking-[0.3em] uppercase text-emerald-700/80 font-semibold outline-none"
+            data-preview-field="navBrand"
+            contenteditable="true"
+          >
+            Psicologia Clínica
+          </p>
+          <h1
+            class="text-3xl md:text-4xl font-semibold text-slate-800 outline-none"
+            data-preview-field="heroTitle"
+            contenteditable="true"
+          >
+            Cuidando da sua história com sensibilidade e ética.
+          </h1>
+          <p
+            class="text-sm md:text-base italic text-slate-500 outline-none"
+            data-preview-field="heroSubtitle"
+            contenteditable="true"
+          >
+            "Acredito que cada trajetória merece ser compreendida com respeito e responsabilidade."
+          </p>
+        </div>
+      </section>
+
       <!-- Preview visual - Sobre mim (similar ao site) -->
-      <section class="py-12 px-4 bg-white mb-10 border border-slate-100 rounded-2xl shadow-sm">
+      <section class="py-12 px-4 bg-white mb-8 border border-slate-100 rounded-2xl shadow-sm">
         <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
           <div class="w-full md:w-1/2 hidden md:block">
             <div class="relative">
@@ -140,6 +167,235 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preview visual - Sessões -->
+      <section class="py-10 px-4 bg-white mb-8 border border-slate-100 rounded-2xl shadow-sm">
+        <div class="max-w-4xl mx-auto space-y-6">
+          <div class="text-center space-y-2">
+            <h2
+              class="text-2xl md:text-3xl font-semibold outline-none"
+              data-preview-field="sessaoTitulo"
+              contenteditable="true"
+            >
+              Como funcionam as sessões
+            </h2>
+            <div class="h-1 w-16 bg-emerald-500 mx-auto rounded-full"></div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+            <div class="bg-slate-50 rounded-xl p-4 space-y-1">
+              <h3
+                class="font-semibold outline-none"
+                data-preview-field="modalidadeTitulo"
+                contenteditable="true"
+              >
+                Modalidade
+              </h3>
+              <p
+                class="text-slate-600 outline-none"
+                data-preview-field="modalidadeTexto"
+                contenteditable="true"
+              >
+                Atendimento Presencial e Online (via plataforma segura).
+              </p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-4 space-y-1">
+              <h3
+                class="font-semibold outline-none"
+                data-preview-field="duracaoTitulo"
+                contenteditable="true"
+              >
+                Duração
+              </h3>
+              <p
+                class="text-slate-600 outline-none"
+                data-preview-field="duracaoTexto"
+                contenteditable="true"
+              >
+                As sessões têm duração aproximada de 50 minutos.
+              </p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-4 space-y-1">
+              <h3
+                class="font-semibold outline-none"
+                data-preview-field="frequenciaTitulo"
+                contenteditable="true"
+              >
+                Frequência
+              </h3>
+              <p
+                class="text-slate-600 outline-none"
+                data-preview-field="frequenciaTexto"
+                contenteditable="true"
+              >
+                Geralmente semanais, ajustadas conforme a necessidade clínica.
+              </p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-4 space-y-1">
+              <h3
+                class="font-semibold outline-none"
+                data-preview-field="agendamentoTitulo"
+                contenteditable="true"
+              >
+                Agendamento
+              </h3>
+              <p
+                class="text-slate-600 outline-none"
+                data-preview-field="agendamentoTexto"
+                contenteditable="true"
+              >
+                Totalmente digital via WhatsApp para sua comodidade.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preview visual - Públicos atendidos -->
+      <section class="py-10 px-4 bg-white mb-8 border border-slate-100 rounded-2xl shadow-sm">
+        <div class="max-w-4xl mx-auto space-y-6">
+          <h2
+            class="text-2xl md:text-3xl text-center font-semibold outline-none"
+            data-preview-field="publicoTitulo"
+            contenteditable="true"
+          >
+            Públicos Atendidos
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-center">
+            <div class="space-y-2">
+              <div class="text-3xl">🧸</div>
+              <h3
+                class="font-medium outline-none"
+                data-preview-field="criancasTitulo"
+                contenteditable="true"
+              >
+                Crianças
+              </h3>
+              <p
+                class="text-slate-600 outline-none"
+                data-preview-field="criancasTexto"
+                contenteditable="true"
+              >
+                Atendimento lúdico e sensível, focado no desenvolvimento infantil e orientação constante aos pais ou
+                responsáveis.
+              </p>
+            </div>
+            <div class="space-y-2">
+              <div class="text-3xl">🌱</div>
+              <h3
+                class="font-medium outline-none"
+                data-preview-field="adolescentesTitulo"
+                contenteditable="true"
+              >
+                Adolescentes
+              </h3>
+              <p
+                class="text-slate-600 outline-none"
+                data-preview-field="adolescentesTexto"
+                contenteditable="true"
+              >
+                Apoio em fases de transição, busca por identidade, manejo de ansiedade e os desafios típicos da
+                juventude.
+              </p>
+            </div>
+            <div class="space-y-2">
+              <div class="text-3xl">🌿</div>
+              <h3
+                class="font-medium outline-none"
+                data-preview-field="adultosTitulo"
+                contenteditable="true"
+              >
+                Adultos
+              </h3>
+              <p
+                class="text-slate-600 outline-none"
+                data-preview-field="adultosTexto"
+                contenteditable="true"
+              >
+                Foco em autoconhecimento, gestão da ansiedade, conflitos em relacionamentos e fortalecimento da
+                autoestima.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preview visual - Contato -->
+      <section class="py-10 px-4 bg-emerald-600 mb-8 rounded-2xl shadow-sm text-white">
+        <div class="max-w-4xl mx-auto space-y-6 text-center">
+          <div class="space-y-2">
+            <h2
+              class="text-2xl md:text-3xl font-serif outline-none"
+              data-preview-field="contatoTitulo"
+              contenteditable="true"
+            >
+              Vamos iniciar essa jornada?
+            </h2>
+            <p
+              class="text-sm md:text-base opacity-90 outline-none"
+              data-preview-field="contatoTexto"
+              contenteditable="true"
+            >
+              Escolha a melhor forma para conversarmos e agendarmos sua primeira consulta.
+            </p>
+          </div>
+
+          <div class="flex flex-col md:flex-row justify-center gap-4 text-sm font-semibold">
+            <button
+              type="button"
+              class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 bg-white text-emerald-700 px-5 py-3 rounded-full shadow-sm"
+            >
+              <span class="text-lg">💬</span>
+              <span
+                class="outline-none"
+                data-preview-field="whatsappTexto"
+                contenteditable="true"
+              >
+                Agendar pelo WhatsApp
+              </span>
+            </button>
+
+            <button
+              type="button"
+              class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 border border-white/70 px-5 py-3 rounded-full"
+            >
+              <span class="text-lg">✉️</span>
+              <span
+                class="outline-none"
+                data-preview-field="emailTexto"
+                contenteditable="true"
+              >
+                Enviar E-mail
+              </span>
+            </button>
+          </div>
+
+          <div class="pt-4 border-t border-white/30 text-xs space-y-1">
+            <p
+              class="font-medium outline-none"
+              data-preview-field="localLabel"
+              contenteditable="true"
+            >
+              Atendimento Presencial
+            </p>
+            <p
+              class="opacity-90 outline-none"
+              data-preview-field="localEndereco"
+              contenteditable="true"
+            >
+              Rua Exemplo, 123 - Sala 45, Centro Comercial. Cidade - Estado.
+            </p>
+            <p
+              class="opacity-80 mt-1 outline-none"
+              data-preview-field="footerTexto"
+              contenteditable="true"
+            >
+              © 2026 | Nome da Psicóloga | CRP 00/00000
+            </p>
           </div>
         </div>
       </section>
