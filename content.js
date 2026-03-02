@@ -54,43 +54,70 @@ async function carregarConteudo() {
         "cor-fundo-contato": "--cor-contato",
         "cor-botao":         "--cor-botao",
         "cor-botao-texto":   "--cor-botao-texto",
+        "cor-nav":           "--cor-nav",
+        "cor-nav-texto":     "--cor-nav-texto",
+        "cor-sobre-fundo":   "--cor-sobre-fundo",
+        "cor-cards":         "--cor-cards",
+        "cor-footer-fundo":  "--cor-footer-fundo",
+        "cor-footer-texto":  "--cor-footer-texto",
       };
       Object.entries(mapaCSS).forEach(([key, css]) => {
         if (e[key]) root.style.setProperty(css, e[key]);
       });
 
-      // Aplica cor de fundo alternado às seções
-      if (e["cor-fundo-alt"]) {
-        document.querySelectorAll("section.bg-stone-50, section.bg-\\[var\\(--cor-fundo-alt\\)\\]").forEach(el => {
-          el.style.backgroundColor = e["cor-fundo-alt"];
-        });
+      // Cards: radius e sombra (CSS vars já aplicadas acima — mas também inline para garantir)
+      if (e["cards-radius"] !== undefined) {
+        root.style.setProperty("--cards-radius", `${e["cards-radius"]}px`);
       }
-      // Aplica cor de fundo da seção contato
-      if (e["cor-fundo-contato"]) {
-        const secContato = document.querySelector("section.bg-sage, #contato");
-        if (secContato) secContato.style.backgroundColor = e["cor-fundo-contato"];
+      if (e["cards-sombra"]) {
+        root.style.setProperty("--cards-sombra", e["cards-sombra"]);
       }
-      // Aplica cor de botões
-      if (e["cor-botao"]) {
-        document.querySelectorAll(".bg-sage, button.rounded-full").forEach(el => {
-          el.style.backgroundColor = e["cor-botao"];
-        });
+
+      // Seção Sobre
+      const secSobre = document.getElementById("sobre");
+      if (secSobre && e["cor-sobre-fundo"]) secSobre.style.backgroundColor = e["cor-sobre-fundo"];
+
+      // Seção Contato
+      const secContato = document.getElementById("contato");
+      if (secContato && e["cor-fundo-contato"]) secContato.style.backgroundColor = e["cor-fundo-contato"];
+
+      // Seção Atendimento (fundo alt)
+      const secAtendimento = document.getElementById("atendimento");
+      if (secAtendimento && e["cor-fundo-alt"]) secAtendimento.style.backgroundColor = e["cor-fundo-alt"];
+
+      // Nav
+      const nav = document.getElementById("main-nav");
+      if (nav) {
+        if (e["cor-nav"])       nav.style.backgroundColor = e["cor-nav"];
+        if (e["cor-nav-texto"]) {
+          nav.querySelectorAll("a, span[data-field]").forEach(el => el.style.color = e["cor-nav-texto"]);
+        }
       }
-      if (e["cor-botao-texto"]) {
-        document.querySelectorAll(".bg-sage, button.rounded-full").forEach(el => {
-          el.style.color = e["cor-botao-texto"];
-        });
+
+      // Footer
+      const footer = document.getElementById("main-footer");
+      if (footer) {
+        if (e["cor-footer-fundo"]) footer.style.backgroundColor = e["cor-footer-fundo"];
+        if (e["cor-footer-texto"]) footer.querySelectorAll("p").forEach(p => p.style.color = e["cor-footer-texto"]);
       }
+
       // Cor dos títulos
       if (e["cor-titulos"]) {
-        document.querySelectorAll("h1,h2,h3").forEach(el => {
-          el.style.color = e["cor-titulos"];
-        });
+        document.querySelectorAll("h1,h2,h3").forEach(el => el.style.color = e["cor-titulos"]);
       }
+
       // Cor do texto claro
       if (e["cor-texto-claro"]) {
-        document.querySelectorAll(".text-gray-500, .text-slate-500").forEach(el => {
+        document.querySelectorAll(".text-gray-500, .text-gray-600").forEach(el => {
           el.style.color = e["cor-texto-claro"];
+        });
+      }
+
+      // Botões
+      if (e["cor-botao"] || e["cor-botao-texto"]) {
+        document.querySelectorAll("a.bg-sage, .bg-sage").forEach(el => {
+          if (e["cor-botao"])       el.style.backgroundColor = e["cor-botao"];
+          if (e["cor-botao-texto"]) el.style.color = e["cor-botao-texto"];
         });
       }
 

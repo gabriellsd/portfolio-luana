@@ -18,6 +18,18 @@
             --cor-contato: #8DAA91;
             --cor-botao: #8DAA91;
             --cor-botao-texto: #FFFFFF;
+            /* nav */
+            --cor-nav: #FFFFFF;
+            --cor-nav-texto: #374151;
+            /* sobre */
+            --cor-sobre-fundo: #FFFFFF;
+            /* cards */
+            --cor-cards: #FFFFFF;
+            --cards-radius: 1rem;
+            --cards-sombra: 0 1px 3px rgba(0,0,0,0.06);
+            /* footer */
+            --cor-footer-fundo: #F1F0EB;
+            --cor-footer-texto: #6B7280;
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -31,7 +43,28 @@
         .bg-sage { background-color: var(--primary-sage); }
         .text-sage { color: var(--primary-sage); }
         .border-sage { border-color: var(--primary-sage); }
-        
+
+        nav.fixed {
+            background-color: var(--cor-nav) !important;
+        }
+        nav.fixed a, nav.fixed span[data-field] {
+            color: var(--cor-nav-texto) !important;
+        }
+        section#sobre {
+            background-color: var(--cor-sobre-fundo);
+        }
+        .sessao-card {
+            background-color: var(--cor-cards) !important;
+            border-radius: var(--cards-radius) !important;
+            box-shadow: var(--cards-sombra) !important;
+        }
+        footer {
+            background-color: var(--cor-footer-fundo) !important;
+        }
+        footer p {
+            color: var(--cor-footer-texto) !important;
+        }
+
         .hero-gradient {
             background: linear-gradient(rgba(249, 247, 242, 0.8), rgba(249, 247, 242, 0.8)), 
                         url('https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070');
@@ -51,7 +84,7 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <nav id="main-nav" class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
             <span class="text-xl font-serif tracking-widest uppercase text-sage" data-field="navBrand">Psicologia Clínica</span>
             <div class="hidden md:flex space-x-8 text-sm uppercase tracking-wider font-medium">
@@ -121,19 +154,19 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
+                <div class="sessao-card bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
                     <h3 class="font-semibold mb-3" data-field="modalidadeTitulo">Modalidade</h3>
                     <p class="text-gray-600 text-sm" data-field="modalidadeTexto">Atendimento Presencial e Online (via plataforma segura).</p>
                 </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
+                <div class="sessao-card bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
                     <h3 class="font-semibold mb-3" data-field="duracaoTitulo">Duração</h3>
                     <p class="text-gray-600 text-sm" data-field="duracaoTexto">As sessões têm duração aproximada de 50 minutos.</p>
                 </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
+                <div class="sessao-card bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
                     <h3 class="font-semibold mb-3" data-field="frequenciaTitulo">Frequência</h3>
                     <p class="text-gray-600 text-sm" data-field="frequenciaTexto">Geralmente semanais, ajustadas conforme a necessidade clínica.</p>
                 </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
+                <div class="sessao-card bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
                     <h3 class="font-semibold mb-3" data-field="agendamentoTitulo">Agendamento</h3>
                     <p class="text-gray-600 text-sm" data-field="agendamentoTexto">Totalmente digital via WhatsApp para sua comodidade.</p>
                 </div>
@@ -209,7 +242,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-8 bg-stone-100 text-center text-xs text-gray-500 uppercase tracking-widest">
+    <footer id="main-footer" class="py-8 bg-stone-100 text-center text-xs text-gray-500 uppercase tracking-widest">
         <p data-field="footerTexto">&copy; 2026 | Nome da Psicóloga | CRP 00/00000</p>
     </footer>
 

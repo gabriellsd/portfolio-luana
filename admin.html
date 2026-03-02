@@ -18,6 +18,14 @@
       --cor-contato: #8DAA91;
       --cor-botao: #8DAA91;
       --cor-botao-texto: #FFFFFF;
+      --cor-nav: #FFFFFF;
+      --cor-nav-texto: #374151;
+      --cor-sobre-fundo: #FFFFFF;
+      --cor-cards: #FFFFFF;
+      --cards-radius: 1rem;
+      --cards-sombra: 0 1px 3px rgba(0,0,0,0.06);
+      --cor-footer-fundo: #F1F0EB;
+      --cor-footer-texto: #6B7280;
     }
     body {
       font-family: 'Inter', sans-serif;
@@ -745,6 +753,100 @@
             <div class="flex items-center gap-3">
               <input id="cor-botao-texto" type="color" value="#FFFFFF" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
               <span id="cor-botao-texto-hex" class="text-xs font-mono text-slate-500">#FFFFFF</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- BARRA DE NAVEGAÇÃO -->
+        <div class="space-y-3">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Barra de navegação</p>
+
+          <div class="space-y-1">
+            <label class="text-xs text-slate-500">Cor de fundo da nav</label>
+            <div class="flex items-center gap-3">
+              <input id="cor-nav" type="color" value="#FFFFFF" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
+              <span id="cor-nav-hex" class="text-xs font-mono text-slate-500">#FFFFFF</span>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs text-slate-500">Cor do texto dos links</label>
+            <div class="flex items-center gap-3">
+              <input id="cor-nav-texto" type="color" value="#374151" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
+              <span id="cor-nav-texto-hex" class="text-xs font-mono text-slate-500">#374151</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- SEÇÃO SOBRE MIM -->
+        <div class="space-y-3">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Seção "Sobre mim"</p>
+
+          <div class="space-y-1">
+            <label class="text-xs text-slate-500">Cor de fundo da seção</label>
+            <div class="flex items-center gap-3">
+              <input id="cor-sobre-fundo" type="color" value="#FFFFFF" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
+              <span id="cor-sobre-fundo-hex" class="text-xs font-mono text-slate-500">#FFFFFF</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- CARDS DAS SESSÕES -->
+        <div class="space-y-3">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Cards das sessões</p>
+
+          <div class="space-y-1">
+            <label class="text-xs text-slate-500">Cor de fundo dos cards</label>
+            <div class="flex items-center gap-3">
+              <input id="cor-cards" type="color" value="#FFFFFF" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
+              <span id="cor-cards-hex" class="text-xs font-mono text-slate-500">#FFFFFF</span>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs text-slate-500">Arredondamento dos cards <span id="cards-radius-val" class="text-slate-400 font-mono">16px</span></label>
+            <input id="cards-radius" type="range" min="0" max="32" step="2" value="16" class="w-full accent-sage cursor-pointer" />
+            <div class="flex justify-between text-xs text-slate-400">
+              <span>Reto</span><span>Médio</span><span>Redondo</span>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs text-slate-500">Sombra dos cards</label>
+            <select id="cards-sombra" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
+              <option value="none">Nenhuma</option>
+              <option value="0 1px 3px rgba(0,0,0,0.06)" selected>Suave (padrão)</option>
+              <option value="0 4px 12px rgba(0,0,0,0.10)">Média</option>
+              <option value="0 8px 24px rgba(0,0,0,0.15)">Forte</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="border-slate-100" />
+
+        <!-- RODAPÉ -->
+        <div class="space-y-3">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Rodapé</p>
+
+          <div class="space-y-1">
+            <label class="text-xs text-slate-500">Cor de fundo do rodapé</label>
+            <div class="flex items-center gap-3">
+              <input id="cor-footer-fundo" type="color" value="#F1F0EB" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
+              <span id="cor-footer-fundo-hex" class="text-xs font-mono text-slate-500">#F1F0EB</span>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs text-slate-500">Cor do texto do rodapé</label>
+            <div class="flex items-center gap-3">
+              <input id="cor-footer-texto" type="color" value="#6B7280" class="w-9 h-9 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
+              <span id="cor-footer-texto-hex" class="text-xs font-mono text-slate-500">#6B7280</span>
             </div>
           </div>
         </div>

@@ -49,22 +49,22 @@ const salvarEstilos  = document.getElementById("salvar-estilos");
 
 // Todos os color pickers
 const coresCfg = [
-  { id: "cor-primaria",      hex: "cor-primaria-hex",      css: "--primary-sage",   def: "#8DAA91" },
-  { id: "cor-titulos",       hex: "cor-titulos-hex",        css: "--cor-titulos",    def: "#2D2D2D" },
-  { id: "cor-texto",         hex: "cor-texto-hex",          css: "--text-dark",      def: "#4A4A4A" },
-  { id: "cor-texto-claro",   hex: "cor-texto-claro-hex",    css: "--cor-texto-claro",def: "#6B7280" },
-  { id: "cor-fundo",         hex: "cor-fundo-hex",          css: "--soft-cream",     def: "#F9F7F2" },
-  { id: "cor-fundo-alt",     hex: "cor-fundo-alt-hex",      css: "--cor-fundo-alt",  def: "#F5F5F4" },
-  { id: "cor-fundo-contato", hex: "cor-fundo-contato-hex",  css: "--cor-contato",    def: "#8DAA91" },
-  { id: "cor-botao",         hex: "cor-botao-hex",          css: "--cor-botao",      def: "#8DAA91" },
-  { id: "cor-botao-texto",   hex: "cor-botao-texto-hex",    css: "--cor-botao-texto",def: "#FFFFFF" },
+  { id: "cor-primaria",      hex: "cor-primaria-hex",       css: "--primary-sage",    def: "#8DAA91" },
+  { id: "cor-titulos",       hex: "cor-titulos-hex",         css: "--cor-titulos",     def: "#2D2D2D" },
+  { id: "cor-texto",         hex: "cor-texto-hex",           css: "--text-dark",       def: "#4A4A4A" },
+  { id: "cor-texto-claro",   hex: "cor-texto-claro-hex",     css: "--cor-texto-claro", def: "#6B7280" },
+  { id: "cor-fundo",         hex: "cor-fundo-hex",           css: "--soft-cream",      def: "#F9F7F2" },
+  { id: "cor-fundo-alt",     hex: "cor-fundo-alt-hex",       css: "--cor-fundo-alt",   def: "#F5F5F4" },
+  { id: "cor-fundo-contato", hex: "cor-fundo-contato-hex",   css: "--cor-contato",     def: "#8DAA91" },
+  { id: "cor-botao",         hex: "cor-botao-hex",           css: "--cor-botao",       def: "#8DAA91" },
+  { id: "cor-botao-texto",   hex: "cor-botao-texto-hex",     css: "--cor-botao-texto", def: "#FFFFFF" },
+  { id: "cor-nav",           hex: "cor-nav-hex",             css: "--cor-nav",         def: "#FFFFFF" },
+  { id: "cor-nav-texto",     hex: "cor-nav-texto-hex",       css: "--cor-nav-texto",   def: "#374151" },
+  { id: "cor-sobre-fundo",   hex: "cor-sobre-fundo-hex",     css: "--cor-sobre-fundo", def: "#FFFFFF" },
+  { id: "cor-cards",         hex: "cor-cards-hex",           css: "--cor-cards",       def: "#FFFFFF" },
+  { id: "cor-footer-fundo",  hex: "cor-footer-fundo-hex",    css: "--cor-footer-fundo",def: "#F1F0EB" },
+  { id: "cor-footer-texto",  hex: "cor-footer-texto-hex",    css: "--cor-footer-texto",def: "#6B7280" },
 ];
-const corPrimaria = document.getElementById("cor-primaria");
-const corPrimariaHex = document.getElementById("cor-primaria-hex");
-const corTexto = document.getElementById("cor-texto");
-const corTextoHex = document.getElementById("cor-texto-hex");
-const corFundo = document.getElementById("cor-fundo");
-const corFundoHex = document.getElementById("cor-fundo-hex");
 
 const CLOUDINARY_CLOUD = "gabriellsd";
 const CLOUDINARY_PRESET = "portfolio-luana";
@@ -325,6 +325,45 @@ function aplicarEstilos(estilos = {}) {
   if (previewSessoes && estilos["cor-fundo-alt"]) {
     previewSessoes.style.backgroundColor = estilos["cor-fundo-alt"];
   }
+
+  // Nav
+  const previewNav = document.querySelector("#app-section nav");
+  if (previewNav) {
+    if (estilos["cor-nav"])       previewNav.style.backgroundColor = estilos["cor-nav"];
+    if (estilos["cor-nav-texto"]) {
+      previewNav.querySelectorAll("a, span").forEach(el => el.style.color = estilos["cor-nav-texto"]);
+    }
+  }
+
+  // Seção sobre
+  const previewSobre = document.getElementById("preview-sobre");
+  if (previewSobre && estilos["cor-sobre-fundo"]) {
+    previewSobre.style.backgroundColor = estilos["cor-sobre-fundo"];
+  }
+
+  // Cards
+  const radius = estilos["cards-radius"] ? `${estilos["cards-radius"]}px` : null;
+  const sombra = estilos["cards-sombra"] || null;
+  document.querySelectorAll(".sessao-card-preview").forEach(card => {
+    if (estilos["cor-cards"])  card.style.backgroundColor = estilos["cor-cards"];
+    if (radius)                card.style.borderRadius    = radius;
+    if (sombra)                card.style.boxShadow       = sombra;
+  });
+  root.style.setProperty("--cards-radius", radius || "1rem");
+  root.style.setProperty("--cards-sombra", sombra || "0 1px 3px rgba(0,0,0,0.06)");
+
+  // Footer
+  const previewFooter = document.getElementById("preview-footer");
+  if (previewFooter) {
+    if (estilos["cor-footer-fundo"]) previewFooter.style.backgroundColor = estilos["cor-footer-fundo"];
+    if (estilos["cor-footer-texto"]) previewFooter.querySelectorAll("p").forEach(p => p.style.color = estilos["cor-footer-texto"]);
+  }
+
+  // Slider de radius: atualiza label
+  const radiusLabel = document.getElementById("cards-radius-val");
+  if (radiusLabel && estilos["cards-radius"] !== undefined) {
+    radiusLabel.textContent = `${estilos["cards-radius"]}px`;
+  }
 }
 
 // Preenche os controles de estilo com os valores salvos
@@ -342,6 +381,18 @@ function preencherEstilos(estilos) {
     }
   });
 
+  // Campos não-cor
+  const radiusEl = document.getElementById("cards-radius");
+  const radiusLabel = document.getElementById("cards-radius-val");
+  if (radiusEl && estilos["cards-radius"] !== undefined) {
+    radiusEl.value = estilos["cards-radius"];
+    if (radiusLabel) radiusLabel.textContent = `${estilos["cards-radius"]}px`;
+  }
+  const sombraEl = document.getElementById("cards-sombra");
+  if (sombraEl && estilos["cards-sombra"]) {
+    sombraEl.value = estilos["cards-sombra"];
+  }
+
   aplicarEstilos(estilos);
 }
 
@@ -355,6 +406,10 @@ function lerEstilosDoModal() {
     const input = document.getElementById(id);
     estilos[id] = input ? input.value : def;
   });
+  const radiusEl = document.getElementById("cards-radius");
+  const sombraEl = document.getElementById("cards-sombra");
+  if (radiusEl) estilos["cards-radius"] = Number(radiusEl.value);
+  if (sombraEl) estilos["cards-sombra"] = sombraEl.value;
   return estilos;
 }
 
@@ -461,6 +516,22 @@ onAuthStateChanged(auth, async (user) => {
       if (!sel) return;
       sel.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
     });
+
+    // Preview em tempo real: slider radius
+    const radiusEl = document.getElementById("cards-radius");
+    const radiusLabel = document.getElementById("cards-radius-val");
+    if (radiusEl) {
+      radiusEl.addEventListener("input", () => {
+        if (radiusLabel) radiusLabel.textContent = `${radiusEl.value}px`;
+        aplicarEstilos(lerEstilosDoModal());
+      });
+    }
+
+    // Preview em tempo real: select sombra
+    const sombraEl = document.getElementById("cards-sombra");
+    if (sombraEl) {
+      sombraEl.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
+    }
 
     // Salvar estilos
     if (salvarEstilos) {
