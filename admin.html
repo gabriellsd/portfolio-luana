@@ -5,781 +5,522 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Painel do Portfólio</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-sage: #8DAA91;
+      --soft-cream: #F9F7F2;
+      --text-dark: #4A4A4A;
+      --accent-tan: #D4B996;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+    }
+    h1, h2, h3, .font-serif {
+      font-family: 'Playfair Display', serif;
+    }
+    .bg-sage { background-color: var(--primary-sage); }
+    .text-sage { color: var(--primary-sage); }
+    .border-sage { border-color: var(--primary-sage); }
+
+    /* Destaque de borda ao editar */
+    [contenteditable]:focus {
+      outline: 2px dashed var(--primary-sage);
+      border-radius: 4px;
+    }
+
+    .hero-gradient {
+      background: linear-gradient(rgba(249, 247, 242, 0.85), rgba(249, 247, 242, 0.85)),
+                  url('https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070');
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
 </head>
-<body class="bg-slate-100">
+<body class="bg-slate-200">
   <div class="min-h-screen flex">
-    <aside class="w-64 bg-white border-r border-slate-200 p-6">
-      <h1 class="text-xl font-semibold mb-4">Painel Portfólio</h1>
-      <p class="text-xs text-slate-500 mb-4">
-        Use este painel para atualizar os textos e links do site sem mexer em código.
+
+    <!-- Sidebar -->
+    <aside class="w-64 shrink-0 bg-white border-r border-slate-200 p-6 sticky top-0 h-screen flex flex-col">
+      <div class="mb-6">
+        <span class="text-lg font-serif tracking-widest uppercase text-sage block mb-1">Painel</span>
+        <h1 class="text-sm font-semibold text-slate-700">Portfólio da Luana</h1>
+      </div>
+      <p class="text-xs text-slate-400 leading-relaxed mb-6">
+        Clique em qualquer texto para editar. Quando terminar, clique em
+        <strong class="text-slate-600">Salvar alterações</strong>.
       </p>
-      <button
-        id="logout-button"
-        type="button"
-        class="mt-2 px-3 py-1.5 rounded-md bg-slate-200 text-xs text-slate-700 hidden"
-      >
-        Sair
-      </button>
+
+      <!-- Links rápidos -->
+      <nav class="space-y-1 text-xs text-slate-500 mb-6">
+        <a href="#preview-hero" class="block hover:text-sage transition">↑ Topo (Hero)</a>
+        <a href="#preview-sobre" class="block hover:text-sage transition">Sobre mim</a>
+        <a href="#preview-sessoes" class="block hover:text-sage transition">Sessões</a>
+        <a href="#preview-publicos" class="block hover:text-sage transition">Públicos</a>
+        <a href="#preview-contato" class="block hover:text-sage transition">Contato</a>
+      </nav>
+
+      <div class="mt-auto space-y-2">
+        <button
+          id="logout-button"
+          type="button"
+          class="hidden w-full px-3 py-2 rounded-md bg-slate-100 text-xs text-slate-600 hover:bg-slate-200 transition"
+        >
+          Sair
+        </button>
+      </div>
     </aside>
 
-    <main class="flex-1 p-6 overflow-y-auto">
-      <!-- Seção de login -->
+    <!-- Main -->
+    <main class="flex-1 overflow-y-auto">
+
+      <!-- ───── Login ───── -->
       <section
         id="login-section"
-        class="max-w-md mx-auto bg-white rounded-xl shadow-sm p-6 space-y-4"
+        class="min-h-screen flex items-center justify-center p-6"
       >
-        <h2 class="text-xl font-semibold">Entrar</h2>
+        <div class="w-full max-w-sm bg-white rounded-2xl shadow-sm p-8 space-y-5">
+          <div class="text-center">
+            <span class="text-2xl font-serif tracking-widest uppercase text-sage block mb-1">Portfólio</span>
+            <p class="text-xs text-slate-400">Faça login para editar o conteúdo</p>
+          </div>
 
-        <label class="block text-sm">
-          <span class="text-slate-600">E-mail</span>
-          <input
-            id="login-email"
-            type="email"
-            class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-          />
-        </label>
+          <label class="block text-sm">
+            <span class="text-slate-600">E-mail</span>
+            <input
+              id="login-email"
+              type="email"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-sage"
+            />
+          </label>
 
-        <label class="block text-sm">
-          <span class="text-slate-600">Senha</span>
-          <input
-            id="login-password"
-            type="password"
-            class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-          />
-        </label>
+          <label class="block text-sm">
+            <span class="text-slate-600">Senha</span>
+            <input
+              id="login-password"
+              type="password"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-sage"
+            />
+          </label>
 
-        <button
-          id="login-button"
-          type="button"
-          class="w-full mt-2 px-4 py-2 rounded-md bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700"
-        >
-          Entrar
-        </button>
+          <button
+            id="login-button"
+            type="button"
+            class="w-full py-2.5 rounded-full bg-sage text-white text-sm font-medium hover:opacity-90 transition"
+          >
+            Entrar
+          </button>
+        </div>
       </section>
 
-      <!-- Seção do formulário (aparece só depois do login) -->
+      <!-- ───── App (só aparece logada) ───── -->
       <section id="app-section" class="hidden">
 
-      <!-- Preview visual - Hero (Topo) -->
-      <section class="py-10 px-4 bg-white mb-8 border border-slate-100 rounded-2xl shadow-sm">
-        <div class="max-w-4xl mx-auto text-center space-y-4">
-          <p
-            class="text-xs tracking-[0.3em] uppercase text-emerald-700/80 font-semibold outline-none"
-            data-preview-field="navBrand"
-            contenteditable="true"
-          >
-            Psicologia Clínica
-          </p>
-          <h1
-            class="text-3xl md:text-4xl font-semibold text-slate-800 outline-none"
-            data-preview-field="heroTitle"
-            contenteditable="true"
-          >
-            Cuidando da sua história com sensibilidade e ética.
-          </h1>
-          <p
-            class="text-sm md:text-base italic text-slate-500 outline-none"
-            data-preview-field="heroSubtitle"
-            contenteditable="true"
-          >
-            "Acredito que cada trajetória merece ser compreendida com respeito e responsabilidade."
-          </p>
-        </div>
-      </section>
-
-      <!-- Preview visual - Sobre mim (similar ao site) -->
-      <section class="py-12 px-4 bg-white mb-8 border border-slate-100 rounded-2xl shadow-sm">
-        <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
-          <div class="w-full md:w-1/2 hidden md:block">
-            <div class="relative">
-              <div class="absolute -top-4 -left-4 w-full h-full border-2 border-slate-200 rounded-lg"></div>
-              <div class="relative rounded-lg shadow-md bg-slate-200 h-48"></div>
-            </div>
+        <!-- Barra fixa de salvar -->
+        <div class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200 px-6 py-3 flex items-center justify-between">
+          <span class="text-xs text-slate-500">Edite os textos abaixo e salve quando terminar</span>
+          <div class="flex items-center gap-3">
+            <div id="mensagem" class="hidden text-xs rounded-md px-3 py-1.5"></div>
+            <button
+              type="submit"
+              form="portfolio-form"
+              class="px-5 py-2 rounded-full bg-sage text-white text-sm font-medium hover:opacity-90 transition shadow-sm"
+            >
+              Salvar alterações
+            </button>
           </div>
-          <div class="w-full md:w-1/2">
-            <h2
-              class="text-2xl md:text-3xl mb-4 font-semibold outline-none"
-              data-preview-field="sobreTitulo"
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!--  PREVIEWS VISUAIS (editáveis)             -->
+        <!-- ══════════════════════════════════════════ -->
+
+        <!-- Hero -->
+        <section id="preview-hero" class="min-h-[60vh] flex items-center justify-center hero-gradient px-6 text-center">
+          <div class="max-w-3xl">
+            <div class="mb-6 inline-block p-4 rounded-full bg-white shadow-sm">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <h1
+              class="text-4xl md:text-5xl mb-6 text-gray-800"
+              data-preview-field="heroTitle"
               contenteditable="true"
             >
-              Sobre mim
-            </h2>
+              Cuidando da sua história com sensibilidade e ética.
+            </h1>
             <p
-              class="text-slate-600 leading-relaxed mb-4 text-sm md:text-base outline-none"
-              data-preview-field="sobreTexto"
+              class="text-lg italic text-gray-600 mb-4"
+              data-preview-field="heroSubtitle"
               contenteditable="true"
             >
-              Sou psicóloga com atuação clínica, dedicada a oferecer um espaço de escuta sensível e acolhedora. Meu
-              trabalho é guiado pela construção de vínculo e pelo respeito à singularidade de cada pessoa, respeitando
-              sempre o seu tempo e processo.
+              "Acredito que cada trajetória merece ser compreendida com respeito e responsabilidade."
             </p>
+          </div>
+        </section>
 
-            <div class="space-y-3">
-              <div class="flex items-start gap-3">
-                <span
-                  class="bg-emerald-50 px-2 py-1 rounded text-emerald-700 text-xs font-semibold outline-none"
-                  data-preview-field="abordagemLabel"
-                  contenteditable="true"
-                >
-                  Abordagem
-                </span>
-                <div class="space-y-1">
-                  <p
-                    class="text-sm font-medium outline-none"
-                    data-preview-field="abordagemTitulo"
-                    contenteditable="true"
-                  >
-                    Terapia Cognitivo Comportamental (TCC)
-                  </p>
-                  <p
-                    class="text-xs text-slate-500 outline-none"
-                    data-preview-field="abordagemDescricao"
-                    contenteditable="true"
-                  >
-                    Foco em padrões de pensamento e comportamento para promover mudanças saudáveis.
-                  </p>
-                </div>
+        <!-- Sobre mim -->
+        <section id="preview-sobre" class="py-24 px-6 bg-white">
+          <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+            <div class="w-full md:w-1/2">
+              <div class="relative">
+                <div class="absolute -top-4 -left-4 w-full h-full border-2 border-sage rounded-lg"></div>
+                <img
+                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000"
+                  alt="Foto Profissional"
+                  class="relative rounded-lg shadow-xl grayscale-[20%]"
+                />
               </div>
+            </div>
+            <div class="w-full md:w-1/2">
+              <h2
+                class="text-3xl md:text-4xl mb-6"
+                data-preview-field="sobreTitulo"
+                contenteditable="true"
+              >
+                Sobre mim
+              </h2>
+              <p
+                class="text-gray-600 leading-relaxed mb-6"
+                data-preview-field="sobreTexto"
+                contenteditable="true"
+              >
+                Sou psicóloga com atuação clínica, dedicada a oferecer um espaço de escuta sensível e acolhedora. Meu trabalho é guiado pela construção de vínculo e pelo respeito à singularidade de cada pessoa, respeitando sempre o seu tempo e processo.
+              </p>
 
-              <div class="flex items-start gap-3">
-                <span
-                  class="bg-emerald-50 px-2 py-1 rounded text-emerald-700 text-xs font-semibold outline-none"
-                  data-preview-field="formacaoLabel"
-                  contenteditable="true"
-                >
-                  Formação
-                </span>
-                <div class="space-y-1">
-                  <p
-                    class="text-sm font-medium outline-none"
-                    data-preview-field="formacaoTitulo"
+              <div class="space-y-4">
+                <div class="flex items-start gap-4">
+                  <span
+                    class="bg-sage/10 p-2 rounded text-sage font-bold"
+                    data-preview-field="abordagemLabel"
                     contenteditable="true"
                   >
-                    Bacharel em Psicologia
-                  </p>
-                  <p
-                    class="text-xs text-slate-500 outline-none"
-                    data-preview-field="formacaoInstituicao"
+                    Abordagem
+                  </span>
+                  <div>
+                    <p
+                      class="font-medium"
+                      data-preview-field="abordagemTitulo"
+                      contenteditable="true"
+                    >
+                      Terapia Cognitivo Comportamental (TCC)
+                    </p>
+                    <p
+                      class="text-sm text-gray-500"
+                      data-preview-field="abordagemDescricao"
+                      contenteditable="true"
+                    >
+                      Foco em padrões de pensamento e comportamento para promover mudanças saudáveis.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                  <span
+                    class="bg-sage/10 p-2 rounded text-sage font-bold"
+                    data-preview-field="formacaoLabel"
                     contenteditable="true"
                   >
-                    Nome da Instituição de Ensino
-                  </p>
+                    Formação
+                  </span>
+                  <div>
+                    <p
+                      class="font-medium"
+                      data-preview-field="formacaoTitulo"
+                      contenteditable="true"
+                    >
+                      Bacharel em Psicologia
+                    </p>
+                    <p
+                      class="text-sm text-gray-500"
+                      data-preview-field="formacaoInstituicao"
+                      contenteditable="true"
+                    >
+                      Nome da Instituição de Ensino
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Preview visual - Sessões -->
-      <section class="py-10 px-4 bg-white mb-8 border border-slate-100 rounded-2xl shadow-sm">
-        <div class="max-w-4xl mx-auto space-y-6">
-          <div class="text-center space-y-2">
+        <!-- Sessões -->
+        <section id="preview-sessoes" class="py-24 px-6 bg-stone-50">
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+              <h2
+                class="text-3xl md:text-4xl mb-4"
+                data-preview-field="sessaoTitulo"
+                contenteditable="true"
+              >
+                Como funcionam as sessões
+              </h2>
+              <div class="h-1 w-20 bg-sage mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                <h3
+                  class="font-semibold mb-3"
+                  data-preview-field="modalidadeTitulo"
+                  contenteditable="true"
+                >
+                  Modalidade
+                </h3>
+                <p
+                  class="text-gray-600 text-sm"
+                  data-preview-field="modalidadeTexto"
+                  contenteditable="true"
+                >
+                  Atendimento Presencial e Online (via plataforma segura).
+                </p>
+              </div>
+              <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                <h3
+                  class="font-semibold mb-3"
+                  data-preview-field="duracaoTitulo"
+                  contenteditable="true"
+                >
+                  Duração
+                </h3>
+                <p
+                  class="text-gray-600 text-sm"
+                  data-preview-field="duracaoTexto"
+                  contenteditable="true"
+                >
+                  As sessões têm duração aproximada de 50 minutos.
+                </p>
+              </div>
+              <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                <h3
+                  class="font-semibold mb-3"
+                  data-preview-field="frequenciaTitulo"
+                  contenteditable="true"
+                >
+                  Frequência
+                </h3>
+                <p
+                  class="text-gray-600 text-sm"
+                  data-preview-field="frequenciaTexto"
+                  contenteditable="true"
+                >
+                  Geralmente semanais, ajustadas conforme a necessidade clínica.
+                </p>
+              </div>
+              <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                <h3
+                  class="font-semibold mb-3"
+                  data-preview-field="agendamentoTitulo"
+                  contenteditable="true"
+                >
+                  Agendamento
+                </h3>
+                <p
+                  class="text-gray-600 text-sm"
+                  data-preview-field="agendamentoTexto"
+                  contenteditable="true"
+                >
+                  Totalmente digital via WhatsApp para sua comodidade.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Públicos -->
+        <section id="preview-publicos" class="py-24 px-6 bg-white">
+          <div class="max-w-6xl mx-auto">
             <h2
-              class="text-2xl md:text-3xl font-semibold outline-none"
-              data-preview-field="sessaoTitulo"
+              class="text-3xl md:text-4xl text-center mb-16"
+              data-preview-field="publicoTitulo"
               contenteditable="true"
             >
-              Como funcionam as sessões
+              Públicos Atendidos
             </h2>
-            <div class="h-1 w-16 bg-emerald-500 mx-auto rounded-full"></div>
-          </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-            <div class="bg-slate-50 rounded-xl p-4 space-y-1">
-              <h3
-                class="font-semibold outline-none"
-                data-preview-field="modalidadeTitulo"
-                contenteditable="true"
-              >
-                Modalidade
-              </h3>
-              <p
-                class="text-slate-600 outline-none"
-                data-preview-field="modalidadeTexto"
-                contenteditable="true"
-              >
-                Atendimento Presencial e Online (via plataforma segura).
-              </p>
-            </div>
-            <div class="bg-slate-50 rounded-xl p-4 space-y-1">
-              <h3
-                class="font-semibold outline-none"
-                data-preview-field="duracaoTitulo"
-                contenteditable="true"
-              >
-                Duração
-              </h3>
-              <p
-                class="text-slate-600 outline-none"
-                data-preview-field="duracaoTexto"
-                contenteditable="true"
-              >
-                As sessões têm duração aproximada de 50 minutos.
-              </p>
-            </div>
-            <div class="bg-slate-50 rounded-xl p-4 space-y-1">
-              <h3
-                class="font-semibold outline-none"
-                data-preview-field="frequenciaTitulo"
-                contenteditable="true"
-              >
-                Frequência
-              </h3>
-              <p
-                class="text-slate-600 outline-none"
-                data-preview-field="frequenciaTexto"
-                contenteditable="true"
-              >
-                Geralmente semanais, ajustadas conforme a necessidade clínica.
-              </p>
-            </div>
-            <div class="bg-slate-50 rounded-xl p-4 space-y-1">
-              <h3
-                class="font-semibold outline-none"
-                data-preview-field="agendamentoTitulo"
-                contenteditable="true"
-              >
-                Agendamento
-              </h3>
-              <p
-                class="text-slate-600 outline-none"
-                data-preview-field="agendamentoTexto"
-                contenteditable="true"
-              >
-                Totalmente digital via WhatsApp para sua comodidade.
-              </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+              <div class="text-center space-y-4">
+                <div class="text-4xl mb-4">🧸</div>
+                <h3
+                  class="text-2xl font-serif"
+                  data-preview-field="criancasTitulo"
+                  contenteditable="true"
+                >
+                  Crianças
+                </h3>
+                <p
+                  class="text-gray-600 leading-relaxed"
+                  data-preview-field="criancasTexto"
+                  contenteditable="true"
+                >
+                  Atendimento lúdico e sensível, focado no desenvolvimento infantil e orientação constante aos pais ou responsáveis.
+                </p>
+              </div>
+
+              <div class="text-center space-y-4">
+                <div class="text-4xl mb-4">🌱</div>
+                <h3
+                  class="text-2xl font-serif"
+                  data-preview-field="adolescentesTitulo"
+                  contenteditable="true"
+                >
+                  Adolescentes
+                </h3>
+                <p
+                  class="text-gray-600 leading-relaxed"
+                  data-preview-field="adolescentesTexto"
+                  contenteditable="true"
+                >
+                  Apoio em fases de transição, busca por identidade, manejo de ansiedade e os desafios típicos da juventude.
+                </p>
+              </div>
+
+              <div class="text-center space-y-4">
+                <div class="text-4xl mb-4">🌿</div>
+                <h3
+                  class="text-2xl font-serif"
+                  data-preview-field="adultosTitulo"
+                  contenteditable="true"
+                >
+                  Adultos
+                </h3>
+                <p
+                  class="text-gray-600 leading-relaxed"
+                  data-preview-field="adultosTexto"
+                  contenteditable="true"
+                >
+                  Foco em autoconhecimento, gestão da ansiedade, conflitos em relacionamentos e fortalecimento da autoestima.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Preview visual - Públicos atendidos -->
-      <section class="py-10 px-4 bg-white mb-8 border border-slate-100 rounded-2xl shadow-sm">
-        <div class="max-w-4xl mx-auto space-y-6">
-          <h2
-            class="text-2xl md:text-3xl text-center font-semibold outline-none"
-            data-preview-field="publicoTitulo"
-            contenteditable="true"
-          >
-            Públicos Atendidos
-          </h2>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-center">
-            <div class="space-y-2">
-              <div class="text-3xl">🧸</div>
-              <h3
-                class="font-medium outline-none"
-                data-preview-field="criancasTitulo"
-                contenteditable="true"
-              >
-                Crianças
-              </h3>
-              <p
-                class="text-slate-600 outline-none"
-                data-preview-field="criancasTexto"
-                contenteditable="true"
-              >
-                Atendimento lúdico e sensível, focado no desenvolvimento infantil e orientação constante aos pais ou
-                responsáveis.
-              </p>
-            </div>
-            <div class="space-y-2">
-              <div class="text-3xl">🌱</div>
-              <h3
-                class="font-medium outline-none"
-                data-preview-field="adolescentesTitulo"
-                contenteditable="true"
-              >
-                Adolescentes
-              </h3>
-              <p
-                class="text-slate-600 outline-none"
-                data-preview-field="adolescentesTexto"
-                contenteditable="true"
-              >
-                Apoio em fases de transição, busca por identidade, manejo de ansiedade e os desafios típicos da
-                juventude.
-              </p>
-            </div>
-            <div class="space-y-2">
-              <div class="text-3xl">🌿</div>
-              <h3
-                class="font-medium outline-none"
-                data-preview-field="adultosTitulo"
-                contenteditable="true"
-              >
-                Adultos
-              </h3>
-              <p
-                class="text-slate-600 outline-none"
-                data-preview-field="adultosTexto"
-                contenteditable="true"
-              >
-                Foco em autoconhecimento, gestão da ansiedade, conflitos em relacionamentos e fortalecimento da
-                autoestima.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Preview visual - Contato -->
-      <section class="py-10 px-4 bg-emerald-600 mb-8 rounded-2xl shadow-sm text-white">
-        <div class="max-w-4xl mx-auto space-y-6 text-center">
-          <div class="space-y-2">
+        <!-- Contato -->
+        <section id="preview-contato" class="py-24 px-6 bg-sage text-white">
+          <div class="max-w-4xl mx-auto text-center">
             <h2
-              class="text-2xl md:text-3xl font-serif outline-none"
+              class="text-3xl md:text-4xl mb-8 font-serif"
               data-preview-field="contatoTitulo"
               contenteditable="true"
             >
               Vamos iniciar essa jornada?
             </h2>
             <p
-              class="text-sm md:text-base opacity-90 outline-none"
+              class="text-lg mb-12 opacity-90"
               data-preview-field="contatoTexto"
               contenteditable="true"
             >
               Escolha a melhor forma para conversarmos e agendarmos sua primeira consulta.
             </p>
+
+            <div class="flex flex-col md:flex-row justify-center gap-6">
+              <div class="flex items-center justify-center gap-3 bg-white text-sage px-8 py-4 rounded-full font-semibold shadow-lg">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.012 2c-5.508 0-9.987 4.479-9.987 9.988 0 1.757.455 3.409 1.25 4.853l-1.325 4.832 4.95-1.298c1.405.765 3.007 1.201 4.712 1.201 5.508 0 9.988-4.479 9.988-9.988s-4.48-9.988-9.988-9.988zm5.952 14.12c-.255.719-1.493 1.319-2.054 1.396-.51.07-1.164.085-3.085-.714-2.458-1.018-4.043-3.52-4.165-3.684-.122-.164-.993-1.322-.993-2.52s.624-1.788.847-2.032c.224-.244.488-.305.651-.305s.326.001.468.008c.149.006.35-.056.549.426.203.491.693 1.687.753 1.809.061.122.102.264.02.427-.082.163-.122.264-.244.407-.122.143-.255.32-.366.429-.122.122-.251.255-.109.497.143.242.635 1.047 1.365 1.696.942.839 1.738 1.1 1.982 1.222.244.122.387.102.529-.061.143-.163.611-.712.774-.954.163-.244.326-.204.549-.122.224.081 1.424.671 1.668.793.244.122.407.183.468.285.061.102.061.59-.194 1.309z"/></svg>
+                <span
+                  data-preview-field="whatsappTexto"
+                  contenteditable="true"
+                >
+                  Agendar pelo WhatsApp
+                </span>
+              </div>
+
+              <div class="flex items-center justify-center gap-3 bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <span
+                  data-preview-field="emailTexto"
+                  contenteditable="true"
+                >
+                  Enviar E-mail
+                </span>
+              </div>
+            </div>
+
+            <div class="mt-16 pt-16 border-t border-white/20">
+              <div class="flex flex-col items-center gap-2">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <p
+                  class="font-medium"
+                  data-preview-field="localLabel"
+                  contenteditable="true"
+                >
+                  Atendimento Presencial
+                </p>
+                <p
+                  class="text-sm opacity-80"
+                  data-preview-field="localEndereco"
+                  contenteditable="true"
+                >
+                  Rua Exemplo, 123 - Sala 45, Centro Comercial. Cidade - Estado.
+                </p>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div class="flex flex-col md:flex-row justify-center gap-4 text-sm font-semibold">
-            <button
-              type="button"
-              class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 bg-white text-emerald-700 px-5 py-3 rounded-full shadow-sm"
-            >
-              <span class="text-lg">💬</span>
-              <span
-                class="outline-none"
-                data-preview-field="whatsappTexto"
-                contenteditable="true"
-              >
-                Agendar pelo WhatsApp
-              </span>
-            </button>
-
-            <button
-              type="button"
-              class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 border border-white/70 px-5 py-3 rounded-full"
-            >
-              <span class="text-lg">✉️</span>
-              <span
-                class="outline-none"
-                data-preview-field="emailTexto"
-                contenteditable="true"
-              >
-                Enviar E-mail
-              </span>
-            </button>
-          </div>
-
-          <div class="pt-4 border-t border-white/30 text-xs space-y-1">
-            <p
-              class="font-medium outline-none"
-              data-preview-field="localLabel"
-              contenteditable="true"
-            >
-              Atendimento Presencial
-            </p>
-            <p
-              class="opacity-90 outline-none"
-              data-preview-field="localEndereco"
-              contenteditable="true"
-            >
-              Rua Exemplo, 123 - Sala 45, Centro Comercial. Cidade - Estado.
-            </p>
-            <p
-              class="opacity-80 mt-1 outline-none"
-              data-preview-field="footerTexto"
-              contenteditable="true"
-            >
-              © 2026 | Nome da Psicóloga | CRP 00/00000
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <form id="portfolio-form" class="space-y-8 max-w-3xl mx-auto">
-        <div class="flex items-center justify-between">
-          <h2 class="text-2xl font-semibold">Conteúdo</h2>
-          <button
-            type="submit"
-            class="px-4 py-2 rounded-md bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700"
+        <!-- Rodapé -->
+        <footer class="py-8 bg-stone-100 text-center text-xs text-gray-500 uppercase tracking-widest">
+          <p
+            data-preview-field="footerTexto"
+            contenteditable="true"
           >
-            Salvar alterações
-          </button>
-        </div>
+            © 2026 | Nome da Psicóloga | CRP 00/00000
+          </p>
+        </footer>
 
-        <!-- Mensagens -->
-        <div id="mensagem" class="hidden text-sm rounded-md p-3"></div>
+        <!-- ══════════════════════════════════════════ -->
+        <!--  CAMPOS OCULTOS para o Firestore          -->
+        <!-- ══════════════════════════════════════════ -->
+        <form id="portfolio-form" class="hidden">
+          <!-- Hero -->
+          <input type="text" name="navBrand" />
+          <input type="text" name="pageTitle" />
+          <input type="text" name="heroTitle" />
+          <textarea name="heroSubtitle"></textarea>
+          <!-- Sobre mim -->
+          <input type="text" name="sobreTitulo" />
+          <textarea name="sobreTexto"></textarea>
+          <input type="text" name="abordagemLabel" />
+          <input type="text" name="abordagemTitulo" />
+          <textarea name="abordagemDescricao"></textarea>
+          <input type="text" name="formacaoLabel" />
+          <input type="text" name="formacaoTitulo" />
+          <input type="text" name="formacaoInstituicao" />
+          <!-- Sessões -->
+          <input type="text" name="sessaoTitulo" />
+          <input type="text" name="modalidadeTitulo" />
+          <textarea name="modalidadeTexto"></textarea>
+          <input type="text" name="duracaoTitulo" />
+          <textarea name="duracaoTexto"></textarea>
+          <input type="text" name="frequenciaTitulo" />
+          <textarea name="frequenciaTexto"></textarea>
+          <input type="text" name="agendamentoTitulo" />
+          <textarea name="agendamentoTexto"></textarea>
+          <!-- Públicos -->
+          <input type="text" name="publicoTitulo" />
+          <input type="text" name="criancasTitulo" />
+          <textarea name="criancasTexto"></textarea>
+          <input type="text" name="adolescentesTitulo" />
+          <textarea name="adolescentesTexto"></textarea>
+          <input type="text" name="adultosTitulo" />
+          <textarea name="adultosTexto"></textarea>
+          <!-- Contato -->
+          <input type="text" name="contatoTitulo" />
+          <textarea name="contatoTexto"></textarea>
+          <input type="text" name="whatsappTexto" />
+          <input type="text" name="links.whatsapp" />
+          <input type="text" name="emailTexto" />
+          <input type="text" name="links.email" />
+          <input type="text" name="localLabel" />
+          <textarea name="localEndereco"></textarea>
+          <input type="text" name="footerTexto" />
+        </form>
 
-        <!-- Seção: Hero -->
-        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4">
-          <h3 class="text-lg font-semibold">Topo (Hero)</h3>
-          <label class="block text-sm">
-            <span class="text-slate-600">Título da página (aba do navegador)</span>
-            <input
-              type="text"
-              name="pageTitle"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label class="block text-sm">
-            <span class="text-slate-600">Nome na faixa superior</span>
-            <input
-              type="text"
-              name="navBrand"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label class="block text-sm">
-            <span class="text-slate-600">Título principal</span>
-            <input
-              type="text"
-              name="heroTitle"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label class="block text-sm">
-            <span class="text-slate-600">Frase em destaque</span>
-            <textarea
-              name="heroSubtitle"
-              rows="2"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            ></textarea>
-          </label>
-        </section>
-
-        <!-- Seção: Sobre mim (inputs escondidos, usados só para salvar no Firestore) -->
-        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4 hidden">
-          <h3 class="text-lg font-semibold">Sobre mim</h3>
-          <label class="block text-sm">
-            <span class="text-slate-600">Título</span>
-            <input
-              type="text"
-              name="sobreTitulo"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label class="block text-sm">
-            <span class="text-slate-600">Texto principal</span>
-            <textarea
-              name="sobreTexto"
-              rows="4"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            ></textarea>
-          </label>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Rótulo da abordagem</span>
-                <input
-                  type="text"
-                  name="abordagemLabel"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Título da abordagem</span>
-                <input
-                  type="text"
-                  name="abordagemTitulo"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Descrição da abordagem</span>
-                <textarea
-                  name="abordagemDescricao"
-                  rows="3"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                ></textarea>
-              </label>
-            </div>
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Rótulo da formação</span>
-                <input
-                  type="text"
-                  name="formacaoLabel"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Título da formação</span>
-                <input
-                  type="text"
-                  name="formacaoTitulo"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Instituição</span>
-                <input
-                  type="text"
-                  name="formacaoInstituicao"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-            </div>
-          </div>
-        </section>
-
-        <!-- Seção: Sessões -->
-        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4">
-          <h3 class="text-lg font-semibold">Sessões</h3>
-          <label class="block text-sm">
-            <span class="text-slate-600">Título da seção</span>
-            <input
-              type="text"
-              name="sessaoTitulo"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            />
-          </label>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Modalidade - título</span>
-                <input
-                  type="text"
-                  name="modalidadeTitulo"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Modalidade - texto</span>
-                <textarea
-                  name="modalidadeTexto"
-                  rows="2"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                ></textarea>
-              </label>
-            </div>
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Duração - título</span>
-                <input
-                  type="text"
-                  name="duracaoTitulo"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Duração - texto</span>
-                <textarea
-                  name="duracaoTexto"
-                  rows="2"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                ></textarea>
-              </label>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Frequência - título</span>
-                <input
-                  type="text"
-                  name="frequenciaTitulo"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Frequência - texto</span>
-                <textarea
-                  name="frequenciaTexto"
-                  rows="2"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                ></textarea>
-              </label>
-            </div>
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Agendamento - título</span>
-                <input
-                  type="text"
-                  name="agendamentoTitulo"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Agendamento - texto</span>
-                <textarea
-                  name="agendamentoTexto"
-                  rows="2"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                ></textarea>
-              </label>
-            </div>
-          </div>
-        </section>
-
-        <!-- Seção: Públicos -->
-        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4">
-          <h3 class="text-lg font-semibold">Públicos atendidos</h3>
-          <label class="block text-sm">
-            <span class="text-slate-600">Título da seção</span>
-            <input
-              type="text"
-              name="publicoTitulo"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            />
-          </label>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Crianças - título</span>
-                <input
-                  type="text"
-                  name="criancasTitulo"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Crianças - texto</span>
-                <textarea
-                  name="criancasTexto"
-                  rows="3"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                ></textarea>
-              </label>
-            </div>
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Adolescentes - título</span>
-                <input
-                  type="text"
-                  name="adolescentesTitulo"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Adolescentes - texto</span>
-                <textarea
-                  name="adolescentesTexto"
-                  rows="3"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                ></textarea>
-              </label>
-            </div>
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Adultos - título</span>
-                <input
-                  type="text"
-                  name="adultosTitulo"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Adultos - texto</span>
-                <textarea
-                  name="adultosTexto"
-                  rows="3"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                ></textarea>
-              </label>
-            </div>
-          </div>
-        </section>
-
-        <!-- Seção: Contato -->
-        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4">
-          <h3 class="text-lg font-semibold">Contato</h3>
-          <label class="block text-sm">
-            <span class="text-slate-600">Título</span>
-            <input
-              type="text"
-              name="contatoTitulo"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label class="block text-sm">
-            <span class="text-slate-600">Texto</span>
-            <textarea
-              name="contatoTexto"
-              rows="3"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            ></textarea>
-          </label>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Texto botão WhatsApp</span>
-                <input
-                  type="text"
-                  name="whatsappTexto"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Link WhatsApp (com https://)</span>
-                <input
-                  type="text"
-                  name="links.whatsapp"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                  placeholder="https://wa.me/55XXXXXXXXXXX"
-                />
-              </label>
-            </div>
-            <div class="space-y-2">
-              <label class="block text-sm">
-                <span class="text-slate-600">Texto botão E-mail</span>
-                <input
-                  type="text"
-                  name="emailTexto"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                />
-              </label>
-              <label class="block text-sm">
-                <span class="text-slate-600">Link E-mail (mailto:...)</span>
-                <input
-                  type="text"
-                  name="links.email"
-                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                  placeholder="mailto:seuemail@exemplo.com"
-                />
-              </label>
-            </div>
-          </div>
-
-          <label class="block text-sm">
-            <span class="text-slate-600">Rótulo do local</span>
-            <input
-              type="text"
-              name="localLabel"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label class="block text-sm">
-            <span class="text-slate-600">Endereço</span>
-            <textarea
-              name="localEndereco"
-              rows="2"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            ></textarea>
-          </label>
-          <label class="block text-sm">
-            <span class="text-slate-600">Texto do rodapé</span>
-            <input
-              type="text"
-              name="footerTexto"
-              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            />
-          </label>
-        </section>
-      </form>
-      </section>
+      </section><!-- fim app-section -->
     </main>
   </div>
 
   <script type="module" src="./admin.js"></script>
 </body>
 </html>
-
