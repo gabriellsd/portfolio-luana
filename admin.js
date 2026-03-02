@@ -571,16 +571,27 @@ onAuthStateChanged(auth, async (user) => {
       "modal-layout","modal-efeitos","modal-preview",
     ];
     const SECAO_MAP = {
-      "modal-nav":        { titulo: "Barra de navegação",   cards: ["modal-nav", "modal-tipografia"] },
-      "modal-tipografia": { titulo: "Fontes & Hero",         cards: ["modal-tipografia", "modal-layout"] },
-      "modal-sobre":      { titulo: "Seção Sobre mim",       cards: ["modal-sobre", "modal-efeitos"] },
-      "modal-cards":      { titulo: "Cards das sessões",     cards: ["modal-fundos", "modal-cards"] },
-      "modal-cores":      { titulo: "Seção Públicos",        cards: ["modal-cores"] },
-      "modal-fundos":     { titulo: "Seção Contato",         cards: ["modal-fundos", "modal-botoes"] },
-      "modal-footer":     { titulo: "Rodapé",                cards: ["modal-footer"] },
-      "modal-botoes":     { titulo: "Botões",                cards: ["modal-botoes"] },
-      "modal-layout":     { titulo: "Layout",                cards: ["modal-layout"] },
-      "modal-efeitos":    { titulo: "Efeitos",               cards: ["modal-efeitos"] },
+      // Cada seção: [cards específicos da seção] + tipografia + tamanhos + cores do texto
+      "modal-nav":        { titulo: "Barra de navegação",
+                            cards: ["modal-nav", "modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-tipografia": { titulo: "Fontes",
+                            cards: ["modal-tipografia", "modal-layout"] },
+      "modal-sobre":      { titulo: "Seção Sobre mim",
+                            cards: ["modal-sobre", "modal-efeitos", "modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-cards":      { titulo: "Cards das sessões",
+                            cards: ["modal-cards", "modal-fundos", "modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-cores":      { titulo: "Seção Públicos",
+                            cards: ["modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-fundos":     { titulo: "Seção Contato",
+                            cards: ["modal-fundos", "modal-botoes", "modal-tipografia", "modal-layout", "modal-cores"] },
+      "modal-footer":     { titulo: "Rodapé",
+                            cards: ["modal-footer", "modal-tipografia", "modal-cores"] },
+      "modal-botoes":     { titulo: "Botões",
+                            cards: ["modal-botoes", "modal-tipografia", "modal-cores"] },
+      "modal-layout":     { titulo: "Layout",
+                            cards: ["modal-layout", "modal-tipografia"] },
+      "modal-efeitos":    { titulo: "Efeitos",
+                            cards: ["modal-efeitos"] },
     };
     const modalTitulo  = document.getElementById("modal-titulo");
     const btnVerTudo   = document.getElementById("btn-ver-tudo");
