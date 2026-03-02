@@ -6,12 +6,26 @@ import {
   getDoc,
   setDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const form = document.getElementById("portfolio-form");
 const msgEl = document.getElementById("mensagem");
+
+const loginSection = document.getElementById("login-section");
+const appSection = document.getElementById("app-section");
+const loginEmail = document.getElementById("login-email");
+const loginPassword = document.getElementById("login-password");
+const loginButton = document.getElementById("login-button");
+const logoutButton = document.getElementById("logout-button");
 
 function mostrarMensagem(texto, tipo = "sucesso") {
   msgEl.textContent = texto;
@@ -78,6 +92,46 @@ async function carregarDadosIniciais() {
   }
 }
 
+// Login com e-mail/senha
+loginButton.addEventListener("click", async () => {
+  try {
+    await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
+  } catch (err) {
+    console.error(err);
+    mostrarMensagem("Erro no login. Confira e-mail e senha.", "erro");
+  }
+});
+
+// Logout
+if (logoutButton) {
+  logoutButton.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error(err);
+      mostrarMensagem("Erro ao sair.", "erro");
+    }
+  });
+}
+
+// Observa estado de autenticação
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    // logado: mostra app, esconde login
+    loginSection.classList.add("hidden");
+    appSection.classList.remove("hidden");
+    if (logoutButton) logoutButton.classList.remove("hidden");
+
+    await carregarDadosIniciais();
+  } else {
+    // deslogado: mostra login, esconde app
+    appSection.classList.add("hidden");
+    loginSection.classList.remove("hidden");
+    if (logoutButton) logoutButton.classList.add("hidden");
+    form.reset();
+  }
+});
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -91,6 +145,3 @@ form.addEventListener("submit", async (e) => {
     mostrarMensagem("Erro ao salvar. Veja o console.", "erro");
   }
 });
-
-carregarDadosIniciais();
-

@@ -9,13 +9,56 @@
 <body class="bg-slate-100">
   <div class="min-h-screen flex">
     <aside class="w-64 bg-white border-r border-slate-200 p-6">
-      <h1 class="text-xl font-semibold mb-6">Painel Portfólio</h1>
-      <p class="text-xs text-slate-500">
+      <h1 class="text-xl font-semibold mb-4">Painel Portfólio</h1>
+      <p class="text-xs text-slate-500 mb-4">
         Use este painel para atualizar os textos e links do site sem mexer em código.
       </p>
+      <button
+        id="logout-button"
+        type="button"
+        class="mt-2 px-3 py-1.5 rounded-md bg-slate-200 text-xs text-slate-700 hidden"
+      >
+        Sair
+      </button>
     </aside>
 
     <main class="flex-1 p-6 overflow-y-auto">
+      <!-- Seção de login -->
+      <section
+        id="login-section"
+        class="max-w-md mx-auto bg-white rounded-xl shadow-sm p-6 space-y-4"
+      >
+        <h2 class="text-xl font-semibold">Entrar</h2>
+
+        <label class="block text-sm">
+          <span class="text-slate-600">E-mail</span>
+          <input
+            id="login-email"
+            type="email"
+            class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+          />
+        </label>
+
+        <label class="block text-sm">
+          <span class="text-slate-600">Senha</span>
+          <input
+            id="login-password"
+            type="password"
+            class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+          />
+        </label>
+
+        <button
+          id="login-button"
+          type="button"
+          class="w-full mt-2 px-4 py-2 rounded-md bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700"
+        >
+          Entrar
+        </button>
+      </section>
+
+      <!-- Seção do formulário (aparece só depois do login) -->
+      <section id="app-section" class="hidden">
       <form id="portfolio-form" class="space-y-8 max-w-3xl mx-auto">
         <div class="flex items-center justify-between">
           <h2 class="text-2xl font-semibold">Conteúdo</h2>
@@ -391,6 +434,7 @@
           </label>
         </section>
       </form>
+      </section>
     </main>
   </div>
 
