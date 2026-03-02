@@ -64,10 +64,17 @@ const coresCfg = [
   { id: "cor-cards",         hex: "cor-cards-hex",           css: "--cor-cards",       def: "#FFFFFF" },
   { id: "cor-footer-fundo",  hex: "cor-footer-fundo-hex",    css: "--cor-footer-fundo",def: "#F1F0EB" },
   { id: "cor-footer-texto",  hex: "cor-footer-texto-hex",    css: "--cor-footer-texto",def: "#6B7280" },
+  { id: "cor-borda-foto",    hex: "cor-borda-foto-hex",      css: "--cor-borda-foto",  def: "#8DAA91" },
 ];
 
 const CLOUDINARY_CLOUD = "gabriellsd";
 const CLOUDINARY_PRESET = "portfolio-luana";
+
+// Logo
+const areaLogo       = document.getElementById("area-logo");
+const inputLogo      = document.getElementById("input-logo");
+const previewLogo    = document.getElementById("preview-logo");
+const logoPlaceholder= document.getElementById("logo-placeholder");
 
 function mostrarMensagem(texto, tipo = "sucesso") {
   msgEl.textContent = texto;
@@ -124,6 +131,13 @@ function preencherFormulario(data) {
       el.value = data[el.name];
     }
   });
+
+  // Carrega logo salva
+  if (data.logoUrl && previewLogo) {
+    previewLogo.src = data.logoUrl;
+    previewLogo.classList.remove("hidden");
+    if (logoPlaceholder) logoPlaceholder.classList.add("hidden");
+  }
 
   // Carrega foto de perfil salva
   if (previewFoto && data.fotoUrl) {
@@ -277,6 +291,22 @@ async function uploadBanner(file) {
   }
 }
 
+// Upload da logo
+async function uploadLogo(file) {
+  mostrarMensagem("Enviando logo...");
+  try {
+    const url = await uploadCloudinary(file);
+    if (previewLogo) { previewLogo.src = url; previewLogo.classList.remove("hidden"); }
+    if (logoPlaceholder) logoPlaceholder.classList.add("hidden");
+    const ref = doc(db, "portfolios", "principal");
+    await setDoc(ref, { logoUrl: url }, { merge: true });
+    mostrarMensagem("Logo atualizada com sucesso!");
+  } catch (err) {
+    console.error(err);
+    mostrarMensagem("Erro ao enviar logo.", "erro");
+  }
+}
+
 // Aplica estilos (fontes e cores) no preview do admin
 function aplicarEstilos(estilos = {}) {
   const root = document.documentElement;
@@ -364,6 +394,33 @@ function aplicarEstilos(estilos = {}) {
   if (radiusLabel && estilos["cards-radius"] !== undefined) {
     radiusLabel.textContent = `${estilos["cards-radius"]}px`;
   }
+
+  // Espaçamento das seções
+  if (estilos["espacamento-secoes"]) {
+    root.style.setProperty("--py-secoes", estilos["espacamento-secoes"]);
+  }
+  // Tamanho dos títulos
+  if (estilos["tamanho-titulos"]) {
+    root.style.setProperty("--titulo-scale", estilos["tamanho-titulos"]);
+  }
+  // Alinhamento no hero
+  const heroEl = document.getElementById("preview-hero");
+  if (heroEl && estilos["hero-alinhamento"]) {
+    heroEl.style.textAlign = estilos["hero-alinhamento"];
+  }
+  // Animação dos cards
+  if (estilos["cards-animacao"] === false || estilos["cards-animacao"] === "false") {
+    document.body.classList.add("sem-animacao-cards");
+  } else {
+    document.body.classList.remove("sem-animacao-cards");
+  }
+  // Borda decorativa da foto
+  if (estilos["cor-borda-foto"]) {
+    root.style.setProperty("--cor-borda-foto", estilos["cor-borda-foto"]);
+    document.querySelectorAll(".borda-foto").forEach(el => {
+      el.style.borderColor = estilos["cor-borda-foto"];
+    });
+  }
 }
 
 // Preenche os controles de estilo com os valores salvos
@@ -389,9 +446,16 @@ function preencherEstilos(estilos) {
     if (radiusLabel) radiusLabel.textContent = `${estilos["cards-radius"]}px`;
   }
   const sombraEl = document.getElementById("cards-sombra");
-  if (sombraEl && estilos["cards-sombra"]) {
-    sombraEl.value = estilos["cards-sombra"];
-  }
+  if (sombraEl && estilos["cards-sombra"]) sombraEl.value = estilos["cards-sombra"];
+
+  const espacamentoEl = document.getElementById("espacamento-secoes");
+  if (espacamentoEl && estilos["espacamento-secoes"]) espacamentoEl.value = estilos["espacamento-secoes"];
+  const tamanhoEl = document.getElementById("tamanho-titulos");
+  if (tamanhoEl && estilos["tamanho-titulos"]) tamanhoEl.value = estilos["tamanho-titulos"];
+  const alinhamentoEl = document.getElementById("hero-alinhamento");
+  if (alinhamentoEl && estilos["hero-alinhamento"]) alinhamentoEl.value = estilos["hero-alinhamento"];
+  const animacaoEl = document.getElementById("cards-animacao");
+  if (animacaoEl && estilos["cards-animacao"] !== undefined) animacaoEl.checked = estilos["cards-animacao"] !== false && estilos["cards-animacao"] !== "false";
 
   aplicarEstilos(estilos);
 }
@@ -406,10 +470,18 @@ function lerEstilosDoModal() {
     const input = document.getElementById(id);
     estilos[id] = input ? input.value : def;
   });
-  const radiusEl = document.getElementById("cards-radius");
-  const sombraEl = document.getElementById("cards-sombra");
-  if (radiusEl) estilos["cards-radius"] = Number(radiusEl.value);
-  if (sombraEl) estilos["cards-sombra"] = sombraEl.value;
+  const radiusEl       = document.getElementById("cards-radius");
+  const sombraEl       = document.getElementById("cards-sombra");
+  const espacamentoEl  = document.getElementById("espacamento-secoes");
+  const tamanhoEl      = document.getElementById("tamanho-titulos");
+  const alinhamentoEl  = document.getElementById("hero-alinhamento");
+  const animacaoEl     = document.getElementById("cards-animacao");
+  if (radiusEl)      estilos["cards-radius"]       = Number(radiusEl.value);
+  if (sombraEl)      estilos["cards-sombra"]        = sombraEl.value;
+  if (espacamentoEl) estilos["espacamento-secoes"]  = espacamentoEl.value;
+  if (tamanhoEl)     estilos["tamanho-titulos"]     = tamanhoEl.value;
+  if (alinhamentoEl) estilos["hero-alinhamento"]    = alinhamentoEl.value;
+  if (animacaoEl)    estilos["cards-animacao"]      = animacaoEl.checked;
   return estilos;
 }
 
@@ -529,6 +601,34 @@ onAuthStateChanged(auth, async (user) => {
       if (!sel) return;
       sel.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
     });
+
+    // Logo upload
+    if (areaLogo && inputLogo) {
+      areaLogo.addEventListener("click", () => inputLogo.click());
+      inputLogo.addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 3 * 1024 * 1024) {
+          mostrarMensagem("Logo muito grande. Máx. 3 MB.", "erro");
+          return;
+        }
+        await uploadLogo(file);
+        inputLogo.value = "";
+      });
+    }
+
+    // Carrega logo do Firestore (se existir)
+    if (previewLogo && typeof carregarDadosIniciais !== "undefined") {
+      // será feito dentro de preencherFormulario via carregarDadosIniciais
+    }
+
+    // Preview em tempo real: selects de layout e efeitos
+    ["espacamento-secoes", "tamanho-titulos", "hero-alinhamento"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
+    });
+    const animacaoEl2 = document.getElementById("cards-animacao");
+    if (animacaoEl2) animacaoEl2.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
 
     // Preview em tempo real: slider radius
     const radiusEl = document.getElementById("cards-radius");

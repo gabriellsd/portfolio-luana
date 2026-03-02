@@ -18,6 +18,9 @@
       --cor-contato: #8DAA91;
       --cor-botao: #8DAA91;
       --cor-botao-texto: #FFFFFF;
+      --py-secoes: 6rem;
+      --titulo-scale: 1;
+      --cor-borda-foto: #8DAA91;
       --cor-nav: #FFFFFF;
       --cor-nav-texto: #374151;
       --cor-sobre-fundo: #FFFFFF;
@@ -37,6 +40,16 @@
     .bg-sage { background-color: var(--primary-sage); }
     .text-sage { color: var(--primary-sage); }
     .border-sage { border-color: var(--primary-sage); }
+
+    #preview-sobre, #preview-sessoes, #preview-publicos, #preview-contato {
+      padding-top: var(--py-secoes) !important;
+      padding-bottom: var(--py-secoes) !important;
+    }
+    h1 { font-size: calc(3.75rem * var(--titulo-scale)); }
+    h2 { font-size: calc(2.25rem * var(--titulo-scale)); }
+    h3 { font-size: calc(1.25rem * var(--titulo-scale)); }
+    .borda-foto { border-color: var(--cor-borda-foto) !important; }
+    body.sem-animacao-cards .card-hover:hover { transform: none !important; }
 
     /* Destaque de borda ao editar */
     [contenteditable]:focus {
@@ -212,13 +225,26 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             Editar cores da nav
           </button>
-          <span
-            class="text-xl font-serif tracking-widest uppercase text-sage outline-none"
-            data-preview-field="navBrand"
-            contenteditable="true"
-          >
-            Psicologia Clínica
-          </span>
+          <!-- Logo upload -->
+          <div class="flex items-center gap-3">
+            <div class="group/logo relative cursor-pointer" id="area-logo">
+              <div id="logo-placeholder" class="w-10 h-10 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center hover:border-sage transition-colors" title="Clique para enviar logo">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <img id="preview-logo" src="" alt="Logo" class="hidden h-10 w-auto object-contain rounded-lg">
+              <div class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg opacity-0 group-hover/logo:opacity-100 transition-opacity pointer-events-none">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+            </div>
+            <input id="input-logo" type="file" accept="image/*" class="hidden">
+            <span
+              class="text-xl font-serif tracking-widest uppercase text-sage outline-none"
+              data-preview-field="navBrand"
+              contenteditable="true"
+            >
+              Psicologia Clínica
+            </span>
+          </div>
           <div class="flex space-x-8 text-sm uppercase tracking-wider font-medium text-gray-600">
             <span>Sobre</span>
             <span>Atendimento</span>
@@ -299,7 +325,7 @@
           <div class="max-w-6xl mx-auto flex flex-row items-center gap-16">
             <div class="w-1/2 shrink-0">
               <div class="relative group">
-                <div class="absolute -top-4 -left-4 w-full h-full border-2 border-sage rounded-lg"></div>
+                <div class="borda-foto absolute -top-4 -left-4 w-full h-full border-2 border-sage rounded-lg"></div>
                 <img
                   id="preview-foto"
                   src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000"
@@ -513,7 +539,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
               <div class="text-center space-y-4">
-                <div class="text-4xl mb-4">🧸</div>
+                <div class="text-4xl mb-4 outline-none cursor-text" data-preview-field="iconeCriancas" contenteditable="true" title="Clique para editar o ícone">🧸</div>
                 <h3
                   class="text-2xl font-serif"
                   data-preview-field="criancasTitulo"
@@ -531,7 +557,7 @@
               </div>
 
               <div class="text-center space-y-4">
-                <div class="text-4xl mb-4">🌱</div>
+                <div class="text-4xl mb-4 outline-none cursor-text" data-preview-field="iconeAdolescentes" contenteditable="true" title="Clique para editar o ícone">🌱</div>
                 <h3
                   class="text-2xl font-serif"
                   data-preview-field="adolescentesTitulo"
@@ -549,7 +575,7 @@
               </div>
 
               <div class="text-center space-y-4">
-                <div class="text-4xl mb-4">🌿</div>
+                <div class="text-4xl mb-4 outline-none cursor-text" data-preview-field="iconeAdultos" contenteditable="true" title="Clique para editar o ícone">🌿</div>
                 <h3
                   class="text-2xl font-serif"
                   data-preview-field="adultosTitulo"
@@ -641,12 +667,20 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             Editar rodapé
           </button>
-          <p
-            data-preview-field="footerTexto"
-            contenteditable="true"
-          >
+          <p data-preview-field="footerTexto" contenteditable="true">
             © 2026 | Nome da Psicóloga | CRP 00/00000
           </p>
+          <!-- Redes sociais -->
+          <div class="flex justify-center gap-4 mt-3 text-slate-400">
+            <div class="flex items-center gap-1.5 text-[10px]">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              <input id="preview-instagram" type="text" name="links.instagram" placeholder="Link do Instagram" class="border-b border-dashed border-slate-300 bg-transparent text-[10px] text-slate-500 outline-none w-36 focus:border-sage" />
+            </div>
+            <div class="flex items-center gap-1.5 text-[10px]">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              <input id="preview-linkedin" type="text" name="links.linkedin" placeholder="Link do LinkedIn" class="border-b border-dashed border-slate-300 bg-transparent text-[10px] text-slate-500 outline-none w-36 focus:border-sage" />
+            </div>
+          </div>
         </footer>
 
         <!-- ══════════════════════════════════════════ -->
@@ -695,6 +729,10 @@
           <input type="text" name="localLabel" />
           <textarea name="localEndereco"></textarea>
           <input type="text" name="footerTexto" />
+          <!-- Ícones públicos -->
+          <input type="text" name="iconeCriancas" />
+          <input type="text" name="iconeAdolescentes" />
+          <input type="text" name="iconeAdultos" />
         </form>
 
       </section><!-- fim app-section -->
@@ -973,6 +1011,70 @@
               <div class="flex items-center gap-2">
                 <span id="cor-footer-texto-hex" class="text-[10px] font-mono text-slate-400">#6B7280</span>
                 <input id="cor-footer-texto" type="color" value="#6B7280" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── LAYOUT ─────────────────────────────────── -->
+        <div id="modal-layout" class="rounded-xl border border-slate-200 overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Layout</p>
+          </div>
+          <div class="px-4 py-3 space-y-3 bg-white">
+            <div class="space-y-1">
+              <p class="text-xs font-medium text-slate-700">Espaçamento entre seções</p>
+              <select id="espacamento-secoes" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
+                <option value="3rem">Compacto</option>
+                <option value="6rem" selected>Normal (padrão)</option>
+                <option value="8rem">Amplo</option>
+              </select>
+            </div>
+            <div class="space-y-1">
+              <p class="text-xs font-medium text-slate-700">Tamanho dos títulos</p>
+              <select id="tamanho-titulos" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
+                <option value="0.8">Pequeno</option>
+                <option value="1" selected>Médio (padrão)</option>
+                <option value="1.2">Grande</option>
+                <option value="1.4">Extra grande</option>
+              </select>
+            </div>
+            <div class="space-y-1">
+              <p class="text-xs font-medium text-slate-700">Alinhamento no hero</p>
+              <select id="hero-alinhamento" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
+                <option value="center" selected>Centralizado</option>
+                <option value="left">À esquerda</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── EFEITOS ─────────────────────────────────── -->
+        <div id="modal-efeitos" class="rounded-xl border border-slate-200 overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Efeitos</p>
+          </div>
+          <div class="px-4 py-3 space-y-3 bg-white">
+            <div class="flex items-center justify-between py-1 border-b border-slate-50">
+              <div>
+                <p class="text-xs font-medium text-slate-700">Animação dos cards</p>
+                <p class="text-[10px] text-slate-400">efeito ao passar o mouse</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input id="cards-animacao" type="checkbox" checked class="sr-only peer">
+                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-sage after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between py-1">
+              <div>
+                <p class="text-xs font-medium text-slate-700">Borda decorativa da foto</p>
+                <p class="text-[10px] text-slate-400">moldura no "Sobre mim"</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="cor-borda-foto-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
+                <input id="cor-borda-foto" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
               </div>
             </div>
           </div>

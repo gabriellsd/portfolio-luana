@@ -30,11 +30,19 @@ async function carregarConteudo() {
       }
     });
 
-    // Campos de link (data-link-field="whatsapp" / "email")
+    // Logo na nav
+    const siteLogo = document.getElementById("site-logo");
+    if (siteLogo && data.logoUrl) {
+      siteLogo.src = data.logoUrl;
+      siteLogo.classList.remove("hidden");
+    }
+
+    // Campos de link (data-link-field="whatsapp" / "email" / "instagram" / "linkedin")
     document.querySelectorAll("[data-link-field]").forEach((el) => {
       const key = el.dataset.linkField;
       if (data.links && data.links[key]) {
         el.href = data.links[key];
+        el.classList.remove("hidden"); // mostra redes sociais quando o link estiver preenchido
       }
     });
 
@@ -119,6 +127,29 @@ async function carregarConteudo() {
           if (e["cor-botao"])       el.style.backgroundColor = e["cor-botao"];
           if (e["cor-botao-texto"]) el.style.color = e["cor-botao-texto"];
         });
+      }
+
+      // Layout: espaçamento e tamanho dos títulos
+      if (e["espacamento-secoes"]) root.style.setProperty("--py-secoes", e["espacamento-secoes"]);
+      if (e["tamanho-titulos"])    root.style.setProperty("--titulo-scale", e["tamanho-titulos"]);
+
+      // Alinhamento do hero
+      if (e["hero-alinhamento"]) {
+        const heroSection = document.querySelector(".hero-gradient");
+        if (heroSection) {
+          heroSection.style.textAlign = e["hero-alinhamento"];
+          heroSection.style.alignItems = e["hero-alinhamento"] === "left" ? "flex-start" : "center";
+        }
+      }
+
+      // Animação dos cards
+      if (e["cards-animacao"] === false || e["cards-animacao"] === "false") {
+        document.body.classList.add("sem-animacao-cards");
+      }
+
+      // Borda decorativa da foto
+      if (e["cor-borda-foto"]) {
+        root.style.setProperty("--cor-borda-foto", e["cor-borda-foto"]);
       }
 
       if (e.fonteTitulos || e.fonteTexto) {
