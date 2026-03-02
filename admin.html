@@ -201,39 +201,34 @@
                   alt="Foto Profissional"
                   class="relative rounded-lg shadow-xl grayscale-[20%] w-full object-cover"
                 />
-                <!-- Overlay de upload -->
-                <button
-                  id="btn-upload-foto"
-                  type="button"
-                  class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                >
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  <span class="text-sm mt-1 font-medium">Trocar foto</span>
-                </button>
-                <input id="input-foto" type="file" accept="image/*" class="hidden" />
-              </div>
-              <div class="mt-3 text-center space-y-1">
-                <p class="text-xs text-slate-400">Passe o mouse sobre a foto para trocar</p>
-                <p class="text-xs text-slate-500 font-medium">📐 Tamanho ideal: <span class="text-sage">800 × 1000 px</span> (retrato 4:5)</p>
-                <p class="text-xs text-slate-400">Formatos aceitos: JPG, PNG, WEBP · Máx. 5 MB</p>
-              </div>
+                <!-- Overlay: botão trocar + slider opacidade -->
+                <div class="absolute inset-0 flex flex-col items-center justify-between rounded-lg bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity p-4">
+                  <button
+                    id="btn-upload-foto"
+                    type="button"
+                    class="flex items-center gap-2 bg-black/50 text-white text-xs font-medium px-4 py-2 rounded-full"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Trocar foto
+                  </button>
 
-              <!-- Slider de opacidade da foto -->
-              <div class="mt-4 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 space-y-2">
-                <div class="flex items-center justify-between text-xs text-slate-600">
-                  <span>Opacidade da foto</span>
-                  <span id="foto-opacidade-valor" class="font-semibold text-sage">100%</span>
+                  <div class="w-full bg-black/50 backdrop-blur rounded-xl px-4 py-3 space-y-2">
+                    <div class="flex items-center justify-between text-white text-xs">
+                      <span>Opacidade do filtro</span>
+                      <span id="foto-opacidade-valor" class="font-semibold">100%</span>
+                    </div>
+                    <input
+                      id="foto-opacidade"
+                      type="range"
+                      min="10"
+                      max="100"
+                      value="100"
+                      class="w-full accent-sage cursor-pointer"
+                    />
+                    <p class="text-white/60 text-xs text-center">📐 Ideal: 800 × 1000 px · Máx. 5 MB</p>
+                  </div>
                 </div>
-                <input
-                  id="foto-opacidade"
-                  type="range"
-                  min="10"
-                  max="100"
-                  value="100"
-                  class="w-full accent-sage cursor-pointer"
-                />
-                <p class="text-xs text-slate-400 text-center">100% = foto normal · valores menores = mais apagada</p>
-              </div>
+                <input id="input-foto" type="file" accept="image/*" class="hidden" />
             </div>
             <div class="w-full md:w-1/2">
               <h2
