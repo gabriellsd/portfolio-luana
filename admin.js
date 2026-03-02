@@ -35,6 +35,8 @@ const btnUploadBanner = document.getElementById("btn-upload-banner");
 const inputBanner = document.getElementById("input-banner");
 const sliderOpacidade = document.getElementById("banner-opacidade");
 const labelOpacidade = document.getElementById("banner-opacidade-valor");
+const sliderGrayscale = document.getElementById("foto-grayscale");
+const labelGrayscale = document.getElementById("foto-grayscale-valor");
 
 const CLOUDINARY_CLOUD = "gabriellsd";
 const CLOUDINARY_PRESET = "portfolio-luana";
@@ -99,6 +101,14 @@ function preencherFormulario(data) {
   if (previewFoto && data.fotoUrl) {
     previewFoto.src = data.fotoUrl;
   }
+
+  // Carrega filtro grayscale salvo
+  const grayscale = data.fotoGrayscale !== undefined ? data.fotoGrayscale : 20;
+  if (sliderGrayscale) {
+    sliderGrayscale.value = grayscale;
+    if (labelGrayscale) labelGrayscale.textContent = `${grayscale}%`;
+  }
+  aplicarGrayscaleFoto(grayscale);
 
   // Carrega banner salvo
   if (previewHero && data.bannerUrl) {
@@ -165,6 +175,12 @@ function validarFoto(file) {
     img.onerror = () => reject("Não foi possível ler a imagem.");
     img.src = url;
   });
+}
+
+// Aplica filtro preto e branco na foto de perfil
+function aplicarGrayscaleFoto(valor) {
+  if (!previewFoto) return;
+  previewFoto.style.filter = `grayscale(${valor}%)`;
 }
 
 // Aplica opacidade do filtro no banner do hero
@@ -292,6 +308,21 @@ onAuthStateChanged(auth, async (user) => {
           mostrarMensagem(msg, "erro");
           inputFoto.value = "";
         }
+      });
+    }
+
+    // Slider de grayscale da foto de perfil
+    if (sliderGrayscale) {
+      sliderGrayscale.addEventListener("input", () => {
+        const val = Number(sliderGrayscale.value);
+        if (labelGrayscale) labelGrayscale.textContent = `${val}%`;
+        aplicarGrayscaleFoto(val);
+      });
+
+      sliderGrayscale.addEventListener("change", async () => {
+        const val = Number(sliderGrayscale.value);
+        const ref = doc(db, "portfolios", "principal");
+        await setDoc(ref, { fotoGrayscale: val }, { merge: true });
       });
     }
 

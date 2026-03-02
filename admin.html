@@ -217,6 +217,23 @@
                 <p class="text-xs text-slate-500 font-medium">📐 Tamanho ideal: <span class="text-sage">800 × 1000 px</span> (retrato 4:5)</p>
                 <p class="text-xs text-slate-400">Formatos aceitos: JPG, PNG, WEBP · Máx. 5 MB</p>
               </div>
+
+              <!-- Slider de filtro da foto -->
+              <div class="mt-4 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 space-y-2">
+                <div class="flex items-center justify-between text-xs text-slate-600">
+                  <span>Filtro preto e branco</span>
+                  <span id="foto-grayscale-valor" class="font-semibold text-sage">20%</span>
+                </div>
+                <input
+                  id="foto-grayscale"
+                  type="range"
+                  min="0"
+                  max="100"
+                  value="20"
+                  class="w-full accent-sage cursor-pointer"
+                />
+                <p class="text-xs text-slate-400 text-center">0% = colorida · 100% = preto e branco total</p>
+              </div>
             </div>
             <div class="w-full md:w-1/2">
               <h2

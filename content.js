@@ -41,7 +41,11 @@ async function carregarConteudo() {
     // Foto de perfil vinda do Cloudinary
     if (data.fotoUrl) {
       const foto = document.querySelector("[data-foto]");
-      if (foto) foto.src = data.fotoUrl;
+      if (foto) {
+        foto.src = data.fotoUrl;
+        const grayscale = data.fotoGrayscale !== undefined ? data.fotoGrayscale : 20;
+        foto.style.filter = `grayscale(${grayscale}%)`;
+      }
     }
 
     // Banner do hero vindo do Cloudinary
