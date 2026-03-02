@@ -739,46 +739,9 @@
           <h2 id="modal-titulo" class="text-sm font-semibold text-slate-700">Fontes e Cores</h2>
           <button id="fechar-estilos" class="text-slate-400 hover:text-slate-600 text-lg leading-none">✕</button>
         </div>
-        <button id="btn-ver-tudo" class="hidden text-[10px] text-sage hover:underline">
-          Ver fontes, cores e layout globais →
-        </button>
       </div>
 
       <div class="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-
-        <!-- ── TIPOGRAFIA ─────────────────────────────── -->
-        <div id="modal-tipografia" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <div class="flex items-center gap-2">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-              <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Tipografia</p>
-            </div>
-            <span class="text-[9px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">global</span>
-          </div>
-          <div class="px-4 py-3 space-y-3 bg-white">
-            <div class="space-y-1">
-              <label class="text-xs text-slate-500">Fonte dos títulos</label>
-              <select id="fonte-titulos" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="Playfair Display">Playfair Display (padrão)</option>
-                <option value="Cormorant Garamond">Cormorant Garamond</option>
-                <option value="Lora">Lora</option>
-                <option value="Merriweather">Merriweather</option>
-                <option value="EB Garamond">EB Garamond</option>
-              </select>
-            </div>
-            <div class="space-y-1">
-              <label class="text-xs text-slate-500">Fonte do corpo do texto</label>
-              <select id="fonte-texto" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="Inter">Inter (padrão)</option>
-                <option value="Lato">Lato</option>
-                <option value="Open Sans">Open Sans</option>
-                <option value="Raleway">Raleway</option>
-                <option value="Nunito">Nunito</option>
-                <option value="Montserrat">Montserrat</option>
-              </select>
-            </div>
-          </div>
-        </div>
 
         <!-- ── HERO / BANNER ─────────────────────────── -->
         <div id="modal-hero" class="rounded-xl border border-slate-200 overflow-hidden">
@@ -811,7 +774,7 @@
               <input id="banner-opacidade" type="range" min="0" max="100" value="85" class="w-full accent-sage cursor-pointer" />
               <div class="flex justify-between text-[10px] text-slate-400"><span>Transparente</span><span>Opaco</span></div>
             </div>
-            <!-- Cores do texto do hero -->
+            <!-- Cores + fontes do hero -->
             <div class="pt-1 border-t border-slate-100 space-y-1">
               <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider pt-1">Texto do hero</p>
               <div class="flex items-center justify-between py-1">
@@ -829,86 +792,37 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- ── CORES DO TEXTO ─────────────────────────── -->
-        <div id="modal-cores" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <div class="flex items-center gap-2">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Cores do texto</p>
+            <!-- Alinhamento -->
+            <div class="pt-2 border-t border-slate-100 space-y-1">
+              <p class="text-xs font-medium text-slate-700">Alinhamento do texto</p>
+              <select id="hero-alinhamento" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
+                <option value="center" selected>Centralizado</option>
+                <option value="left">À esquerda</option>
+              </select>
             </div>
-            <span class="text-[9px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">global</span>
-          </div>
-          <div class="px-4 py-3 space-y-2 bg-white">
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Cor primária</p>
-                <p class="text-[10px] text-slate-400">botões, bordas, ícones</p>
+            <!-- Fontes do site -->
+            <div class="pt-2 border-t border-slate-100 space-y-3">
+              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Fontes do site</p>
+              <div class="space-y-1">
+                <label class="text-xs text-slate-500">Fonte dos títulos</label>
+                <select id="fonte-titulos" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
+                  <option value="Playfair Display">Playfair Display (padrão)</option>
+                  <option value="Cormorant Garamond">Cormorant Garamond</option>
+                  <option value="Lora">Lora</option>
+                  <option value="Merriweather">Merriweather</option>
+                  <option value="EB Garamond">EB Garamond</option>
+                </select>
               </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-primaria-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
-                <input id="cor-primaria" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Cor dos títulos</p>
-                <p class="text-[10px] text-slate-400">h1, h2, h3</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-titulos-hex" class="text-[10px] font-mono text-slate-400">#2D2D2D</span>
-                <input id="cor-titulos" type="color" value="#2D2D2D" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Cor do texto</p>
-                <p class="text-[10px] text-slate-400">parágrafos</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-texto-hex" class="text-[10px] font-mono text-slate-400">#4A4A4A</span>
-                <input id="cor-texto" type="color" value="#4A4A4A" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between py-1.5">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Texto secundário</p>
-                <p class="text-[10px] text-slate-400">subtextos, descrições</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-texto-claro-hex" class="text-[10px] font-mono text-slate-400">#6B7280</span>
-                <input id="cor-texto-claro" type="color" value="#6B7280" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── BOTÕES ──────────────────────────────────── -->
-        <div id="modal-botoes" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4"/></svg>
-            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Botões</p>
-          </div>
-          <div class="px-4 py-3 space-y-2 bg-white">
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Fundo do botão</p>
-                <p class="text-[10px] text-slate-400">Agendar, Salvar</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-botao-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
-                <input id="cor-botao" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between py-1.5">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Texto do botão</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-botao-texto-hex" class="text-[10px] font-mono text-slate-400">#FFFFFF</span>
-                <input id="cor-botao-texto" type="color" value="#FFFFFF" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
+              <div class="space-y-1">
+                <label class="text-xs text-slate-500">Fonte do corpo do texto</label>
+                <select id="fonte-texto" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
+                  <option value="Inter">Inter (padrão)</option>
+                  <option value="Lato">Lato</option>
+                  <option value="Open Sans">Open Sans</option>
+                  <option value="Raleway">Raleway</option>
+                  <option value="Nunito">Nunito</option>
+                  <option value="Montserrat">Montserrat</option>
+                </select>
               </div>
             </div>
           </div>
@@ -1000,28 +914,6 @@
           </div>
         </div>
 
-        <!-- ── FUNDOS DAS SEÇÕES ───────────────────────── -->
-        <div id="modal-fundos" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <div class="flex items-center gap-2">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
-              <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Fundo geral</p>
-            </div>
-            <span class="text-[9px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">global</span>
-          </div>
-          <div class="px-4 py-3 bg-white">
-            <div class="flex items-center justify-between py-1.5">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Cor de fundo</p>
-                <p class="text-[10px] text-slate-400">hero e seções claras</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-fundo-hex" class="text-[10px] font-mono text-slate-400">#F9F7F2</span>
-                <input id="cor-fundo" type="color" value="#F9F7F2" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- ── SEÇÃO CONTATO ─────────────────────────── -->
         <div id="modal-contato" class="rounded-xl border border-slate-200 overflow-hidden">
@@ -1039,6 +931,21 @@
               <div class="flex items-center gap-2">
                 <span id="cor-fundo-contato-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
                 <input id="cor-fundo-contato" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
+              </div>
+            </div>
+            <!-- Cor dos botões -->
+            <div class="flex items-center justify-between py-1 border-b border-slate-50">
+              <p class="text-xs font-medium text-slate-700">Cor dos botões</p>
+              <div class="flex items-center gap-2">
+                <span id="cor-botao-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
+                <input id="cor-botao" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
+              </div>
+            </div>
+            <div class="flex items-center justify-between py-1 border-b border-slate-50">
+              <p class="text-xs font-medium text-slate-700">Texto dos botões</p>
+              <div class="flex items-center gap-2">
+                <span id="cor-botao-texto-hex" class="text-[10px] font-mono text-slate-400">#FFFFFF</span>
+                <input id="cor-botao-texto" type="color" value="#FFFFFF" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
               </div>
             </div>
             <!-- Links dos botões -->
@@ -1096,6 +1003,17 @@
                   <span id="cor-sobre-texto-hex" class="text-[10px] font-mono text-slate-400">#4A4A4A</span>
                   <input id="cor-sobre-texto" type="color" value="#4A4A4A" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
                 </div>
+              </div>
+            </div>
+            <!-- Borda decorativa -->
+            <div class="flex items-center justify-between py-1 border-t border-slate-100 mt-1">
+              <div>
+                <p class="text-xs font-medium text-slate-700">Borda decorativa da foto</p>
+                <p class="text-[10px] text-slate-400">moldura colorida</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="cor-borda-foto-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
+                <input id="cor-borda-foto" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
               </div>
             </div>
           </div>
@@ -1164,6 +1082,17 @@
                 </div>
               </div>
             </div>
+            <!-- Animação dos cards -->
+            <div class="flex items-center justify-between py-1 border-t border-slate-100 mt-1">
+              <div>
+                <p class="text-xs font-medium text-slate-700">Animação dos cards</p>
+                <p class="text-[10px] text-slate-400">efeito ao passar o mouse</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input id="cards-animacao" type="checkbox" checked class="sr-only peer">
+                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-sage after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -1219,72 +1148,6 @@
           </div>
         </div>
 
-        <!-- ── LAYOUT ─────────────────────────────────── -->
-        <div id="modal-layout" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <div class="flex items-center gap-2">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-              <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Layout & Tamanhos</p>
-            </div>
-            <span class="text-[9px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">global</span>
-          </div>
-          <div class="px-4 py-3 space-y-3 bg-white">
-            <div class="space-y-1">
-              <p class="text-xs font-medium text-slate-700">Espaçamento entre seções</p>
-              <select id="espacamento-secoes" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="3rem">Compacto</option>
-                <option value="6rem" selected>Normal (padrão)</option>
-                <option value="8rem">Amplo</option>
-              </select>
-            </div>
-            <div class="space-y-1">
-              <p class="text-xs font-medium text-slate-700">Tamanho dos títulos</p>
-              <select id="tamanho-titulos" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="0.8">Pequeno</option>
-                <option value="1" selected>Médio (padrão)</option>
-                <option value="1.2">Grande</option>
-                <option value="1.4">Extra grande</option>
-              </select>
-            </div>
-            <div class="space-y-1">
-              <p class="text-xs font-medium text-slate-700">Alinhamento no hero</p>
-              <select id="hero-alinhamento" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="center" selected>Centralizado</option>
-                <option value="left">À esquerda</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── EFEITOS ─────────────────────────────────── -->
-        <div id="modal-efeitos" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Efeitos</p>
-          </div>
-          <div class="px-4 py-3 space-y-3 bg-white">
-            <div class="flex items-center justify-between py-1 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Animação dos cards</p>
-                <p class="text-[10px] text-slate-400">efeito ao passar o mouse</p>
-              </div>
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input id="cards-animacao" type="checkbox" checked class="sr-only peer">
-                <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-sage after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
-              </label>
-            </div>
-            <div class="flex items-center justify-between py-1">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Borda decorativa da foto</p>
-                <p class="text-[10px] text-slate-400">moldura no "Sobre mim"</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-borda-foto-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
-                <input id="cor-borda-foto" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- ── PREVIEW ────────────────────────────────── -->
         <div id="modal-preview" class="rounded-xl border border-sage/30 overflow-hidden">

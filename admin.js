@@ -601,62 +601,40 @@ onAuthStateChanged(auth, async (user) => {
       });
     }
 
-    // Mapeamento: qual seção mostra quais cards do modal
+    // Mapeamento: qual seção mostra quais cards do modal (somente por seção)
     const TODOS_CARDS = [
-      "modal-hero","modal-tipografia","modal-cores","modal-botoes","modal-nav",
-      "modal-fundos","modal-contato","modal-sobre","modal-cards","modal-publicos",
-      "modal-footer","modal-layout","modal-efeitos","modal-preview",
+      "modal-nav","modal-hero","modal-sobre","modal-cards",
+      "modal-publicos","modal-contato","modal-footer","modal-preview",
     ];
     const SECAO_MAP = {
-      // Cada seção mostra APENAS seus controles específicos.
-      // Controles globais (tipografia, cores, layout) ficam no "Ver todas as opções".
-      "modal-nav":      { titulo: "Barra de navegação",     cards: ["modal-nav"] },
-      "modal-hero":     { titulo: "Hero / Banner",           cards: ["modal-hero"] },
-      "modal-sobre":    { titulo: "Sobre mim",               cards: ["modal-sobre", "modal-efeitos"] },
-      "modal-cards":    { titulo: "Sessões de atendimento",  cards: ["modal-cards"] },
-      "modal-publicos": { titulo: "Seção Públicos",          cards: ["modal-publicos"] },
-      "modal-contato":  { titulo: "Seção Contato",           cards: ["modal-contato", "modal-botoes"] },
-      "modal-footer":   { titulo: "Rodapé",                  cards: ["modal-footer"] },
-      // Globais — acessíveis pelo "Ver todas as opções" ou via botão direto
-      "modal-tipografia": { titulo: "Fontes",       cards: ["modal-tipografia", "modal-layout"] },
-      "modal-botoes":     { titulo: "Botões",        cards: ["modal-botoes"] },
-      "modal-layout":     { titulo: "Layout",        cards: ["modal-layout"] },
-      "modal-cores":      { titulo: "Cores do texto",cards: ["modal-cores"] },
-      "modal-efeitos":    { titulo: "Efeitos",       cards: ["modal-efeitos"] },
-      "modal-fundos":     { titulo: "Fundo geral",   cards: ["modal-fundos"] },
+      "modal-nav":      { titulo: "Barra de navegação",    cards: ["modal-nav"] },
+      "modal-hero":     { titulo: "Hero / Banner",          cards: ["modal-hero"] },
+      "modal-sobre":    { titulo: "Sobre mim",              cards: ["modal-sobre"] },
+      "modal-cards":    { titulo: "Sessões de atendimento", cards: ["modal-cards"] },
+      "modal-publicos": { titulo: "Seção Públicos",         cards: ["modal-publicos"] },
+      "modal-contato":  { titulo: "Seção Contato",          cards: ["modal-contato"] },
+      "modal-footer":   { titulo: "Rodapé",                 cards: ["modal-footer"] },
     };
-    const modalTitulo  = document.getElementById("modal-titulo");
-    const btnVerTudo   = document.getElementById("btn-ver-tudo");
+    const modalTitulo = document.getElementById("modal-titulo");
 
     function abrirModalEstilos(alvoId) {
       if (!modalEstilos) return;
       modalEstilos.classList.remove("hidden");
       const config = SECAO_MAP[alvoId];
-      const esTudo = !config;
 
       // Título
-      if (modalTitulo) modalTitulo.textContent = esTudo ? "Fontes e Cores" : config.titulo;
+      if (modalTitulo) modalTitulo.textContent = config ? config.titulo : "Editar estilos";
 
-      // Mostrar/esconder cards
+      // Mostrar/esconder cards: se sem config (botão da barra), mostra tudo
       TODOS_CARDS.forEach(id => {
         const card = document.getElementById(id);
         if (!card) return;
-        if (esTudo || id === "modal-preview") {
+        if (!config || id === "modal-preview") {
           card.classList.remove("hidden");
         } else {
           card.classList.toggle("hidden", !config.cards.includes(id));
         }
       });
-
-      // Botão "Ver tudo"
-      if (btnVerTudo) {
-        if (esTudo) {
-          btnVerTudo.classList.add("hidden");
-        } else {
-          btnVerTudo.classList.remove("hidden");
-          btnVerTudo.onclick = () => abrirModalEstilos(null);
-        }
-      }
 
       // Scroll ao topo do modal
       const scroll = modalEstilos.querySelector(".overflow-y-auto");
@@ -716,7 +694,7 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     // Preview em tempo real: selects de layout e efeitos
-    ["espacamento-secoes", "tamanho-titulos", "hero-alinhamento", "fonte-nav"].forEach(id => {
+    ["hero-alinhamento", "fonte-nav", "fonte-titulos", "fonte-texto"].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
     });
