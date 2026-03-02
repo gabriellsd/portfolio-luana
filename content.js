@@ -38,6 +38,39 @@ async function carregarConteudo() {
       }
     });
 
+    // Fontes e cores personalizadas
+    if (data.estilos) {
+      const e = data.estilos;
+      const root = document.documentElement;
+
+      if (e.corPrimaria) root.style.setProperty("--primary-sage", e.corPrimaria);
+      if (e.corTexto)    root.style.setProperty("--text-dark", e.corTexto);
+      if (e.corFundo)    root.style.setProperty("--soft-cream", e.corFundo);
+
+      if (e.fonteTitulos || e.fonteTexto) {
+        // Carrega as fontes via Google Fonts dinamicamente
+        const fonts = [
+          e.fonteTitulos && `family=${e.fonteTitulos.replace(/ /g, "+")}:ital,wght@0,400;0,600;1,400`,
+          e.fonteTexto   && `family=${e.fonteTexto.replace(/ /g, "+")}:wght@300;400;500;600`,
+        ].filter(Boolean).join("&");
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = `https://fonts.googleapis.com/css2?${fonts}&display=swap`;
+        document.head.appendChild(link);
+
+        link.onload = () => {
+          if (e.fonteTitulos) {
+            document.querySelectorAll("h1,h2,h3,.font-serif").forEach(el => {
+              el.style.fontFamily = `'${e.fonteTitulos}', serif`;
+            });
+          }
+          if (e.fonteTexto) {
+            document.body.style.fontFamily = `'${e.fonteTexto}', sans-serif`;
+          }
+        };
+      }
+    }
+
     // Foto de perfil: troca imagem (se tiver) e aplica opacidade sempre
     const foto = document.querySelector("[data-foto]");
     if (foto) {

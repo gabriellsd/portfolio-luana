@@ -38,6 +38,19 @@ const labelOpacidade = document.getElementById("banner-opacidade-valor");
 const sliderOpacidadeFoto = document.getElementById("foto-opacidade");
 const labelOpacidadeFoto = document.getElementById("foto-opacidade-valor");
 
+// Estilos
+const toggleEstilos = document.getElementById("toggle-estilos");
+const estilosSection = document.getElementById("estilos-section");
+const fonteTitulos = document.getElementById("fonte-titulos");
+const fonteTexto = document.getElementById("fonte-texto");
+const corPrimaria = document.getElementById("cor-primaria");
+const corPrimariaHex = document.getElementById("cor-primaria-hex");
+const corTexto = document.getElementById("cor-texto");
+const corTextoHex = document.getElementById("cor-texto-hex");
+const corFundo = document.getElementById("cor-fundo");
+const corFundoHex = document.getElementById("cor-fundo-hex");
+const salvarEstilos = document.getElementById("salvar-estilos");
+
 const CLOUDINARY_CLOUD = "gabriellsd";
 const CLOUDINARY_PRESET = "portfolio-luana";
 
@@ -249,12 +262,67 @@ async function uploadBanner(file) {
   }
 }
 
+// Aplica estilos (fontes e cores) no preview do admin
+function aplicarEstilos({ fonteTitulosVal, fonteTextoVal, corPrimariaVal, corTextoVal, corFundoVal }) {
+  const root = document.documentElement;
+  if (fonteTitulosVal) {
+    document.querySelectorAll("h1,h2,h3,.font-serif").forEach(el => {
+      el.style.fontFamily = `'${fonteTitulosVal}', serif`;
+    });
+  }
+  if (fonteTextoVal) {
+    document.querySelectorAll("p,span,a,li,label,button:not(.font-serif)").forEach(el => {
+      el.style.fontFamily = `'${fonteTextoVal}', sans-serif`;
+    });
+  }
+  if (corPrimariaVal) {
+    root.style.setProperty("--primary-sage", corPrimariaVal);
+  }
+  if (corTextoVal) {
+    root.style.setProperty("--text-dark", corTextoVal);
+  }
+  if (corFundoVal) {
+    root.style.setProperty("--soft-cream", corFundoVal);
+    document.querySelectorAll(".hero-gradient, #preview-hero").forEach(el => {
+      el.style.backgroundColor = corFundoVal;
+    });
+  }
+}
+
+// Preenche os controles de estilo com os valores salvos
+function preencherEstilos(estilos) {
+  if (!estilos) return;
+  if (estilos.fonteTitulos && fonteTitulos) fonteTitulos.value = estilos.fonteTitulos;
+  if (estilos.fonteTexto && fonteTexto) fonteTexto.value = estilos.fonteTexto;
+  if (estilos.corPrimaria && corPrimaria) {
+    corPrimaria.value = estilos.corPrimaria;
+    if (corPrimariaHex) corPrimariaHex.textContent = estilos.corPrimaria;
+  }
+  if (estilos.corTexto && corTexto) {
+    corTexto.value = estilos.corTexto;
+    if (corTextoHex) corTextoHex.textContent = estilos.corTexto;
+  }
+  if (estilos.corFundo && corFundo) {
+    corFundo.value = estilos.corFundo;
+    if (corFundoHex) corFundoHex.textContent = estilos.corFundo;
+  }
+  aplicarEstilos({
+    fonteTitulosVal: estilos.fonteTitulos,
+    fonteTextoVal: estilos.fonteTexto,
+    corPrimariaVal: estilos.corPrimaria,
+    corTextoVal: estilos.corTexto,
+    corFundoVal: estilos.corFundo,
+  });
+}
+
 async function carregarDadosIniciais() {
   try {
     const ref = doc(db, "portfolios", "principal");
     const snap = await getDoc(ref);
     if (snap.exists()) {
-      preencherFormulario(snap.data());
+      const data = snap.data();
+      preencherFormulario(data);
+      if (data.estilos) preencherEstilos(data.estilos);
     }
   } catch (err) {
     console.error(err);
@@ -323,6 +391,63 @@ onAuthStateChanged(auth, async (user) => {
         const val = Number(sliderOpacidadeFoto.value);
         const ref = doc(db, "portfolios", "principal");
         await setDoc(ref, { fotoOpacidade: val }, { merge: true });
+      });
+    }
+
+    // Toggle painel de estilos
+    if (toggleEstilos) {
+      toggleEstilos.classList.remove("hidden");
+      toggleEstilos.addEventListener("click", () => {
+        estilosSection.classList.toggle("hidden");
+      });
+    }
+
+    // Preview em tempo real das cores
+    [
+      [corPrimaria, corPrimariaHex, "corPrimaria"],
+      [corTexto, corTextoHex, "corTexto"],
+      [corFundo, corFundoHex, "corFundo"],
+    ].forEach(([input, label]) => {
+      if (!input) return;
+      input.addEventListener("input", () => {
+        if (label) label.textContent = input.value;
+        aplicarEstilos({
+          corPrimariaVal: corPrimaria?.value,
+          corTextoVal: corTexto?.value,
+          corFundoVal: corFundo?.value,
+        });
+      });
+    });
+
+    // Preview em tempo real das fontes
+    [fonteTitulos, fonteTexto].forEach(sel => {
+      if (!sel) return;
+      sel.addEventListener("change", () => {
+        aplicarEstilos({
+          fonteTitulosVal: fonteTitulos?.value,
+          fonteTextoVal: fonteTexto?.value,
+        });
+      });
+    });
+
+    // Salvar estilos
+    if (salvarEstilos) {
+      salvarEstilos.addEventListener("click", async () => {
+        try {
+          const estilos = {
+            fonteTitulos: fonteTitulos?.value || "Playfair Display",
+            fonteTexto: fonteTexto?.value || "Inter",
+            corPrimaria: corPrimaria?.value || "#8DAA91",
+            corTexto: corTexto?.value || "#4A4A4A",
+            corFundo: corFundo?.value || "#F9F7F2",
+          };
+          const ref = doc(db, "portfolios", "principal");
+          await setDoc(ref, { estilos }, { merge: true });
+          mostrarMensagem("Estilos salvos com sucesso!");
+        } catch (err) {
+          console.error(err);
+          mostrarMensagem("Erro ao salvar estilos.", "erro");
+        }
       });
     }
 
