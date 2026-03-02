@@ -65,6 +65,9 @@ const coresCfg = [
   { id: "cor-footer-fundo",  hex: "cor-footer-fundo-hex",    css: "--cor-footer-fundo",def: "#F1F0EB" },
   { id: "cor-footer-texto",  hex: "cor-footer-texto-hex",    css: "--cor-footer-texto",def: "#6B7280" },
   { id: "cor-borda-foto",       hex: "cor-borda-foto-hex",       css: "--cor-borda-foto",       def: "#8DAA91" },
+  // Nav específicos
+  { id: "cor-nav-btn",          hex: "cor-nav-btn-hex",          css: "--cor-nav-btn",          def: "#8DAA91" },
+  { id: "cor-nav-btn-texto",    hex: "cor-nav-btn-texto-hex",    css: "--cor-nav-btn-texto",    def: "#FFFFFF" },
   // Cores por seção (sobreescrevem o global apenas para aquela seção)
   { id: "cor-hero-titulo",      hex: "cor-hero-titulo-hex",      css: "--cor-hero-titulo",      def: "#2D2D2D" },
   { id: "cor-hero-texto",       hex: "cor-hero-texto-hex",       css: "--cor-hero-texto",       def: "#4A4A4A" },
@@ -84,6 +87,12 @@ const areaLogo       = document.getElementById("area-logo");
 const inputLogo      = document.getElementById("input-logo");
 const previewLogo    = document.getElementById("preview-logo");
 const logoPlaceholder= document.getElementById("logo-placeholder");
+
+function atualizarMiniLogoModal(url) {
+  const container = document.getElementById("logo-preview-modal");
+  if (!container) return;
+  container.innerHTML = `<img src="${url}" class="w-full h-full object-contain p-1" />`;
+}
 
 function mostrarMensagem(texto, tipo = "sucesso") {
   msgEl.textContent = texto;
@@ -146,6 +155,7 @@ function preencherFormulario(data) {
     previewLogo.src = data.logoUrl;
     previewLogo.classList.remove("hidden");
     if (logoPlaceholder) logoPlaceholder.classList.add("hidden");
+    atualizarMiniLogoModal(data.logoUrl);
   }
 
   // Carrega foto de perfil salva
@@ -307,6 +317,7 @@ async function uploadLogo(file) {
     const url = await uploadCloudinary(file);
     if (previewLogo) { previewLogo.src = url; previewLogo.classList.remove("hidden"); }
     if (logoPlaceholder) logoPlaceholder.classList.add("hidden");
+    atualizarMiniLogoModal(url);
     const ref = doc(db, "portfolios", "principal");
     await setDoc(ref, { logoUrl: url }, { merge: true });
     mostrarMensagem("Logo atualizada com sucesso!");
@@ -348,6 +359,11 @@ function aplicarEstilos(estilos = {}) {
     const ff = `'${estilos.fonteTexto}', sans-serif`;
     document.querySelectorAll("p,span:not(.text-sage)").forEach(el => el.style.fontFamily = ff);
     if (prevTexto) prevTexto.style.fontFamily = ff;
+  }
+  if (estilos.fonteNav) {
+    const navEl = document.getElementById("preview-nav");
+    if (navEl) navEl.style.fontFamily = estilos.fonteNav;
+    root.style.setProperty("--fonte-nav", estilos.fonteNav);
   }
 
   // Aplica cada cor via CSS var
@@ -445,6 +461,8 @@ function preencherEstilos(estilos) {
   if (!estilos) return;
   if (estilos.fonteTitulos && fonteTitulos) fonteTitulos.value = estilos.fonteTitulos;
   if (estilos.fonteTexto   && fonteTexto)   fonteTexto.value   = estilos.fonteTexto;
+  const fonteNavEl = document.getElementById("fonte-nav");
+  if (estilos.fonteNav && fonteNavEl) fonteNavEl.value = estilos.fonteNav;
 
   coresCfg.forEach(({ id, hex }) => {
     const input = document.getElementById(id);
@@ -479,9 +497,11 @@ function preencherEstilos(estilos) {
 
 // Lê todos os valores do modal e retorna objeto de estilos
 function lerEstilosDoModal() {
+  const fonteNavEl = document.getElementById("fonte-nav");
   const estilos = {
     fonteTitulos: fonteTitulos?.value || "Playfair Display",
     fonteTexto:   fonteTexto?.value   || "Inter",
+    fonteNav:     fonteNavEl?.value   || "",
   };
   coresCfg.forEach(({ id, def }) => {
     const input = document.getElementById(id);
@@ -696,10 +716,14 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     // Preview em tempo real: selects de layout e efeitos
-    ["espacamento-secoes", "tamanho-titulos", "hero-alinhamento"].forEach(id => {
+    ["espacamento-secoes", "tamanho-titulos", "hero-alinhamento", "fonte-nav"].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
     });
+
+    // Botão logo no modal-nav → reutiliza inputLogo
+    const btnLogoModal = document.getElementById("btn-logo-modal");
+    if (btnLogoModal && inputLogo) btnLogoModal.addEventListener("click", () => inputLogo.click());
     const animacaoEl2 = document.getElementById("cards-animacao");
     if (animacaoEl2) animacaoEl2.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
 

@@ -35,6 +35,10 @@
             --titulo-scale: 1;
             /* efeitos */
             --cor-borda-foto: #8DAA91;
+            /* nav específicos */
+            --cor-nav-btn: ;
+            --cor-nav-btn-texto: ;
+            --fonte-nav: ;
             /* cores por seção (sobreescrevem o global quando definidas) */
             --cor-hero-titulo: ;
             --cor-hero-texto: ;
@@ -72,6 +76,11 @@
         }
         nav.fixed a, nav.fixed span[data-field] {
             color: var(--cor-nav-texto) !important;
+        }
+        nav.fixed { font-family: var(--fonte-nav, inherit); }
+        nav.fixed #nav-btn {
+            background-color: var(--cor-nav-btn, var(--cor-botao)) !important;
+            color: var(--cor-nav-btn-texto, var(--cor-botao-texto, #fff)) !important;
         }
         section#sobre {
             background-color: var(--cor-sobre-fundo);

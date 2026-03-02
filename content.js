@@ -69,6 +69,9 @@ async function carregarConteudo() {
         "cor-footer-fundo":  "--cor-footer-fundo",
         "cor-footer-texto":  "--cor-footer-texto",
         "cor-borda-foto":       "--cor-borda-foto",
+        // Nav específicos
+        "cor-nav-btn":          "--cor-nav-btn",
+        "cor-nav-btn-texto":    "--cor-nav-btn-texto",
         // Por seção — aplicadas via CSS rules com fallback para o global
         "cor-hero-titulo":      "--cor-hero-titulo",
         "cor-hero-texto":       "--cor-hero-texto",
@@ -163,10 +166,12 @@ async function carregarConteudo() {
       }
 
       // Fontes (carrega Google Fonts e aplica)
-      if (e.fonteTitulos || e.fonteTexto) {
+      if (e.fonteTitulos || e.fonteTexto || e.fonteNav) {
+        const fonteNavBase = e.fonteNav ? e.fonteNav.split(",")[0].replace(/'/g,"").trim() : null;
         const fonts = [
           e.fonteTitulos && `family=${e.fonteTitulos.replace(/ /g, "+")}:ital,wght@0,400;0,600;1,400`,
           e.fonteTexto   && `family=${e.fonteTexto.replace(/ /g, "+")}:wght@300;400;500;600`,
+          fonteNavBase   && `family=${fonteNavBase.replace(/ /g, "+")}:wght@300;400;500;600`,
         ].filter(Boolean).join("&");
         const link = document.createElement("link");
         link.rel = "stylesheet";
@@ -177,6 +182,11 @@ async function carregarConteudo() {
             el.style.fontFamily = `'${e.fonteTitulos}', serif`
           );
           if (e.fonteTexto) document.body.style.fontFamily = `'${e.fonteTexto}', sans-serif`;
+          if (e.fonteNav) {
+            root.style.setProperty("--fonte-nav", e.fonteNav);
+            const nav = document.getElementById("main-nav");
+            if (nav) nav.style.fontFamily = e.fonteNav;
+          }
         };
       }
     }
