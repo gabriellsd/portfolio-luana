@@ -580,25 +580,20 @@ onAuthStateChanged(auth, async (user) => {
       "modal-footer","modal-layout","modal-efeitos","modal-preview",
     ];
     const SECAO_MAP = {
-      // Cada chave corresponde ao data-abrir-estilo do botão na seção
-      "modal-nav":      { titulo: "Barra de navegação",
-                          cards: ["modal-nav", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-hero":     { titulo: "Hero / Banner",
-                          cards: ["modal-hero", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-sobre":    { titulo: "Sobre mim",
-                          cards: ["modal-sobre", "modal-efeitos", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-cards":    { titulo: "Sessões de atendimento",
-                          cards: ["modal-cards", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-publicos": { titulo: "Seção Públicos",
-                          cards: ["modal-publicos", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-contato":  { titulo: "Seção Contato",
-                          cards: ["modal-contato", "modal-botoes", "modal-tipografia", "modal-layout", "modal-cores"] },
-      "modal-footer":   { titulo: "Rodapé",
-                          cards: ["modal-footer", "modal-tipografia", "modal-cores"] },
-      // Entradas auxiliares (abertas pelo botão "Ver todas" ou direto)
+      // Cada seção mostra APENAS seus controles específicos.
+      // Controles globais (tipografia, cores, layout) ficam no "Ver todas as opções".
+      "modal-nav":      { titulo: "Barra de navegação",     cards: ["modal-nav"] },
+      "modal-hero":     { titulo: "Hero / Banner",           cards: ["modal-hero"] },
+      "modal-sobre":    { titulo: "Sobre mim",               cards: ["modal-sobre", "modal-efeitos"] },
+      "modal-cards":    { titulo: "Sessões de atendimento",  cards: ["modal-cards"] },
+      "modal-publicos": { titulo: "Seção Públicos",          cards: ["modal-publicos"] },
+      "modal-contato":  { titulo: "Seção Contato",           cards: ["modal-contato", "modal-botoes"] },
+      "modal-footer":   { titulo: "Rodapé",                  cards: ["modal-footer"] },
+      // Globais — acessíveis pelo "Ver todas as opções" ou via botão direto
       "modal-tipografia": { titulo: "Fontes",       cards: ["modal-tipografia", "modal-layout"] },
-      "modal-botoes":     { titulo: "Botões",        cards: ["modal-botoes", "modal-tipografia", "modal-cores"] },
-      "modal-layout":     { titulo: "Layout",        cards: ["modal-layout", "modal-tipografia"] },
+      "modal-botoes":     { titulo: "Botões",        cards: ["modal-botoes"] },
+      "modal-layout":     { titulo: "Layout",        cards: ["modal-layout"] },
+      "modal-cores":      { titulo: "Cores do texto",cards: ["modal-cores"] },
       "modal-efeitos":    { titulo: "Efeitos",       cards: ["modal-efeitos"] },
       "modal-fundos":     { titulo: "Fundo geral",   cards: ["modal-fundos"] },
     };
