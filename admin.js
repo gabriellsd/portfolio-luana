@@ -26,6 +26,7 @@ const loginEmail = document.getElementById("login-email");
 const loginPassword = document.getElementById("login-password");
 const loginButton = document.getElementById("login-button");
 const logoutButton = document.getElementById("logout-button");
+const previewFields = document.querySelectorAll("[data-preview-field]");
 
 function mostrarMensagem(texto, tipo = "sucesso") {
   msgEl.textContent = texto;
@@ -82,6 +83,33 @@ function preencherFormulario(data) {
       el.value = data[el.name];
     }
   });
+
+  // Sincroniza inputs com o preview visual (Sobre mim)
+  syncInputsToPreview();
+}
+
+// Copia valores dos inputs para o preview visual
+function syncInputsToPreview() {
+  previewFields.forEach((el) => {
+    const key = el.dataset.previewField;
+    const input = form.elements.namedItem(key);
+    if (input && typeof input.value === "string" && input.value.trim() !== "") {
+      el.textContent = input.value;
+    }
+  });
+}
+
+// Configura edição no preview: ao digitar no bloco visual, atualiza o input oculto
+function setupPreviewEditing() {
+  previewFields.forEach((el) => {
+    el.addEventListener("input", () => {
+      const key = el.dataset.previewField;
+      const input = form.elements.namedItem(key);
+      if (input) {
+        input.value = el.textContent.trim();
+      }
+    });
+  });
 }
 
 async function carregarDadosIniciais() {
@@ -126,6 +154,9 @@ onAuthStateChanged(auth, async (user) => {
     loginSection.classList.add("hidden");
     appSection.classList.remove("hidden");
     if (logoutButton) logoutButton.classList.remove("hidden");
+
+    // Garante que preview está configurado
+    setupPreviewEditing();
 
     await carregarDadosIniciais();
   } else {

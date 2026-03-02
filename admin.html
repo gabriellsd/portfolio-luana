@@ -59,6 +59,91 @@
 
       <!-- Seção do formulário (aparece só depois do login) -->
       <section id="app-section" class="hidden">
+
+      <!-- Preview visual - Sobre mim (similar ao site) -->
+      <section class="py-12 px-4 bg-white mb-10 border border-slate-100 rounded-2xl shadow-sm">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+          <div class="w-full md:w-1/2 hidden md:block">
+            <div class="relative">
+              <div class="absolute -top-4 -left-4 w-full h-full border-2 border-slate-200 rounded-lg"></div>
+              <div class="relative rounded-lg shadow-md bg-slate-200 h-48"></div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/2">
+            <h2
+              class="text-2xl md:text-3xl mb-4 font-semibold outline-none"
+              data-preview-field="sobreTitulo"
+              contenteditable="true"
+            >
+              Sobre mim
+            </h2>
+            <p
+              class="text-slate-600 leading-relaxed mb-4 text-sm md:text-base outline-none"
+              data-preview-field="sobreTexto"
+              contenteditable="true"
+            >
+              Sou psicóloga com atuação clínica, dedicada a oferecer um espaço de escuta sensível e acolhedora. Meu
+              trabalho é guiado pela construção de vínculo e pelo respeito à singularidade de cada pessoa, respeitando
+              sempre o seu tempo e processo.
+            </p>
+
+            <div class="space-y-3">
+              <div class="flex items-start gap-3">
+                <span
+                  class="bg-emerald-50 px-2 py-1 rounded text-emerald-700 text-xs font-semibold outline-none"
+                  data-preview-field="abordagemLabel"
+                  contenteditable="true"
+                >
+                  Abordagem
+                </span>
+                <div class="space-y-1">
+                  <p
+                    class="text-sm font-medium outline-none"
+                    data-preview-field="abordagemTitulo"
+                    contenteditable="true"
+                  >
+                    Terapia Cognitivo Comportamental (TCC)
+                  </p>
+                  <p
+                    class="text-xs text-slate-500 outline-none"
+                    data-preview-field="abordagemDescricao"
+                    contenteditable="true"
+                  >
+                    Foco em padrões de pensamento e comportamento para promover mudanças saudáveis.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <span
+                  class="bg-emerald-50 px-2 py-1 rounded text-emerald-700 text-xs font-semibold outline-none"
+                  data-preview-field="formacaoLabel"
+                  contenteditable="true"
+                >
+                  Formação
+                </span>
+                <div class="space-y-1">
+                  <p
+                    class="text-sm font-medium outline-none"
+                    data-preview-field="formacaoTitulo"
+                    contenteditable="true"
+                  >
+                    Bacharel em Psicologia
+                  </p>
+                  <p
+                    class="text-xs text-slate-500 outline-none"
+                    data-preview-field="formacaoInstituicao"
+                    contenteditable="true"
+                  >
+                    Nome da Instituição de Ensino
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <form id="portfolio-form" class="space-y-8 max-w-3xl mx-auto">
         <div class="flex items-center justify-between">
           <h2 class="text-2xl font-semibold">Conteúdo</h2>
@@ -110,8 +195,8 @@
           </label>
         </section>
 
-        <!-- Seção: Sobre mim -->
-        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4">
+        <!-- Seção: Sobre mim (inputs escondidos, usados só para salvar no Firestore) -->
+        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4 hidden">
           <h3 class="text-lg font-semibold">Sobre mim</h3>
           <label class="block text-sm">
             <span class="text-slate-600">Título</span>
