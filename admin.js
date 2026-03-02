@@ -27,6 +27,12 @@ const loginPassword = document.getElementById("login-password");
 const loginButton = document.getElementById("login-button");
 const logoutButton = document.getElementById("logout-button");
 const previewFields = document.querySelectorAll("[data-preview-field]");
+const previewFoto = document.getElementById("preview-foto");
+const btnUploadFoto = document.getElementById("btn-upload-foto");
+const inputFoto = document.getElementById("input-foto");
+
+const CLOUDINARY_CLOUD = "gabriellsd";
+const CLOUDINARY_PRESET = "portfolio-luana";
 
 function mostrarMensagem(texto, tipo = "sucesso") {
   msgEl.textContent = texto;
@@ -84,7 +90,12 @@ function preencherFormulario(data) {
     }
   });
 
-  // Sincroniza inputs com o preview visual (Sobre mim)
+  // Carrega foto salva no Cloudinary
+  if (previewFoto && data.fotoUrl) {
+    previewFoto.src = data.fotoUrl;
+  }
+
+  // Sincroniza inputs com o preview visual
   syncInputsToPreview();
 }
 
@@ -110,6 +121,38 @@ function setupPreviewEditing() {
       }
     });
   });
+}
+
+// Upload da foto para Cloudinary e salva URL no Firestore
+async function uploadFoto(file) {
+  mostrarMensagem("Enviando foto...", "sucesso");
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_PRESET);
+  formData.append("folder", "portfolio");
+
+  try {
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+      { method: "POST", body: formData }
+    );
+    const json = await res.json();
+
+    if (!json.secure_url) throw new Error("URL não retornada");
+
+    // Atualiza o preview imediatamente
+    previewFoto.src = json.secure_url;
+
+    // Salva a URL no Firestore
+    const ref = doc(db, "portfolios", "principal");
+    await setDoc(ref, { fotoUrl: json.secure_url }, { merge: true });
+
+    mostrarMensagem("Foto atualizada com sucesso!");
+  } catch (err) {
+    console.error(err);
+    mostrarMensagem("Erro ao enviar foto. Tente novamente.", "erro");
+  }
 }
 
 async function carregarDadosIniciais() {
@@ -157,6 +200,15 @@ onAuthStateChanged(auth, async (user) => {
 
     // Garante que preview está configurado
     setupPreviewEditing();
+
+    // Configura botão de upload da foto
+    if (btnUploadFoto && inputFoto) {
+      btnUploadFoto.addEventListener("click", () => inputFoto.click());
+      inputFoto.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) uploadFoto(file);
+      });
+    }
 
     await carregarDadosIniciais();
   } else {

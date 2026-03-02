@@ -37,6 +37,12 @@ async function carregarConteudo() {
         el.href = data.links[key];
       }
     });
+
+    // Foto de perfil vinda do Cloudinary
+    if (data.fotoUrl) {
+      const foto = document.querySelector("[data-foto]");
+      if (foto) foto.src = data.fotoUrl;
+    }
   } catch (err) {
     console.error("Erro ao carregar conteúdo:", err);
   }

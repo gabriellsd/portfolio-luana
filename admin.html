@@ -163,14 +163,26 @@
         <section id="preview-sobre" class="py-24 px-6 bg-white">
           <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
             <div class="w-full md:w-1/2">
-              <div class="relative">
+              <div class="relative group">
                 <div class="absolute -top-4 -left-4 w-full h-full border-2 border-sage rounded-lg"></div>
                 <img
+                  id="preview-foto"
                   src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000"
                   alt="Foto Profissional"
-                  class="relative rounded-lg shadow-xl grayscale-[20%]"
+                  class="relative rounded-lg shadow-xl grayscale-[20%] w-full object-cover"
                 />
+                <!-- Overlay de upload -->
+                <button
+                  id="btn-upload-foto"
+                  type="button"
+                  class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                >
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span class="text-sm mt-1 font-medium">Trocar foto</span>
+                </button>
+                <input id="input-foto" type="file" accept="image/*" class="hidden" />
               </div>
+              <p class="text-xs text-slate-400 text-center mt-3">Passe o mouse sobre a foto para trocar</p>
             </div>
             <div class="w-full md:w-1/2">
               <h2
