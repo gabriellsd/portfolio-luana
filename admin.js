@@ -781,6 +781,8 @@ form.addEventListener("submit", async (e) => {
 
   try {
     const data = formToData(form);
+    // Sempre inclui os estilos atuais para não precisar de dois botões de salvar
+    data.estilos = lerEstilosDoModal();
     const ref = doc(db, "portfolios", "principal");
     await setDoc(ref, data, { merge: true });
     mostrarMensagem("Alterações salvas com sucesso!");

@@ -51,7 +51,7 @@ async function carregarConteudo() {
       const e = data.estilos;
       const root = document.documentElement;
 
-      // Cores via CSS custom properties
+      // 1. Atualiza todas as CSS custom properties de uma vez
       const mapaCSS = {
         "cor-primaria":      "--primary-sage",
         "cor-titulos":       "--cor-titulos",
@@ -68,70 +68,76 @@ async function carregarConteudo() {
         "cor-cards":         "--cor-cards",
         "cor-footer-fundo":  "--cor-footer-fundo",
         "cor-footer-texto":  "--cor-footer-texto",
+        "cor-borda-foto":    "--cor-borda-foto",
       };
       Object.entries(mapaCSS).forEach(([key, css]) => {
         if (e[key]) root.style.setProperty(css, e[key]);
       });
 
-      // Cards: radius e sombra (CSS vars já aplicadas acima — mas também inline para garantir)
-      if (e["cards-radius"] !== undefined) {
-        root.style.setProperty("--cards-radius", `${e["cards-radius"]}px`);
-      }
-      if (e["cards-sombra"]) {
-        root.style.setProperty("--cards-sombra", e["cards-sombra"]);
-      }
+      if (e["cards-radius"] !== undefined) root.style.setProperty("--cards-radius", `${e["cards-radius"]}px`);
+      if (e["cards-sombra"])               root.style.setProperty("--cards-sombra",  e["cards-sombra"]);
+      if (e["espacamento-secoes"])         root.style.setProperty("--py-secoes",      e["espacamento-secoes"]);
+      if (e["tamanho-titulos"])            root.style.setProperty("--titulo-scale",   e["tamanho-titulos"]);
 
-      // Seção Sobre
-      const secSobre = document.getElementById("sobre");
-      if (secSobre && e["cor-sobre-fundo"]) secSobre.style.backgroundColor = e["cor-sobre-fundo"];
-
-      // Seção Contato
-      const secContato = document.getElementById("contato");
-      if (secContato && e["cor-fundo-contato"]) secContato.style.backgroundColor = e["cor-fundo-contato"];
-
-      // Seção Atendimento (fundo alt)
-      const secAtendimento = document.getElementById("atendimento");
-      if (secAtendimento && e["cor-fundo-alt"]) secAtendimento.style.backgroundColor = e["cor-fundo-alt"];
-
+      // 2. Aplica inline nos elementos — garante override mesmo quando Tailwind tem especificidade maior
       // Nav
       const nav = document.getElementById("main-nav");
       if (nav) {
-        if (e["cor-nav"])       nav.style.backgroundColor = e["cor-nav"];
-        if (e["cor-nav-texto"]) {
-          nav.querySelectorAll("a, span[data-field]").forEach(el => el.style.color = e["cor-nav-texto"]);
-        }
+        if (e["cor-nav"])       nav.style.setProperty("background-color", e["cor-nav"], "important");
+        if (e["cor-nav-texto"]) nav.querySelectorAll("a, span").forEach(el =>
+          el.style.setProperty("color", e["cor-nav-texto"], "important")
+        );
       }
+
+      // Hero / seção de fundo geral
+      if (e["cor-fundo"]) document.body.style.backgroundColor = e["cor-fundo"];
+
+      // Sobre mim
+      const secSobre = document.getElementById("sobre");
+      if (secSobre && e["cor-sobre-fundo"]) secSobre.style.setProperty("background-color", e["cor-sobre-fundo"], "important");
+
+      // Atendimento / Sessões
+      const secAtendimento = document.getElementById("atendimento");
+      if (secAtendimento && e["cor-fundo-alt"]) secAtendimento.style.setProperty("background-color", e["cor-fundo-alt"], "important");
+
+      // Cards
+      document.querySelectorAll(".sessao-card").forEach(card => {
+        if (e["cor-cards"]) card.style.setProperty("background-color", e["cor-cards"], "important");
+      });
+
+      // Contato
+      const secContato = document.getElementById("contato");
+      if (secContato && e["cor-fundo-contato"]) secContato.style.setProperty("background-color", e["cor-fundo-contato"], "important");
 
       // Footer
       const footer = document.getElementById("main-footer");
       if (footer) {
-        if (e["cor-footer-fundo"]) footer.style.backgroundColor = e["cor-footer-fundo"];
-        if (e["cor-footer-texto"]) footer.querySelectorAll("p").forEach(p => p.style.color = e["cor-footer-texto"]);
+        if (e["cor-footer-fundo"]) footer.style.setProperty("background-color", e["cor-footer-fundo"], "important");
+        if (e["cor-footer-texto"]) footer.querySelectorAll("p, span").forEach(p =>
+          p.style.setProperty("color", e["cor-footer-texto"], "important")
+        );
       }
 
-      // Cor dos títulos
-      if (e["cor-titulos"]) {
-        document.querySelectorAll("h1,h2,h3").forEach(el => el.style.color = e["cor-titulos"]);
-      }
+      // Títulos
+      if (e["cor-titulos"]) document.querySelectorAll("h1, h2, h3").forEach(el =>
+        el.style.setProperty("color", e["cor-titulos"], "important")
+      );
 
-      // Cor do texto claro
-      if (e["cor-texto-claro"]) {
-        document.querySelectorAll(".text-gray-500, .text-gray-600").forEach(el => {
-          el.style.color = e["cor-texto-claro"];
-        });
-      }
+      // Texto do corpo
+      if (e["cor-texto"]) document.body.style.color = e["cor-texto"];
 
-      // Botões
+      // Texto secundário (claro)
+      if (e["cor-texto-claro"]) document.querySelectorAll(".text-gray-500, .text-gray-600, .opacity-80").forEach(el =>
+        el.style.color = e["cor-texto-claro"]
+      );
+
+      // Botões (fundo e texto)
       if (e["cor-botao"] || e["cor-botao-texto"]) {
-        document.querySelectorAll("a.bg-sage, .bg-sage").forEach(el => {
-          if (e["cor-botao"])       el.style.backgroundColor = e["cor-botao"];
-          if (e["cor-botao-texto"]) el.style.color = e["cor-botao-texto"];
+        document.querySelectorAll(".bg-sage").forEach(el => {
+          if (e["cor-botao"])       el.style.setProperty("background-color", e["cor-botao"], "important");
+          if (e["cor-botao-texto"]) el.style.setProperty("color", e["cor-botao-texto"], "important");
         });
       }
-
-      // Layout: espaçamento e tamanho dos títulos
-      if (e["espacamento-secoes"]) root.style.setProperty("--py-secoes", e["espacamento-secoes"]);
-      if (e["tamanho-titulos"])    root.style.setProperty("--titulo-scale", e["tamanho-titulos"]);
 
       // Alinhamento do hero
       if (e["hero-alinhamento"]) {
@@ -147,11 +153,7 @@ async function carregarConteudo() {
         document.body.classList.add("sem-animacao-cards");
       }
 
-      // Borda decorativa da foto
-      if (e["cor-borda-foto"]) {
-        root.style.setProperty("--cor-borda-foto", e["cor-borda-foto"]);
-      }
-
+      // Fontes (carrega Google Fonts e aplica)
       if (e.fonteTitulos || e.fonteTexto) {
         const fonts = [
           e.fonteTitulos && `family=${e.fonteTitulos.replace(/ /g, "+")}:ital,wght@0,400;0,600;1,400`,
@@ -161,16 +163,11 @@ async function carregarConteudo() {
         link.rel = "stylesheet";
         link.href = `https://fonts.googleapis.com/css2?${fonts}&display=swap`;
         document.head.appendChild(link);
-
         link.onload = () => {
-          if (e.fonteTitulos) {
-            document.querySelectorAll("h1,h2,h3,.font-serif").forEach(el => {
-              el.style.fontFamily = `'${e.fonteTitulos}', serif`;
-            });
-          }
-          if (e.fonteTexto) {
-            document.body.style.fontFamily = `'${e.fonteTexto}', sans-serif`;
-          }
+          if (e.fonteTitulos) document.querySelectorAll("h1,h2,h3,.font-serif").forEach(el =>
+            el.style.fontFamily = `'${e.fonteTitulos}', serif`
+          );
+          if (e.fonteTexto) document.body.style.fontFamily = `'${e.fonteTexto}', sans-serif`;
         };
       }
     }
