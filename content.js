@@ -43,8 +43,8 @@ async function carregarConteudo() {
       const foto = document.querySelector("[data-foto]");
       if (foto) {
         foto.src = data.fotoUrl;
-        const grayscale = data.fotoGrayscale !== undefined ? data.fotoGrayscale : 20;
-        foto.style.filter = `grayscale(${grayscale}%)`;
+        const opacidadeFoto = data.fotoOpacidade !== undefined ? data.fotoOpacidade : 100;
+        foto.style.opacity = opacidadeFoto / 100;
       }
     }
 

@@ -35,8 +35,8 @@ const btnUploadBanner = document.getElementById("btn-upload-banner");
 const inputBanner = document.getElementById("input-banner");
 const sliderOpacidade = document.getElementById("banner-opacidade");
 const labelOpacidade = document.getElementById("banner-opacidade-valor");
-const sliderGrayscale = document.getElementById("foto-grayscale");
-const labelGrayscale = document.getElementById("foto-grayscale-valor");
+const sliderOpacidadeFoto = document.getElementById("foto-opacidade");
+const labelOpacidadeFoto = document.getElementById("foto-opacidade-valor");
 
 const CLOUDINARY_CLOUD = "gabriellsd";
 const CLOUDINARY_PRESET = "portfolio-luana";
@@ -102,13 +102,13 @@ function preencherFormulario(data) {
     previewFoto.src = data.fotoUrl;
   }
 
-  // Carrega filtro grayscale salvo
-  const grayscale = data.fotoGrayscale !== undefined ? data.fotoGrayscale : 20;
-  if (sliderGrayscale) {
-    sliderGrayscale.value = grayscale;
-    if (labelGrayscale) labelGrayscale.textContent = `${grayscale}%`;
+  // Carrega opacidade salva da foto
+  const opacidadeFoto = data.fotoOpacidade !== undefined ? data.fotoOpacidade : 100;
+  if (sliderOpacidadeFoto) {
+    sliderOpacidadeFoto.value = opacidadeFoto;
+    if (labelOpacidadeFoto) labelOpacidadeFoto.textContent = `${opacidadeFoto}%`;
   }
-  aplicarGrayscaleFoto(grayscale);
+  aplicarOpacidadeFoto(opacidadeFoto);
 
   // Carrega banner salvo
   if (previewHero && data.bannerUrl) {
@@ -177,10 +177,10 @@ function validarFoto(file) {
   });
 }
 
-// Aplica filtro preto e branco na foto de perfil
-function aplicarGrayscaleFoto(valor) {
+// Aplica opacidade na foto de perfil
+function aplicarOpacidadeFoto(valor) {
   if (!previewFoto) return;
-  previewFoto.style.filter = `grayscale(${valor}%)`;
+  previewFoto.style.opacity = valor / 100;
 }
 
 // Aplica opacidade do filtro no banner do hero
@@ -311,18 +311,18 @@ onAuthStateChanged(auth, async (user) => {
       });
     }
 
-    // Slider de grayscale da foto de perfil
-    if (sliderGrayscale) {
-      sliderGrayscale.addEventListener("input", () => {
-        const val = Number(sliderGrayscale.value);
-        if (labelGrayscale) labelGrayscale.textContent = `${val}%`;
-        aplicarGrayscaleFoto(val);
+    // Slider de opacidade da foto de perfil
+    if (sliderOpacidadeFoto) {
+      sliderOpacidadeFoto.addEventListener("input", () => {
+        const val = Number(sliderOpacidadeFoto.value);
+        if (labelOpacidadeFoto) labelOpacidadeFoto.textContent = `${val}%`;
+        aplicarOpacidadeFoto(val);
       });
 
-      sliderGrayscale.addEventListener("change", async () => {
-        const val = Number(sliderGrayscale.value);
+      sliderOpacidadeFoto.addEventListener("change", async () => {
+        const val = Number(sliderOpacidadeFoto.value);
         const ref = doc(db, "portfolios", "principal");
-        await setDoc(ref, { fotoGrayscale: val }, { merge: true });
+        await setDoc(ref, { fotoOpacidade: val }, { merge: true });
       });
     }
 

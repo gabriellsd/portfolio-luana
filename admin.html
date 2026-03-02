@@ -218,21 +218,21 @@
                 <p class="text-xs text-slate-400">Formatos aceitos: JPG, PNG, WEBP · Máx. 5 MB</p>
               </div>
 
-              <!-- Slider de filtro da foto -->
+              <!-- Slider de opacidade da foto -->
               <div class="mt-4 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 space-y-2">
                 <div class="flex items-center justify-between text-xs text-slate-600">
-                  <span>Filtro preto e branco</span>
-                  <span id="foto-grayscale-valor" class="font-semibold text-sage">20%</span>
+                  <span>Opacidade da foto</span>
+                  <span id="foto-opacidade-valor" class="font-semibold text-sage">100%</span>
                 </div>
                 <input
-                  id="foto-grayscale"
+                  id="foto-opacidade"
                   type="range"
-                  min="0"
+                  min="10"
                   max="100"
-                  value="20"
+                  value="100"
                   class="w-full accent-sage cursor-pointer"
                 />
-                <p class="text-xs text-slate-400 text-center">0% = colorida · 100% = preto e branco total</p>
+                <p class="text-xs text-slate-400 text-center">100% = foto normal · valores menores = mais apagada</p>
               </div>
             </div>
             <div class="w-full md:w-1/2">
