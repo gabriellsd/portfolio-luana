@@ -35,7 +35,25 @@
             --titulo-scale: 1;
             /* efeitos */
             --cor-borda-foto: #8DAA91;
+            /* cores por seção (sobreescrevem o global quando definidas) */
+            --cor-hero-titulo: ;
+            --cor-hero-texto: ;
+            --cor-sobre-titulo: ;
+            --cor-sobre-texto: ;
+            --cor-sessoes-titulo: ;
+            --cor-sessoes-texto: ;
+            --cor-publicos-titulo: ;
+            --cor-publicos-texto: ;
         }
+        /* Cor de título e texto específicos por seção */
+        .hero-gradient h1, .hero-gradient h2, .hero-gradient h3 { color: var(--cor-hero-titulo, var(--cor-titulos)); }
+        .hero-gradient p { color: var(--cor-hero-texto, var(--text-dark)); }
+        #sobre h1, #sobre h2, #sobre h3 { color: var(--cor-sobre-titulo, var(--cor-titulos)); }
+        #sobre p, #sobre span:not(.bg-sage) { color: var(--cor-sobre-texto, var(--text-dark)); }
+        #atendimento h1, #atendimento h2, #atendimento h3 { color: var(--cor-sessoes-titulo, var(--cor-titulos)); }
+        #atendimento p { color: var(--cor-sessoes-texto, var(--text-dark)); }
+        #publico h1, #publico h2, #publico h3 { color: var(--cor-publicos-titulo, var(--cor-titulos)); }
+        #publico p { color: var(--cor-publicos-texto, var(--text-dark)); }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--soft-cream);

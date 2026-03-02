@@ -68,7 +68,16 @@ async function carregarConteudo() {
         "cor-cards":         "--cor-cards",
         "cor-footer-fundo":  "--cor-footer-fundo",
         "cor-footer-texto":  "--cor-footer-texto",
-        "cor-borda-foto":    "--cor-borda-foto",
+        "cor-borda-foto":       "--cor-borda-foto",
+        // Por seção — aplicadas via CSS rules com fallback para o global
+        "cor-hero-titulo":      "--cor-hero-titulo",
+        "cor-hero-texto":       "--cor-hero-texto",
+        "cor-sobre-titulo":     "--cor-sobre-titulo",
+        "cor-sobre-texto":      "--cor-sobre-texto",
+        "cor-sessoes-titulo":   "--cor-sessoes-titulo",
+        "cor-sessoes-texto":    "--cor-sessoes-texto",
+        "cor-publicos-titulo":  "--cor-publicos-titulo",
+        "cor-publicos-texto":   "--cor-publicos-texto",
       };
       Object.entries(mapaCSS).forEach(([key, css]) => {
         if (e[key]) root.style.setProperty(css, e[key]);

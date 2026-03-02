@@ -46,7 +46,6 @@ const modalOverlay   = document.getElementById("modal-overlay");
 const fecharEstilos  = document.getElementById("fechar-estilos");
 const fonteTitulos   = document.getElementById("fonte-titulos");
 const fonteTexto     = document.getElementById("fonte-texto");
-const salvarEstilos  = document.getElementById("salvar-estilos");
 
 // Todos os color pickers
 const coresCfg = [
@@ -65,7 +64,16 @@ const coresCfg = [
   { id: "cor-cards",         hex: "cor-cards-hex",           css: "--cor-cards",       def: "#FFFFFF" },
   { id: "cor-footer-fundo",  hex: "cor-footer-fundo-hex",    css: "--cor-footer-fundo",def: "#F1F0EB" },
   { id: "cor-footer-texto",  hex: "cor-footer-texto-hex",    css: "--cor-footer-texto",def: "#6B7280" },
-  { id: "cor-borda-foto",    hex: "cor-borda-foto-hex",      css: "--cor-borda-foto",  def: "#8DAA91" },
+  { id: "cor-borda-foto",       hex: "cor-borda-foto-hex",       css: "--cor-borda-foto",       def: "#8DAA91" },
+  // Cores por seção (sobreescrevem o global apenas para aquela seção)
+  { id: "cor-hero-titulo",      hex: "cor-hero-titulo-hex",      css: "--cor-hero-titulo",      def: "#2D2D2D" },
+  { id: "cor-hero-texto",       hex: "cor-hero-texto-hex",       css: "--cor-hero-texto",       def: "#4A4A4A" },
+  { id: "cor-sobre-titulo",     hex: "cor-sobre-titulo-hex",     css: "--cor-sobre-titulo",     def: "#2D2D2D" },
+  { id: "cor-sobre-texto",      hex: "cor-sobre-texto-hex",      css: "--cor-sobre-texto",      def: "#4A4A4A" },
+  { id: "cor-sessoes-titulo",   hex: "cor-sessoes-titulo-hex",   css: "--cor-sessoes-titulo",   def: "#2D2D2D" },
+  { id: "cor-sessoes-texto",    hex: "cor-sessoes-texto-hex",    css: "--cor-sessoes-texto",    def: "#4A4A4A" },
+  { id: "cor-publicos-titulo",  hex: "cor-publicos-titulo-hex",  css: "--cor-publicos-titulo",  def: "#2D2D2D" },
+  { id: "cor-publicos-texto",   hex: "cor-publicos-texto-hex",   css: "--cor-publicos-texto",   def: "#4A4A4A" },
 ];
 
 const CLOUDINARY_CLOUD = "gabriellsd";
@@ -709,22 +717,6 @@ onAuthStateChanged(auth, async (user) => {
     const sombraEl = document.getElementById("cards-sombra");
     if (sombraEl) {
       sombraEl.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
-    }
-
-    // Salvar estilos
-    if (salvarEstilos) {
-      salvarEstilos.addEventListener("click", async () => {
-        try {
-          const estilos = lerEstilosDoModal();
-          const ref = doc(db, "portfolios", "principal");
-          await setDoc(ref, { estilos }, { merge: true });
-          mostrarMensagem("Estilos salvos com sucesso!");
-          modalEstilos.classList.add("hidden");
-        } catch (err) {
-          console.error(err);
-          mostrarMensagem("Erro ao salvar estilos.", "erro");
-        }
-      });
     }
 
     // Slider de opacidade do banner
