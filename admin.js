@@ -49,6 +49,11 @@ function formToData(formEl) {
 
   const formData = new FormData(formEl);
   for (const [name, value] of formData.entries()) {
+    // Se o campo estiver em branco, não sobrescreve o que já existe no Firestore
+    if (typeof value === "string" && value.trim() === "") {
+      continue;
+    }
+
     if (name.startsWith("links.")) {
       const key = name.split(".")[1];
       if (!data.links) data.links = {};
