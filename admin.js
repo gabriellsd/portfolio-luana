@@ -500,6 +500,19 @@ onAuthStateChanged(auth, async (user) => {
     if (fecharEstilos)  fecharEstilos.addEventListener("click",  () => modalEstilos.classList.add("hidden"));
     if (modalOverlay)   modalOverlay.addEventListener("click",   () => modalEstilos.classList.add("hidden"));
 
+    // Botões "Editar cores" no hover das seções — abre modal e rola até a seção correta
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-abrir-estilo]");
+      if (!btn) return;
+      const alvoId = btn.dataset.abrirEstilo;
+      if (modalEstilos) modalEstilos.classList.remove("hidden");
+      const alvo = document.getElementById(alvoId);
+      if (alvo) {
+        // Pequeno delay para o modal abrir antes de rolar
+        setTimeout(() => alvo.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+      }
+    });
+
     // Preview em tempo real: color pickers
     coresCfg.forEach(({ id, hex }) => {
       const input = document.getElementById(id);
