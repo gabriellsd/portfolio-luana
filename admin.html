@@ -169,9 +169,23 @@
             </p>
           </div>
 
-          <!-- Dica de tamanho -->
-          <div class="absolute bottom-3 left-0 right-0 text-center opacity-0 group-hover/hero:opacity-100 transition-opacity">
-            <span class="text-xs bg-black/40 text-white px-3 py-1 rounded-full">📐 Tamanho ideal do banner: 1920 × 1080 px (paisagem) · Máx. 5 MB</span>
+          <!-- Controles do banner -->
+          <div class="absolute bottom-4 left-0 right-0 px-6 opacity-0 group-hover/hero:opacity-100 transition-opacity">
+            <div class="max-w-sm mx-auto bg-black/50 backdrop-blur rounded-xl px-4 py-3 space-y-2">
+              <div class="flex items-center justify-between text-white text-xs">
+                <span>Opacidade do filtro</span>
+                <span id="banner-opacidade-valor" class="font-semibold">85%</span>
+              </div>
+              <input
+                id="banner-opacidade"
+                type="range"
+                min="0"
+                max="100"
+                value="85"
+                class="w-full accent-sage cursor-pointer"
+              />
+              <p class="text-white/60 text-xs text-center">📐 Ideal: 1920 × 1080 px · Máx. 5 MB</p>
+            </div>
           </div>
         </section>
 

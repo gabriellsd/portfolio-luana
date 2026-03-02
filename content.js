@@ -48,7 +48,8 @@ async function carregarConteudo() {
     if (data.bannerUrl) {
       const hero = document.querySelector(".hero-gradient");
       if (hero) {
-        hero.style.backgroundImage = `linear-gradient(rgba(249,247,242,0.8), rgba(249,247,242,0.8)), url('${data.bannerUrl}')`;
+        const opacidade = data.bannerOpacidade !== undefined ? data.bannerOpacidade / 100 : 0.8;
+        hero.style.backgroundImage = `linear-gradient(rgba(249,247,242,${opacidade}), rgba(249,247,242,${opacidade})), url('${data.bannerUrl}')`;
         hero.style.backgroundSize = "cover";
         hero.style.backgroundPosition = "center";
       }

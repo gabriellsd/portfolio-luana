@@ -33,6 +33,8 @@ const inputFoto = document.getElementById("input-foto");
 const previewHero = document.getElementById("preview-hero");
 const btnUploadBanner = document.getElementById("btn-upload-banner");
 const inputBanner = document.getElementById("input-banner");
+const sliderOpacidade = document.getElementById("banner-opacidade");
+const labelOpacidade = document.getElementById("banner-opacidade-valor");
 
 const CLOUDINARY_CLOUD = "gabriellsd";
 const CLOUDINARY_PRESET = "portfolio-luana";
@@ -100,7 +102,13 @@ function preencherFormulario(data) {
 
   // Carrega banner salvo
   if (previewHero && data.bannerUrl) {
-    previewHero.style.backgroundImage = `linear-gradient(rgba(249,247,242,0.85), rgba(249,247,242,0.85)), url('${data.bannerUrl}')`;
+    previewHero.dataset.bannerUrl = data.bannerUrl;
+    const opacidade = data.bannerOpacidade !== undefined ? data.bannerOpacidade : 85;
+    if (sliderOpacidade) {
+      sliderOpacidade.value = opacidade;
+      if (labelOpacidade) labelOpacidade.textContent = `${opacidade}%`;
+    }
+    aplicarOpacidadeBanner(opacidade, data.bannerUrl);
   }
 
   // Sincroniza inputs com o preview visual
@@ -159,6 +167,18 @@ function validarFoto(file) {
   });
 }
 
+// Aplica opacidade do filtro no banner do hero
+function aplicarOpacidadeBanner(valor, bannerUrl) {
+  if (!previewHero) return;
+  const opacidade = valor / 100;
+  const bgUrl = bannerUrl || previewHero.dataset.bannerUrl ||
+    "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070";
+  previewHero.style.backgroundImage =
+    `linear-gradient(rgba(249,247,242,${opacidade}), rgba(249,247,242,${opacidade})), url('${bgUrl}')`;
+  previewHero.style.backgroundSize = "cover";
+  previewHero.style.backgroundPosition = "center";
+}
+
 // Upload genérico para Cloudinary — retorna a URL
 async function uploadCloudinary(file) {
   const formData = new FormData();
@@ -201,8 +221,9 @@ async function uploadBanner(file) {
   mostrarMensagem("Enviando banner...", "sucesso");
   try {
     const url = await uploadCloudinary(file);
-    // Atualiza o preview do hero imediatamente
-    previewHero.style.backgroundImage = `linear-gradient(rgba(249,247,242,0.85), rgba(249,247,242,0.85)), url('${url}')`;
+    previewHero.dataset.bannerUrl = url;
+    const opacidade = sliderOpacidade ? Number(sliderOpacidade.value) : 85;
+    aplicarOpacidadeBanner(opacidade, url);
     const ref = doc(db, "portfolios", "principal");
     await setDoc(ref, { bannerUrl: url }, { merge: true });
     mostrarMensagem("Banner atualizado com sucesso!");
@@ -271,6 +292,21 @@ onAuthStateChanged(auth, async (user) => {
           mostrarMensagem(msg, "erro");
           inputFoto.value = "";
         }
+      });
+    }
+
+    // Slider de opacidade do banner
+    if (sliderOpacidade) {
+      sliderOpacidade.addEventListener("input", () => {
+        const val = Number(sliderOpacidade.value);
+        if (labelOpacidade) labelOpacidade.textContent = `${val}%`;
+        aplicarOpacidadeBanner(val);
+      });
+
+      sliderOpacidade.addEventListener("change", async () => {
+        const val = Number(sliderOpacidade.value);
+        const ref = doc(db, "portfolios", "principal");
+        await setDoc(ref, { bannerOpacidade: val }, { merge: true });
       });
     }
 
