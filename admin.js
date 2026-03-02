@@ -123,6 +123,34 @@ function setupPreviewEditing() {
   });
 }
 
+// Valida a foto antes de enviar
+function validarFoto(file) {
+  return new Promise((resolve, reject) => {
+    // Máx. 5 MB
+    if (file.size > 5 * 1024 * 1024) {
+      reject("A foto é muito grande. Use uma imagem de até 5 MB.");
+      return;
+    }
+
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const proporcao = img.width / img.height;
+      // Ideal 4:5 (0.8) — aceita entre 0.6 e 1.1
+      if (proporcao < 0.6 || proporcao > 1.1) {
+        reject(
+          `Proporção fora do ideal. Use uma foto no formato retrato (ex.: 800×1000 px). Sua imagem: ${img.width}×${img.height} px.`
+        );
+      } else {
+        resolve();
+      }
+    };
+    img.onerror = () => reject("Não foi possível ler a imagem.");
+    img.src = url;
+  });
+}
+
 // Upload da foto para Cloudinary e salva URL no Firestore
 async function uploadFoto(file) {
   mostrarMensagem("Enviando foto...", "sucesso");
@@ -204,9 +232,16 @@ onAuthStateChanged(auth, async (user) => {
     // Configura botão de upload da foto
     if (btnUploadFoto && inputFoto) {
       btnUploadFoto.addEventListener("click", () => inputFoto.click());
-      inputFoto.addEventListener("change", (e) => {
+      inputFoto.addEventListener("change", async (e) => {
         const file = e.target.files[0];
-        if (file) uploadFoto(file);
+        if (!file) return;
+        try {
+          await validarFoto(file);
+          uploadFoto(file);
+        } catch (msg) {
+          mostrarMensagem(msg, "erro");
+          inputFoto.value = "";
+        }
       });
     }
 
