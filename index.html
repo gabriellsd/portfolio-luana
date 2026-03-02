@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-field="pageTitle">Portfólio Profissional | Psicologia Clínica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-sage: #8DAA91;
+            --soft-cream: #F9F7F2;
+            --text-dark: #4A4A4A;
+            --accent-tan: #D4B996;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--soft-cream);
+            color: var(--text-dark);
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .bg-sage { background-color: var(--primary-sage); }
+        .text-sage { color: var(--primary-sage); }
+        .border-sage { border-color: var(--primary-sage); }
+        
+        .hero-gradient {
+            background: linear-gradient(rgba(249, 247, 242, 0.8), rgba(249, 247, 242, 0.8)), 
+                        url('https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <span class="text-xl font-serif tracking-widest uppercase text-sage" data-field="navBrand">Psicologia Clínica</span>
+            <div class="hidden md:flex space-x-8 text-sm uppercase tracking-wider font-medium">
+                <a href="#sobre" class="hover:text-sage transition">Sobre</a>
+                <a href="#atendimento" class="hover:text-sage transition">Atendimento</a>
+                <a href="#publico" class="hover:text-sage transition">Público</a>
+                <a href="#contato" class="bg-sage text-white px-5 py-2 rounded-full hover:opacity-90 transition">Agendar</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pt-20 hero-gradient px-6 text-center">
+        <div class="max-w-3xl">
+            <div class="mb-6 inline-block p-4 rounded-full bg-white shadow-sm">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <h1 class="text-4xl md:text-6xl mb-6 text-gray-800" data-field="heroTitle">Cuidando da sua história com sensibilidade e ética.</h1>
+            <p class="text-lg md:text-xl italic text-gray-600 mb-10" data-field="heroSubtitle">"Acredito que cada trajetória merece ser compreendida com respeito e responsabilidade."</p>
+            <a href="#sobre" class="animate-bounce inline-block">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Sobre Mim -->
+    <section id="sobre" class="py-24 px-6 bg-white">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+            <div class="w-full md:w-1/2">
+                <div class="relative">
+                    <div class="absolute -top-4 -left-4 w-full h-full border-2 border-sage rounded-lg"></div>
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000" alt="Foto Profissional" class="relative rounded-lg shadow-xl grayscale-[20%]">
+                </div>
+            </div>
+            <div class="w-full md:w-1/2">
+                <h2 class="text-3xl md:text-4xl mb-6" data-field="sobreTitulo">Sobre mim</h2>
+                <p class="text-gray-600 leading-relaxed mb-6" data-field="sobreTexto">
+                    Sou psicóloga com atuação clínica, dedicada a oferecer um espaço de escuta sensível e acolhedora. Meu trabalho é guiado pela construção de vínculo e pelo respeito à singularidade de cada pessoa, respeitando sempre o seu tempo e processo.
+                </p>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4">
+                        <span class="bg-sage/10 p-2 rounded text-sage font-bold" data-field="abordagemLabel">Abordagem</span>
+                        <div>
+                            <p class="font-medium" data-field="abordagemTitulo">Terapia Cognitivo Comportamental (TCC)</p>
+                            <p class="text-sm text-gray-500" data-field="abordagemDescricao">Foco em padrões de pensamento e comportamento para promover mudanças saudáveis.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <span class="bg-sage/10 p-2 rounded text-sage font-bold" data-field="formacaoLabel">Formação</span>
+                        <div>
+                            <p class="font-medium" data-field="formacaoTitulo">Bacharel em Psicologia</p>
+                            <p class="text-sm text-gray-500" data-field="formacaoInstituicao">Nome da Instituição de Ensino</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Atendimento -->
+    <section id="atendimento" class="py-24 px-6 bg-stone-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl mb-4" data-field="sessaoTitulo">Como funcionam as sessões</h2>
+                <div class="h-1 w-20 bg-sage mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
+                    <h3 class="font-semibold mb-3" data-field="modalidadeTitulo">Modalidade</h3>
+                    <p class="text-gray-600 text-sm" data-field="modalidadeTexto">Atendimento Presencial e Online (via plataforma segura).</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
+                    <h3 class="font-semibold mb-3" data-field="duracaoTitulo">Duração</h3>
+                    <p class="text-gray-600 text-sm" data-field="duracaoTexto">As sessões têm duração aproximada de 50 minutos.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
+                    <h3 class="font-semibold mb-3" data-field="frequenciaTitulo">Frequência</h3>
+                    <p class="text-gray-600 text-sm" data-field="frequenciaTexto">Geralmente semanais, ajustadas conforme a necessidade clínica.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm card-hover text-center">
+                    <h3 class="font-semibold mb-3" data-field="agendamentoTitulo">Agendamento</h3>
+                    <p class="text-gray-600 text-sm" data-field="agendamentoTexto">Totalmente digital via WhatsApp para sua comodidade.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Público -->
+    <section id="publico" class="py-24 px-6 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl text-center mb-16" data-field="publicoTitulo">Públicos Atendidos</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Crianças -->
+                <div class="text-center space-y-4">
+                    <div class="text-4xl mb-4">🧸</div>
+                    <h3 class="text-2xl font-serif" data-field="criancasTitulo">Crianças</h3>
+                    <p class="text-gray-600 leading-relaxed" data-field="criancasTexto">
+                        Atendimento lúdico e sensível, focado no desenvolvimento infantil e orientação constante aos pais ou responsáveis.
+                    </p>
+                </div>
+                
+                <!-- Adolescentes -->
+                <div class="text-center space-y-4">
+                    <div class="text-4xl mb-4">🌱</div>
+                    <h3 class="text-2xl font-serif" data-field="adolescentesTitulo">Adolescentes</h3>
+                    <p class="text-gray-600 leading-relaxed" data-field="adolescentesTexto">
+                        Apoio em fases de transição, busca por identidade, manejo de ansiedade e os desafios típicos da juventude.
+                    </p>
+                </div>
+                
+                <!-- Adultos -->
+                <div class="text-center space-y-4">
+                    <div class="text-4xl mb-4">🌿</div>
+                    <h3 class="text-2xl font-serif" data-field="adultosTitulo">Adultos</h3>
+                    <p class="text-gray-600 leading-relaxed" data-field="adultosTexto">
+                        Foco em autoconhecimento, gestão da ansiedade, conflitos em relacionamentos e fortalecimento da autoestima.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contato -->
+    <section id="contato" class="py-24 px-6 bg-sage text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl mb-8 font-serif" data-field="contatoTitulo">Vamos iniciar essa jornada?</h2>
+            <p class="text-lg mb-12 opacity-90" data-field="contatoTexto">Escolha a melhor forma para conversarmos e agendarmos sua primeira consulta.</p>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-6">
+                <!-- WhatsApp -->
+                <a href="#" data-link-field="whatsapp" class="flex items-center justify-center gap-3 bg-white text-sage px-8 py-4 rounded-full font-semibold hover:bg-stone-100 transition shadow-lg">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.012 2c-5.508 0-9.987 4.479-9.987 9.988 0 1.757.455 3.409 1.25 4.853l-1.325 4.832 4.95-1.298c1.405.765 3.007 1.201 4.712 1.201 5.508 0 9.988-4.479 9.988-9.988s-4.48-9.988-9.988-9.988zm5.952 14.12c-.255.719-1.493 1.319-2.054 1.396-.51.07-1.164.085-3.085-.714-2.458-1.018-4.043-3.52-4.165-3.684-.122-.164-.993-1.322-.993-2.52s.624-1.788.847-2.032c.224-.244.488-.305.651-.305s.326.001.468.008c.149.006.35-.056.549.426.203.491.693 1.687.753 1.809.061.122.102.264.02.427-.082.163-.122.264-.244.407-.122.143-.255.32-.366.429-.122.122-.251.255-.109.497.143.242.635 1.047 1.365 1.696.942.839 1.738 1.1 1.982 1.222.244.122.387.102.529-.061.143-.163.611-.712.774-.954.163-.244.326-.204.549-.122.224.081 1.424.671 1.668.793.244.122.407.183.468.285.061.102.061.59-.194 1.309z"/></svg>
+                    <span data-field="whatsappTexto">Agendar pelo WhatsApp</span>
+                </a>
+                
+                <!-- Email -->
+                <a href="#" data-link-field="email" class="flex items-center justify-center gap-3 bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span data-field="emailTexto">Enviar E-mail</span>
+                </a>
+            </div>
+
+            <!-- Localização -->
+            <div class="mt-16 pt-16 border-t border-white/20">
+                <div class="flex flex-col items-center gap-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <p class="font-medium" data-field="localLabel">Atendimento Presencial</p>
+                    <p class="text-sm opacity-80" data-field="localEndereco">Rua Exemplo, 123 - Sala 45, Centro Comercial. Cidade - Estado.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-stone-100 text-center text-xs text-gray-500 uppercase tracking-widest">
+        <p data-field="footerTexto">&copy; 2026 | Nome da Psicóloga | CRP 00/00000</p>
+    </footer>
+
+</body>
+<script type="module" src="./content.js"></script>
+</html>

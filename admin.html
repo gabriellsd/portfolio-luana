@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel do Portfólio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100">
+  <div class="min-h-screen flex">
+    <aside class="w-64 bg-white border-r border-slate-200 p-6">
+      <h1 class="text-xl font-semibold mb-6">Painel Portfólio</h1>
+      <p class="text-xs text-slate-500">
+        Use este painel para atualizar os textos e links do site sem mexer em código.
+      </p>
+    </aside>
+
+    <main class="flex-1 p-6 overflow-y-auto">
+      <form id="portfolio-form" class="space-y-8 max-w-3xl mx-auto">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-semibold">Conteúdo</h2>
+          <button
+            type="submit"
+            class="px-4 py-2 rounded-md bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700"
+          >
+            Salvar alterações
+          </button>
+        </div>
+
+        <!-- Mensagens -->
+        <div id="mensagem" class="hidden text-sm rounded-md p-3"></div>
+
+        <!-- Seção: Hero -->
+        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4">
+          <h3 class="text-lg font-semibold">Topo (Hero)</h3>
+          <label class="block text-sm">
+            <span class="text-slate-600">Título da página (aba do navegador)</span>
+            <input
+              type="text"
+              name="pageTitle"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+          <label class="block text-sm">
+            <span class="text-slate-600">Nome na faixa superior</span>
+            <input
+              type="text"
+              name="navBrand"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+          <label class="block text-sm">
+            <span class="text-slate-600">Título principal</span>
+            <input
+              type="text"
+              name="heroTitle"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+          <label class="block text-sm">
+            <span class="text-slate-600">Frase em destaque</span>
+            <textarea
+              name="heroSubtitle"
+              rows="2"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            ></textarea>
+          </label>
+        </section>
+
+        <!-- Seção: Sobre mim -->
+        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4">
+          <h3 class="text-lg font-semibold">Sobre mim</h3>
+          <label class="block text-sm">
+            <span class="text-slate-600">Título</span>
+            <input
+              type="text"
+              name="sobreTitulo"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+          <label class="block text-sm">
+            <span class="text-slate-600">Texto principal</span>
+            <textarea
+              name="sobreTexto"
+              rows="4"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            ></textarea>
+          </label>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Rótulo da abordagem</span>
+                <input
+                  type="text"
+                  name="abordagemLabel"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Título da abordagem</span>
+                <input
+                  type="text"
+                  name="abordagemTitulo"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Descrição da abordagem</span>
+                <textarea
+                  name="abordagemDescricao"
+                  rows="3"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                ></textarea>
+              </label>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Rótulo da formação</span>
+                <input
+                  type="text"
+                  name="formacaoLabel"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Título da formação</span>
+                <input
+                  type="text"
+                  name="formacaoTitulo"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Instituição</span>
+                <input
+                  type="text"
+                  name="formacaoInstituicao"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seção: Sessões -->
+        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4">
+          <h3 class="text-lg font-semibold">Sessões</h3>
+          <label class="block text-sm">
+            <span class="text-slate-600">Título da seção</span>
+            <input
+              type="text"
+              name="sessaoTitulo"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Modalidade - título</span>
+                <input
+                  type="text"
+                  name="modalidadeTitulo"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Modalidade - texto</span>
+                <textarea
+                  name="modalidadeTexto"
+                  rows="2"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                ></textarea>
+              </label>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Duração - título</span>
+                <input
+                  type="text"
+                  name="duracaoTitulo"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Duração - texto</span>
+                <textarea
+                  name="duracaoTexto"
+                  rows="2"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                ></textarea>
+              </label>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Frequência - título</span>
+                <input
+                  type="text"
+                  name="frequenciaTitulo"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Frequência - texto</span>
+                <textarea
+                  name="frequenciaTexto"
+                  rows="2"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                ></textarea>
+              </label>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Agendamento - título</span>
+                <input
+                  type="text"
+                  name="agendamentoTitulo"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Agendamento - texto</span>
+                <textarea
+                  name="agendamentoTexto"
+                  rows="2"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                ></textarea>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seção: Públicos -->
+        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4">
+          <h3 class="text-lg font-semibold">Públicos atendidos</h3>
+          <label class="block text-sm">
+            <span class="text-slate-600">Título da seção</span>
+            <input
+              type="text"
+              name="publicoTitulo"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Crianças - título</span>
+                <input
+                  type="text"
+                  name="criancasTitulo"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Crianças - texto</span>
+                <textarea
+                  name="criancasTexto"
+                  rows="3"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                ></textarea>
+              </label>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Adolescentes - título</span>
+                <input
+                  type="text"
+                  name="adolescentesTitulo"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Adolescentes - texto</span>
+                <textarea
+                  name="adolescentesTexto"
+                  rows="3"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                ></textarea>
+              </label>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Adultos - título</span>
+                <input
+                  type="text"
+                  name="adultosTitulo"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Adultos - texto</span>
+                <textarea
+                  name="adultosTexto"
+                  rows="3"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                ></textarea>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seção: Contato -->
+        <section class="bg-white rounded-xl shadow-sm p-5 space-y-4">
+          <h3 class="text-lg font-semibold">Contato</h3>
+          <label class="block text-sm">
+            <span class="text-slate-600">Título</span>
+            <input
+              type="text"
+              name="contatoTitulo"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+          <label class="block text-sm">
+            <span class="text-slate-600">Texto</span>
+            <textarea
+              name="contatoTexto"
+              rows="3"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            ></textarea>
+          </label>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Texto botão WhatsApp</span>
+                <input
+                  type="text"
+                  name="whatsappTexto"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Link WhatsApp (com https://)</span>
+                <input
+                  type="text"
+                  name="links.whatsapp"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                  placeholder="https://wa.me/55XXXXXXXXXXX"
+                />
+              </label>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-sm">
+                <span class="text-slate-600">Texto botão E-mail</span>
+                <input
+                  type="text"
+                  name="emailTexto"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label class="block text-sm">
+                <span class="text-slate-600">Link E-mail (mailto:...)</span>
+                <input
+                  type="text"
+                  name="links.email"
+                  class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                  placeholder="mailto:seuemail@exemplo.com"
+                />
+              </label>
+            </div>
+          </div>
+
+          <label class="block text-sm">
+            <span class="text-slate-600">Rótulo do local</span>
+            <input
+              type="text"
+              name="localLabel"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+          <label class="block text-sm">
+            <span class="text-slate-600">Endereço</span>
+            <textarea
+              name="localEndereco"
+              rows="2"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            ></textarea>
+          </label>
+          <label class="block text-sm">
+            <span class="text-slate-600">Texto do rodapé</span>
+            <input
+              type="text"
+              name="footerTexto"
+              class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            />
+          </label>
+        </section>
+      </form>
+    </main>
+  </div>
+
+  <script type="module" src="./admin.js"></script>
+</body>
+</html>
+
