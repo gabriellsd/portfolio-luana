@@ -245,11 +245,23 @@
               Psicologia Clínica
             </span>
           </div>
-          <div class="flex space-x-8 text-sm uppercase tracking-wider font-medium text-gray-600">
+          <div class="flex space-x-8 text-sm uppercase tracking-wider font-medium text-gray-600 items-center">
             <span>Sobre</span>
             <span>Atendimento</span>
             <span>Público</span>
-            <span class="bg-sage text-white px-5 py-2 rounded-full">Agendar</span>
+            <!-- Botão Agendar da nav: texto e link editáveis -->
+            <div class="flex flex-col items-center gap-1 group/nav-btn">
+              <span
+                data-preview-field="navBtnTexto"
+                contenteditable="true"
+                class="bg-sage text-white px-5 py-2 rounded-full outline-none cursor-text"
+                title="Clique para editar o texto"
+              >Agendar</span>
+              <div class="flex items-center gap-1 opacity-0 group-hover/nav-btn:opacity-100 transition-opacity">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <input type="text" name="links.navBtn" form="portfolio-form" placeholder="#contato ou URL" class="border-b border-dashed border-sage bg-transparent text-[9px] text-slate-500 outline-none w-28 focus:border-sage" />
+              </div>
+            </div>
           </div>
         </nav>
 
@@ -618,24 +630,28 @@
             </p>
 
             <div class="flex flex-col md:flex-row justify-center gap-6">
-              <div class="flex items-center justify-center gap-3 bg-white text-sage px-8 py-4 rounded-full font-semibold shadow-lg">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.012 2c-5.508 0-9.987 4.479-9.987 9.988 0 1.757.455 3.409 1.25 4.853l-1.325 4.832 4.95-1.298c1.405.765 3.007 1.201 4.712 1.201 5.508 0 9.988-4.479 9.988-9.988s-4.48-9.988-9.988-9.988zm5.952 14.12c-.255.719-1.493 1.319-2.054 1.396-.51.07-1.164.085-3.085-.714-2.458-1.018-4.043-3.52-4.165-3.684-.122-.164-.993-1.322-.993-2.52s.624-1.788.847-2.032c.224-.244.488-.305.651-.305s.326.001.468.008c.149.006.35-.056.549.426.203.491.693 1.687.753 1.809.061.122.102.264.02.427-.082.163-.122.264-.244.407-.122.143-.255.32-.366.429-.122.122-.251.255-.109.497.143.242.635 1.047 1.365 1.696.942.839 1.738 1.1 1.982 1.222.244.122.387.102.529-.061.143-.163.611-.712.774-.954.163-.244.326-.204.549-.122.224.081 1.424.671 1.668.793.244.122.407.183.468.285.061.102.061.59-.194 1.309z"/></svg>
-                <span
-                  data-preview-field="whatsappTexto"
-                  contenteditable="true"
-                >
-                  Agendar pelo WhatsApp
-                </span>
+              <!-- Botão WhatsApp -->
+              <div class="flex flex-col items-center gap-2">
+                <div class="flex items-center justify-center gap-3 bg-white text-sage px-8 py-4 rounded-full font-semibold shadow-lg">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.012 2c-5.508 0-9.987 4.479-9.987 9.988 0 1.757.455 3.409 1.25 4.853l-1.325 4.832 4.95-1.298c1.405.765 3.007 1.201 4.712 1.201 5.508 0 9.988-4.479 9.988-9.988s-4.48-9.988-9.988-9.988zm5.952 14.12c-.255.719-1.493 1.319-2.054 1.396-.51.07-1.164.085-3.085-.714-2.458-1.018-4.043-3.52-4.165-3.684-.122-.164-.993-1.322-.993-2.52s.624-1.788.847-2.032c.224-.244.488-.305.651-.305s.326.001.468.008c.149.006.35-.056.549.426.203.491.693 1.687.753 1.809.061.122.102.264.02.427-.082.163-.122.264-.244.407-.122.143-.255.32-.366.429-.122.122-.251.255-.109.497.143.242.635 1.047 1.365 1.696.942.839 1.738 1.1 1.982 1.222.244.122.387.102.529-.061.143-.163.611-.712.774-.954.163-.244.326-.204.549-.122.224.081 1.424.671 1.668.793.244.122.407.183.468.285.061.102.061.59-.194 1.309z"/></svg>
+                  <span data-preview-field="whatsappTexto" contenteditable="true">Agendar pelo WhatsApp</span>
+                </div>
+                <div class="flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1.5 w-full max-w-xs">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <input type="text" name="links.whatsapp" form="portfolio-form" placeholder="https://wa.me/5511999999999" class="bg-transparent text-white text-xs placeholder-white/50 outline-none w-full" />
+                </div>
               </div>
 
-              <div class="flex items-center justify-center gap-3 bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                <span
-                  data-preview-field="emailTexto"
-                  contenteditable="true"
-                >
-                  Enviar E-mail
-                </span>
+              <!-- Botão E-mail -->
+              <div class="flex flex-col items-center gap-2">
+                <div class="flex items-center justify-center gap-3 bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  <span data-preview-field="emailTexto" contenteditable="true">Enviar E-mail</span>
+                </div>
+                <div class="flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1.5 w-full max-w-xs">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <input type="text" name="links.email" form="portfolio-form" placeholder="mailto:contato@email.com" class="bg-transparent text-white text-xs placeholder-white/50 outline-none w-full" />
+                </div>
               </div>
             </div>
 
@@ -674,11 +690,11 @@
           <div class="flex justify-center gap-4 mt-3 text-slate-400">
             <div class="flex items-center gap-1.5 text-[10px]">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              <input id="preview-instagram" type="text" name="links.instagram" placeholder="Link do Instagram" class="border-b border-dashed border-slate-300 bg-transparent text-[10px] text-slate-500 outline-none w-36 focus:border-sage" />
+              <input id="preview-instagram" type="text" name="links.instagram" form="portfolio-form" placeholder="Link do Instagram" class="border-b border-dashed border-slate-300 bg-transparent text-[10px] text-slate-500 outline-none w-36 focus:border-sage" />
             </div>
             <div class="flex items-center gap-1.5 text-[10px]">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-              <input id="preview-linkedin" type="text" name="links.linkedin" placeholder="Link do LinkedIn" class="border-b border-dashed border-slate-300 bg-transparent text-[10px] text-slate-500 outline-none w-36 focus:border-sage" />
+              <input id="preview-linkedin" type="text" name="links.linkedin" form="portfolio-form" placeholder="Link do LinkedIn" class="border-b border-dashed border-slate-300 bg-transparent text-[10px] text-slate-500 outline-none w-36 focus:border-sage" />
             </div>
           </div>
         </footer>
@@ -723,9 +739,8 @@
           <input type="text" name="contatoTitulo" />
           <textarea name="contatoTexto"></textarea>
           <input type="text" name="whatsappTexto" />
-          <input type="text" name="links.whatsapp" />
           <input type="text" name="emailTexto" />
-          <input type="text" name="links.email" />
+          <input type="text" name="navBtnTexto" />
           <input type="text" name="localLabel" />
           <textarea name="localEndereco"></textarea>
           <input type="text" name="footerTexto" />
