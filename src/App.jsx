@@ -36,19 +36,16 @@ const psico = {
 
 const specialties = [
   {
-    emoji: '🧸',
     title: 'Crianças',
     description:
       'O atendimento infantil é realizado de forma lúdica, utilizando o brincar como principal linguagem da criança. Também ofereço orientação aos pais e responsáveis, que são parceiros fundamentais nesse processo.',
   },
   {
-    emoji: '🌱',
     title: 'Adolescentes',
     description:
       'A adolescência é uma fase de grandes transformações — identidade, pertencimento, relacionamentos e pressões do dia a dia. Ofereço um espaço de escuta sem julgamentos para atravessar esse período com mais segurança.',
   },
   {
-    emoji: '🌿',
     title: 'Adultos',
     description:
       'Atendimento voltado para ansiedade, autoconhecimento, autoestima, relacionamentos e os desafios da vida adulta. Um espaço para se reconectar consigo mesmo e construir uma vida mais equilibrada.',
@@ -263,7 +260,6 @@ export default function App() {
                 key={index}
                 className="p-8 rounded-3xl bg-stone-50 hover:bg-teal-50 border border-stone-100 transition-all group"
               >
-                <div className="text-4xl mb-6">{spec.emoji}</div>
                 <h3 className="text-xl font-semibold mb-3 text-stone-800">{spec.title}</h3>
                 <p className="text-stone-600 leading-relaxed mb-6">{spec.description}</p>
                 <a
