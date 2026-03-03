@@ -1,61 +1,75 @@
 import { firebaseConfig } from "./firebase-config.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
+  getFirestore, doc, getDoc, setDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
+  getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
 const auth = getAuth(app);
 
-// ── Elementos de UI ───────────────────────────────────────────
-const loginSection   = document.getElementById("login-section");
-const appSection     = document.getElementById("app-section");
-const loginEmail     = document.getElementById("login-email");
-const loginPassword  = document.getElementById("login-password");
-const loginButton    = document.getElementById("login-button");
-const loginError     = document.getElementById("login-error");
-const logoutButton   = document.getElementById("logout-button");
-const form           = document.getElementById("portfolio-form");
-const msgEl          = document.getElementById("mensagem");
+// ── Elementos ────────────────────────────────────────────────
+const loginSection  = document.getElementById("login-section");
+const appSection    = document.getElementById("app-section");
+const loginEmail    = document.getElementById("login-email");
+const loginPassword = document.getElementById("login-password");
+const loginButton   = document.getElementById("login-button");
+const loginError    = document.getElementById("login-error");
+const logoutButton  = document.getElementById("logout-button");
+const msgEl         = document.getElementById("mensagem");
+const btnSalvar     = document.getElementById("btn-salvar");
 
-// Imagens
-const previewLogo    = document.getElementById("preview-logo");
-const btnLogo        = document.getElementById("btn-upload-logo");
-const inputLogo      = document.getElementById("input-logo");
-const previewFoto    = document.getElementById("preview-foto");
+// Painel de configurações
+const btnSettings      = document.getElementById("btn-settings");
+const settingsPanel    = document.getElementById("settings-panel");
+const settingsOverlay  = document.getElementById("settings-overlay");
+const btnCloseSettings = document.getElementById("btn-close-settings");
+
+// Imagens inline
+const previewLogo    = document.getElementById("site-logo");
+const btnLogoNav     = document.getElementById("btn-upload-logo");
+const inputLogoNav   = document.getElementById("input-logo");
+const fotoImg        = document.getElementById("foto-perfil");
 const btnFoto        = document.getElementById("btn-upload-foto");
 const inputFoto      = document.getElementById("input-foto");
-const btnBanner      = document.getElementById("btn-upload-banner");
-const inputBanner    = document.getElementById("input-banner");
+const btnBannerHero  = document.getElementById("btn-upload-banner");
+const inputBannerHero= document.getElementById("input-banner");
 
-// Sliders
-const sliderBanner   = document.getElementById("banner-opacidade");
-const labelBanner    = document.getElementById("banner-opacidade-valor");
-const sliderFoto     = document.getElementById("foto-opacidade");
-const labelFoto      = document.getElementById("foto-opacidade-valor");
+// Painel de configs
+const cfgLogoPreview  = document.getElementById("cfg-logo-preview");
+const btnCfgLogo      = document.getElementById("btn-cfg-logo");
+const inputCfgLogo    = document.getElementById("input-cfg-logo");
+const cfgPageTitle    = document.getElementById("cfg-page-title");
+const cfgNavBtnLink   = document.getElementById("cfg-nav-btn-link");
+const btnCfgBanner    = document.getElementById("btn-cfg-banner");
+const inputCfgBanner  = document.getElementById("input-cfg-banner");
+const cfgBannerOpacity= document.getElementById("cfg-banner-opacity");
+const cfgBannerVal    = document.getElementById("cfg-banner-val");
+const cfgFotoOpacity  = document.getElementById("cfg-foto-opacity");
+const cfgFotoVal      = document.getElementById("cfg-foto-val");
+const cfgWhatsapp     = document.getElementById("cfg-whatsapp");
+const cfgEmail        = document.getElementById("cfg-email");
+const cfgInstagram    = document.getElementById("cfg-instagram");
+const cfgLinkedin     = document.getElementById("cfg-linkedin");
+const btnSalvarCfg    = document.getElementById("btn-salvar-cfg");
 
 const CLOUDINARY_CLOUD  = "gabriellsd";
 const CLOUDINARY_PRESET = "portfolio-luana";
 
-// ── Auth ──────────────────────────────────────────────────────
+// ── Auth ─────────────────────────────────────────────────────
 onAuthStateChanged(auth, (user) => {
   if (user) {
     loginSection.classList.add("hidden");
     appSection.classList.remove("hidden");
+    document.body.classList.add("admin-mode");
     carregarDados();
   } else {
     loginSection.classList.remove("hidden");
     appSection.classList.add("hidden");
+    document.body.classList.remove("admin-mode");
   }
 });
 
@@ -70,23 +84,59 @@ loginButton.addEventListener("click", async () => {
     loginButton.disabled = false;
   }
 });
-
-loginPassword.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") loginButton.click();
-});
-
+loginPassword.addEventListener("keydown", (e) => { if (e.key === "Enter") loginButton.click(); });
 logoutButton.addEventListener("click", () => signOut(auth));
 
-// ── Feedback ──────────────────────────────────────────────────
-function mostrarMensagem(texto, tipo = "sucesso") {
+// ── Feedback ─────────────────────────────────────────────────
+function mostrarMsg(texto, tipo = "ok") {
   msgEl.textContent = texto;
-  msgEl.className =
-    "text-sm font-medium text-center px-4 py-3 rounded-xl " +
-    (tipo === "erro"
-      ? "bg-red-50 text-red-700 border border-red-200"
-      : "bg-emerald-50 text-emerald-700 border border-emerald-200");
-  clearTimeout(mostrarMensagem._t);
-  mostrarMensagem._t = setTimeout(() => { msgEl.className = "hidden"; }, 4000);
+  msgEl.className = tipo === "erro"
+    ? "text-xs font-medium px-3 py-1 rounded-full bg-red-900/60 text-red-200"
+    : "text-xs font-medium px-3 py-1 rounded-full bg-emerald-900/60 text-emerald-200";
+  clearTimeout(mostrarMsg._t);
+  mostrarMsg._t = setTimeout(() => { msgEl.className = "hidden"; }, 4000);
+}
+
+// ── Painel de configurações ───────────────────────────────────
+function abrirSettings() {
+  settingsPanel.classList.add("open");
+  settingsOverlay.classList.add("open");
+}
+function fecharSettings() {
+  settingsPanel.classList.remove("open");
+  settingsOverlay.classList.remove("open");
+}
+btnSettings.addEventListener("click", abrirSettings);
+btnCloseSettings.addEventListener("click", fecharSettings);
+settingsOverlay.addEventListener("click", fecharSettings);
+
+// Sliders do painel
+cfgBannerOpacity.addEventListener("input", () => {
+  cfgBannerVal.textContent = `${cfgBannerOpacity.value}%`;
+  aplicarOpacidadeBanner(cfgBannerOpacity.value);
+});
+cfgBannerOpacity.addEventListener("change", async () => {
+  await setDoc(doc(db, "portfolios", "principal"), { bannerOpacidade: Number(cfgBannerOpacity.value) }, { merge: true });
+});
+
+cfgFotoOpacity.addEventListener("input", () => {
+  cfgFotoVal.textContent = `${cfgFotoOpacity.value}%`;
+  if (fotoImg) fotoImg.style.opacity = cfgFotoOpacity.value / 100;
+});
+cfgFotoOpacity.addEventListener("change", async () => {
+  await setDoc(doc(db, "portfolios", "principal"), { fotoOpacidade: Number(cfgFotoOpacity.value) }, { merge: true });
+});
+
+function aplicarOpacidadeBanner(valor) {
+  const hero = document.getElementById("hero-section");
+  if (!hero) return;
+  const op = valor / 100;
+  const bgUrl = hero.dataset.bannerUrl ||
+    "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070";
+  hero.style.backgroundImage =
+    `linear-gradient(rgba(249,247,242,${op}), rgba(249,247,242,${op})), url('${bgUrl}')`;
+  hero.style.backgroundSize = "cover";
+  hero.style.backgroundPosition = "center";
 }
 
 // ── Cloudinary ────────────────────────────────────────────────
@@ -98,7 +148,7 @@ async function uploadParaCloudinary(file) {
     `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
     { method: "POST", body: fd }
   );
-  if (!res.ok) throw new Error("Falha no upload para o Cloudinary");
+  if (!res.ok) throw new Error("Falha no upload");
   return (await res.json()).secure_url;
 }
 
@@ -109,123 +159,198 @@ async function carregarDados() {
     if (!snap.exists()) return;
     const data = snap.data();
 
-    // Preenche todos os inputs do formulário
-    Array.from(form.elements).forEach((el) => {
-      if (!el.name) return;
-      if (el.name.startsWith("links.")) {
-        const key = el.name.split(".")[1];
-        if (data.links?.[key]) el.value = data.links[key];
-      } else if (data[el.name] !== undefined) {
-        el.value = data[el.name];
-      }
+    // Textos editáveis inline
+    document.querySelectorAll("[data-field][contenteditable]").forEach((el) => {
+      const key = el.dataset.field;
+      if (data[key] !== undefined) el.textContent = data[key];
     });
 
     // Logo
     if (data.logoUrl) {
       previewLogo.src = data.logoUrl;
       previewLogo.classList.remove("hidden");
+      cfgLogoPreview.src = data.logoUrl;
+      cfgLogoPreview.classList.remove("hidden");
+      document.getElementById("btn-upload-logo").textContent = "Trocar logo";
     }
 
-    // Foto de perfil
-    if (data.fotoUrl) {
-      previewFoto.src = data.fotoUrl;
-      previewFoto.classList.remove("hidden");
-    }
-
-    // Opacidade da foto
+    // Foto
+    if (data.fotoUrl) fotoImg.src = data.fotoUrl;
     const opFoto = data.fotoOpacidade ?? 100;
-    sliderFoto.value = opFoto;
-    labelFoto.textContent = `${opFoto}%`;
+    fotoImg.style.opacity = opFoto / 100;
+    cfgFotoOpacity.value = opFoto;
+    cfgFotoVal.textContent = `${opFoto}%`;
 
-    // Opacidade do banner
+    // Banner
+    const hero = document.getElementById("hero-section");
     const opBanner = data.bannerOpacidade ?? 85;
-    sliderBanner.value = opBanner;
-    labelBanner.textContent = `${opBanner}%`;
+    if (data.bannerUrl) hero.dataset.bannerUrl = data.bannerUrl;
+    cfgBannerOpacity.value = opBanner;
+    cfgBannerVal.textContent = `${opBanner}%`;
+    aplicarOpacidadeBanner(opBanner);
+
+    // Painel: configs
+    if (data.pageTitle) cfgPageTitle.value = data.pageTitle;
+    if (data.links?.navBtn) cfgNavBtnLink.value = data.links.navBtn;
+    if (data.links?.whatsapp) cfgWhatsapp.value = data.links.whatsapp;
+    if (data.links?.email) cfgEmail.value = data.links.email;
+    if (data.links?.instagram) cfgInstagram.value = data.links.instagram;
+    if (data.links?.linkedin) cfgLinkedin.value = data.links.linkedin;
 
   } catch (err) {
     console.error(err);
-    mostrarMensagem("Erro ao carregar dados.", "erro");
+    mostrarMsg("Erro ao carregar dados.", "erro");
   }
 }
 
-// ── Salvar formulário ─────────────────────────────────────────
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const btn = form.querySelector("[type=submit]");
-  btn.disabled = true;
-  btn.textContent = "Salvando…";
-
+// ── Salvar textos editáveis ───────────────────────────────────
+async function salvarTextos() {
+  btnSalvar.disabled = true;
+  btnSalvar.textContent = "Salvando…";
   try {
     const data = {};
-    const fd = new FormData(form);
-    for (const [name, value] of fd.entries()) {
-      if (typeof value === "string" && !value.trim()) continue;
-      if (name.startsWith("links.")) {
-        const key = name.split(".")[1];
-        if (!data.links) data.links = {};
-        data.links[key] = value.trim();
-      } else {
-        data[name] = value;
-      }
-    }
+    document.querySelectorAll("[data-field][contenteditable]").forEach((el) => {
+      const key = el.dataset.field;
+      const val = el.textContent.trim();
+      if (val) data[key] = val;
+    });
     await setDoc(doc(db, "portfolios", "principal"), data, { merge: true });
-    mostrarMensagem("Alterações salvas com sucesso!");
+    mostrarMsg("Salvo com sucesso!");
   } catch (err) {
     console.error(err);
-    mostrarMensagem("Erro ao salvar. Tente novamente.", "erro");
+    mostrarMsg("Erro ao salvar.", "erro");
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Salvar alterações`;
+    btnSalvar.disabled = false;
+    btnSalvar.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Salvar`;
+  }
+}
+btnSalvar.addEventListener("click", salvarTextos);
+
+// ── Salvar configurações (painel) ─────────────────────────────
+btnSalvarCfg.addEventListener("click", async () => {
+  btnSalvarCfg.disabled = true;
+  try {
+    const data = {
+      links: {
+        navBtn:    cfgNavBtnLink.value.trim()  || null,
+        whatsapp:  cfgWhatsapp.value.trim()    || null,
+        email:     cfgEmail.value.trim()       || null,
+        instagram: cfgInstagram.value.trim()   || null,
+        linkedin:  cfgLinkedin.value.trim()    || null,
+      },
+    };
+    if (cfgPageTitle.value.trim()) data.pageTitle = cfgPageTitle.value.trim();
+    await setDoc(doc(db, "portfolios", "principal"), data, { merge: true });
+    mostrarMsg("Configurações salvas!");
+    fecharSettings();
+  } catch (err) {
+    console.error(err);
+    mostrarMsg("Erro ao salvar configurações.", "erro");
+  } finally {
+    btnSalvarCfg.disabled = false;
   }
 });
 
-// ── Sliders ───────────────────────────────────────────────────
-sliderFoto.addEventListener("input", () => {
-  labelFoto.textContent = `${sliderFoto.value}%`;
-});
-sliderFoto.addEventListener("change", async () => {
-  await setDoc(doc(db, "portfolios", "principal"), { fotoOpacidade: Number(sliderFoto.value) }, { merge: true });
-});
-
-sliderBanner.addEventListener("input", () => {
-  labelBanner.textContent = `${sliderBanner.value}%`;
-});
-sliderBanner.addEventListener("change", async () => {
-  await setDoc(doc(db, "portfolios", "principal"), { bannerOpacidade: Number(sliderBanner.value) }, { merge: true });
-});
-
-// ── Upload de imagens ─────────────────────────────────────────
-async function handleUpload({ inputEl, previewEl, firestoreKey, label }) {
+// ── Uploads de imagem ─────────────────────────────────────────
+async function handleUpload({ inputEl, firestoreKey, onSuccess, label }) {
   const file = inputEl.files[0];
   if (!file) return;
+  mostrarMsg(`Enviando ${label}…`);
   try {
-    mostrarMensagem(`Enviando ${label}…`);
     const url = await uploadParaCloudinary(file);
-    if (previewEl) {
-      previewEl.src = url;
-      previewEl.classList.remove("hidden");
-    }
     await setDoc(doc(db, "portfolios", "principal"), { [firestoreKey]: url }, { merge: true });
-    mostrarMensagem(`${label} atualizada com sucesso!`);
-  } catch (err) {
-    console.error(err);
-    mostrarMensagem(`Erro ao enviar ${label.toLowerCase()}. Tente novamente.`, "erro");
+    onSuccess(url);
+    mostrarMsg(`${label} atualizada!`);
+  } catch {
+    mostrarMsg(`Erro ao enviar ${label.toLowerCase()}.`, "erro");
   } finally {
     inputEl.value = "";
   }
 }
 
-btnLogo.addEventListener("click", () => inputLogo.click());
-inputLogo.addEventListener("change", () =>
-  handleUpload({ inputEl: inputLogo, previewEl: previewLogo, firestoreKey: "logoUrl", label: "Logo" })
+// Logo (na nav)
+btnLogoNav.addEventListener("click", () => inputLogoNav.click());
+inputLogoNav.addEventListener("change", () =>
+  handleUpload({
+    inputEl: inputLogoNav,
+    firestoreKey: "logoUrl",
+    label: "Logo",
+    onSuccess: (url) => {
+      previewLogo.src = url;
+      previewLogo.classList.remove("hidden");
+      cfgLogoPreview.src = url;
+      cfgLogoPreview.classList.remove("hidden");
+      btnLogoNav.textContent = "Trocar logo";
+    },
+  })
 );
 
+// Logo (painel)
+btnCfgLogo.addEventListener("click", () => inputCfgLogo.click());
+inputCfgLogo.addEventListener("change", () =>
+  handleUpload({
+    inputEl: inputCfgLogo,
+    firestoreKey: "logoUrl",
+    label: "Logo",
+    onSuccess: (url) => {
+      previewLogo.src = url;
+      previewLogo.classList.remove("hidden");
+      cfgLogoPreview.src = url;
+      cfgLogoPreview.classList.remove("hidden");
+      btnLogoNav.textContent = "Trocar logo";
+    },
+  })
+);
+
+// Foto
 btnFoto.addEventListener("click", () => inputFoto.click());
 inputFoto.addEventListener("change", () =>
-  handleUpload({ inputEl: inputFoto, previewEl: previewFoto, firestoreKey: "fotoUrl", label: "Foto" })
+  handleUpload({
+    inputEl: inputFoto,
+    firestoreKey: "fotoUrl",
+    label: "Foto",
+    onSuccess: (url) => { fotoImg.src = url; },
+  })
 );
 
-btnBanner.addEventListener("click", () => inputBanner.click());
-inputBanner.addEventListener("change", () =>
-  handleUpload({ inputEl: inputBanner, previewEl: null, firestoreKey: "bannerUrl", label: "Banner" })
+// Banner (hero)
+btnBannerHero.addEventListener("click", () => inputBannerHero.click());
+inputBannerHero.addEventListener("change", () =>
+  handleUpload({
+    inputEl: inputBannerHero,
+    firestoreKey: "bannerUrl",
+    label: "Banner",
+    onSuccess: (url) => {
+      const hero = document.getElementById("hero-section");
+      hero.dataset.bannerUrl = url;
+      aplicarOpacidadeBanner(cfgBannerOpacity.value);
+    },
+  })
 );
+
+// Banner (painel)
+btnCfgBanner.addEventListener("click", () => inputCfgBanner.click());
+inputCfgBanner.addEventListener("change", () =>
+  handleUpload({
+    inputEl: inputCfgBanner,
+    firestoreKey: "bannerUrl",
+    label: "Banner",
+    onSuccess: (url) => {
+      const hero = document.getElementById("hero-section");
+      hero.dataset.bannerUrl = url;
+      aplicarOpacidadeBanner(cfgBannerOpacity.value);
+    },
+  })
+);
+
+// ── Prevenir navegação dos links no admin ─────────────────────
+document.querySelectorAll("a[href]").forEach((a) => {
+  if (!a.dataset.linkField) {
+    a.addEventListener("click", (e) => {
+      const href = a.getAttribute("href");
+      if (href && !href.startsWith("#")) e.preventDefault();
+    });
+  } else {
+    a.addEventListener("click", (e) => e.preventDefault());
+  }
+});
