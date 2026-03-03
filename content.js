@@ -207,8 +207,12 @@ async function carregarConteudo() {
       const opacidade = data.bannerOpacidade !== undefined ? data.bannerOpacidade / 100 : 0.8;
       const bgUrl = data.bannerUrl ||
         "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070";
-      hero.style.backgroundImage =
-        `linear-gradient(rgba(249,247,242,${opacidade}), rgba(249,247,242,${opacidade})), url('${bgUrl}')`;
+      const fundoHex = (data.estilos && data.estilos["cor-fundo"]) || "#F9F7F2";
+      const r = parseInt(fundoHex.slice(1, 3), 16);
+      const g = parseInt(fundoHex.slice(3, 5), 16);
+      const b = parseInt(fundoHex.slice(5, 7), 16);
+      const overlay = `rgba(${r},${g},${b},${opacidade})`;
+      hero.style.backgroundImage = `linear-gradient(${overlay}, ${overlay}), url('${bgUrl}')`;
       hero.style.backgroundSize = "cover";
       hero.style.backgroundPosition = "center";
     }
