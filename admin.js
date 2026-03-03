@@ -1,389 +1,781 @@
-import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
-                           from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { firebaseConfig }  from "./firebase-config.js";
+import { firebaseConfig } from "./firebase-config.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const app  = initializeApp(firebaseConfig);
-const db   = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const auth = getAuth(app);
 
-// ── Elementos globais ─────────────────────────────────────────────────
-const telaLogin    = document.getElementById("tela-login");
-const painel       = document.getElementById("painel");
-const formLogin    = document.getElementById("form-login");
-const erroLogin    = document.getElementById("erro-login");
-const btnLogout    = document.getElementById("btn-logout");
-const iframe       = document.getElementById("preview-site");
-const painelEdicao = document.getElementById("painel-edicao");
-const painelTitulo = document.getElementById("painel-titulo");
-const painelConteudo = document.getElementById("painel-conteudo");
-const fecharPainel = document.getElementById("fechar-painel");
-const btnSalvar    = document.getElementById("btn-salvar");
-const msgSalvar    = document.getElementById("msg-salvar");
+const form = document.getElementById("portfolio-form");
+const msgEl = document.getElementById("mensagem");
 
-// ── Login / Logout ────────────────────────────────────────────────────
-formLogin?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  erroLogin.classList.add("hidden");
-  try {
-    await signInWithEmailAndPassword(auth,
-      document.getElementById("login-email").value,
-      document.getElementById("login-senha").value
-    );
-  } catch {
-    erroLogin.textContent = "E-mail ou senha incorretos.";
-    erroLogin.classList.remove("hidden");
-  }
-});
+const loginSection = document.getElementById("login-section");
+const appSection = document.getElementById("app-section");
+const loginEmail = document.getElementById("login-email");
+const loginPassword = document.getElementById("login-password");
+const loginButton = document.getElementById("login-button");
+const logoutButton = document.getElementById("logout-button");
+const previewFields = document.querySelectorAll("[data-preview-field]");
+const previewFoto = document.getElementById("preview-foto");
+const btnUploadFoto = document.getElementById("btn-upload-foto");
+const inputFoto = document.getElementById("input-foto");
+const previewHero = document.getElementById("preview-hero");
+const btnUploadBanner      = document.getElementById("btn-upload-banner");
+const btnUploadBannerModal = document.getElementById("btn-upload-banner-modal");
+const inputBanner = document.getElementById("input-banner");
+const sliderOpacidade = document.getElementById("banner-opacidade");
+const labelOpacidade = document.getElementById("banner-opacidade-valor");
+const sliderOpacidadeFoto = document.getElementById("foto-opacidade");
+const labelOpacidadeFoto = document.getElementById("foto-opacidade-valor");
 
-btnLogout?.addEventListener("click", () => signOut(auth));
+// Estilos
+const toggleEstilos  = document.getElementById("toggle-estilos");
+const modalEstilos   = document.getElementById("modal-estilos");
+const modalOverlay   = document.getElementById("modal-overlay");
+const fecharEstilos  = document.getElementById("fechar-estilos");
+const fonteTitulos   = document.getElementById("fonte-titulos");
+const fonteTexto     = document.getElementById("fonte-texto");
 
-// ── Estado de autenticação ────────────────────────────────────────────
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    telaLogin.classList.add("hidden");
-    painel.classList.remove("hidden");
-    iniciarPainel();
-  } else {
-    telaLogin.classList.remove("hidden");
-    painel.classList.add("hidden");
-  }
-});
-
-// ── Seção atualmente aberta ───────────────────────────────────────────
-let secaoAtiva = null;
-let dadosAtuais = {};   // dados carregados do Firestore
-
-// ── Helper: injeta CSS no iframe ──────────────────────────────────────
-function iframeDoc() {
-  try { return iframe.contentDocument; } catch { return null; }
-}
-
-function setCSSVar(nome, valor) {
-  const doc = iframeDoc();
-  if (!doc) return;
-  doc.documentElement.style.setProperty(nome, valor);
-}
-
-function setIframeStyle(seletor, prop, valor, importante = false) {
-  const doc = iframeDoc();
-  if (!doc) return;
-  doc.querySelectorAll(seletor).forEach(el =>
-    el.style.setProperty(prop, valor, importante ? "important" : "")
-  );
-}
-
-function carregarFonteIframe(nomeFonte) {
-  const doc = iframeDoc();
-  if (!doc || !nomeFonte) return;
-  const id = "admin-font-" + nomeFonte.replace(/ /g, "-");
-  if (doc.getElementById(id)) return;
-  const link = doc.createElement("link");
-  link.id   = id;
-  link.rel  = "stylesheet";
-  link.href = `https://fonts.googleapis.com/css2?family=${nomeFonte.replace(/ /g, "+")}:wght@300;400;500;600&display=swap`;
-  doc.head.appendChild(link);
-}
-
-// ── Fontes disponíveis ────────────────────────────────────────────────
-const FONTES = [
-  "Inter", "Lato", "Open Sans", "Raleway", "Nunito", "Montserrat",
-  "Playfair Display", "Cormorant Garamond", "Lora", "Merriweather",
+// Todos os color pickers
+const coresCfg = [
+  { id: "cor-primaria",      hex: "cor-primaria-hex",       css: "--primary-sage",    def: "#8DAA91" },
+  { id: "cor-titulos",       hex: "cor-titulos-hex",         css: "--cor-titulos",     def: "#2D2D2D" },
+  { id: "cor-texto",         hex: "cor-texto-hex",           css: "--text-dark",       def: "#4A4A4A" },
+  { id: "cor-texto-claro",   hex: "cor-texto-claro-hex",     css: "--cor-texto-claro", def: "#6B7280" },
+  { id: "cor-fundo",         hex: "cor-fundo-hex",           css: "--soft-cream",      def: "#F9F7F2" },
+  { id: "cor-fundo-alt",     hex: "cor-fundo-alt-hex",       css: "--cor-fundo-alt",   def: "#F5F5F4" },
+  { id: "cor-fundo-contato", hex: "cor-fundo-contato-hex",   css: "--cor-contato",     def: "#8DAA91" },
+  { id: "cor-botao",         hex: "cor-botao-hex",           css: "--cor-botao",       def: "#8DAA91" },
+  { id: "cor-botao-texto",   hex: "cor-botao-texto-hex",     css: "--cor-botao-texto", def: "#FFFFFF" },
+  { id: "cor-nav",           hex: "cor-nav-hex",             css: "--cor-nav",         def: "#FFFFFF" },
+  { id: "cor-nav-texto",     hex: "cor-nav-texto-hex",       css: "--cor-nav-texto",   def: "#374151" },
+  { id: "cor-sobre-fundo",   hex: "cor-sobre-fundo-hex",     css: "--cor-sobre-fundo", def: "#FFFFFF" },
+  { id: "cor-cards",         hex: "cor-cards-hex",           css: "--cor-cards",       def: "#FFFFFF" },
+  { id: "cor-footer-fundo",  hex: "cor-footer-fundo-hex",    css: "--cor-footer-fundo",def: "#F1F0EB" },
+  { id: "cor-footer-texto",  hex: "cor-footer-texto-hex",    css: "--cor-footer-texto",def: "#6B7280" },
+  { id: "cor-borda-foto",       hex: "cor-borda-foto-hex",       css: "--cor-borda-foto",       def: "#8DAA91" },
+  // Nav específicos
+  { id: "cor-nav-btn",          hex: "cor-nav-btn-hex",          css: "--cor-nav-btn",          def: "#8DAA91" },
+  { id: "cor-nav-btn-texto",    hex: "cor-nav-btn-texto-hex",    css: "--cor-nav-btn-texto",    def: "#FFFFFF" },
+  // Cores por seção (sobreescrevem o global apenas para aquela seção)
+  { id: "cor-hero-titulo",      hex: "cor-hero-titulo-hex",      css: "--cor-hero-titulo",      def: "#2D2D2D" },
+  { id: "cor-hero-texto",       hex: "cor-hero-texto-hex",       css: "--cor-hero-texto",       def: "#4A4A4A" },
+  { id: "cor-sobre-titulo",     hex: "cor-sobre-titulo-hex",     css: "--cor-sobre-titulo",     def: "#2D2D2D" },
+  { id: "cor-sobre-texto",      hex: "cor-sobre-texto-hex",      css: "--cor-sobre-texto",      def: "#4A4A4A" },
+  { id: "cor-sessoes-titulo",   hex: "cor-sessoes-titulo-hex",   css: "--cor-sessoes-titulo",   def: "#2D2D2D" },
+  { id: "cor-sessoes-texto",    hex: "cor-sessoes-texto-hex",    css: "--cor-sessoes-texto",    def: "#4A4A4A" },
+  { id: "cor-publicos-titulo",  hex: "cor-publicos-titulo-hex",  css: "--cor-publicos-titulo",  def: "#2D2D2D" },
+  { id: "cor-publicos-texto",   hex: "cor-publicos-texto-hex",   css: "--cor-publicos-texto",   def: "#4A4A4A" },
 ];
 
-// ════════════════════════════════════════════════════════════════════════
-// DEFINIÇÕES DE SEÇÕES
-// Cada seção sabe: como renderizar controles e como aplicar ao iframe
-// ════════════════════════════════════════════════════════════════════════
+const CLOUDINARY_CLOUD = "gabriellsd";
+const CLOUDINARY_PRESET = "portfolio-luana";
 
-const SECOES = {
+// Logo
+const areaLogo       = document.getElementById("area-logo");
+const inputLogo      = document.getElementById("input-logo");
+const previewLogo    = document.getElementById("preview-logo");
+const logoPlaceholder= document.getElementById("logo-placeholder");
 
-  // ── NAVEGAÇÃO ────────────────────────────────────────────────────────
-  nav: {
-    titulo: "Navegação",
-    defaults: {
-      fundoCor:       "#ffffff",
-      linksCor:       "#374151",
-      btnCor:         "#8DAA91",
-      btnTextoCor:    "#ffffff",
-      letraTamanho:   "14",
-      fonte:          "Inter",
-      layout:         "logo-esq-links-dir",
-    },
+function atualizarMiniLogoModal(url) {
+  const container = document.getElementById("logo-preview-modal");
+  if (!container) return;
+  container.innerHTML = `<img src="${url}" class="w-full h-full object-contain p-1" />`;
+}
 
-    renderControles(dados) {
-      return `
-        <!-- Cores -->
-        <div>
-          <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-3">Cores</p>
-          <div class="space-y-3">
-            ${colorRow("fundoCor",    "Fundo da nav",       dados.fundoCor)}
-            ${colorRow("linksCor",    "Cor das letras",     dados.linksCor)}
-            ${colorRow("btnCor",      "Cor do botão",       dados.btnCor)}
-            ${colorRow("btnTextoCor", "Texto do botão",     dados.btnTextoCor)}
-          </div>
-        </div>
+function mostrarMensagem(texto, tipo = "sucesso") {
+  msgEl.textContent = texto;
+  msgEl.classList.remove("hidden");
+  msgEl.classList.remove("bg-red-100", "text-red-700", "bg-emerald-100", "text-emerald-700");
 
-        <!-- Tipografia -->
-        <div>
-          <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-3">Tipografia</p>
-          <div class="space-y-3">
-            <div>
-              <label class="text-xs text-gray-500 block mb-1.5">Fonte</label>
-              <select id="ctrl-fonte" class="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white outline-none focus:border-gray-400">
-                ${FONTES.map(f => `<option value="${f}" ${f === dados.fonte ? "selected" : ""}>${f}</option>`).join("")}
-              </select>
-            </div>
-            <div>
-              <div class="flex justify-between mb-1.5">
-                <label class="text-xs text-gray-500">Tamanho da letra</label>
-                <span id="ctrl-letraTamanho-val" class="text-xs font-mono text-gray-400">${dados.letraTamanho}px</span>
-              </div>
-              <input id="ctrl-letraTamanho" type="range" min="11" max="20" value="${dados.letraTamanho}" class="w-full" />
-              <div class="flex justify-between text-[10px] text-gray-400 mt-0.5"><span>Menor</span><span>Maior</span></div>
-            </div>
-          </div>
-        </div>
+  if (tipo === "erro") {
+    msgEl.classList.add("bg-red-100", "text-red-700");
+  } else {
+    msgEl.classList.add("bg-emerald-100", "text-emerald-700");
+  }
 
-        <!-- Posicionamento -->
-        <div>
-          <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-3">Posicionamento</p>
-          <div class="grid grid-cols-1 gap-2">
-            ${layoutBtn("logo-esq-links-dir",  dados.layout, "Logo esquerda · Links direita",  "◼ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; — — ● ")}
-            ${layoutBtn("logo-esq-links-centro",dados.layout, "Logo esquerda · Links centro",   "◼ &nbsp;&nbsp; — — &nbsp;&nbsp; ● ")}
-            ${layoutBtn("logo-centro",          dados.layout, "Logo centralizada",               "&nbsp;&nbsp;&nbsp; ◼ &nbsp;&nbsp;&nbsp; — — — ● ")}
-          </div>
-        </div>
-      `;
-    },
+  setTimeout(() => {
+    msgEl.classList.add("hidden");
+  }, 4000);
+}
 
-    aplicar(dados) {
-      const doc = iframeDoc();
-      if (!doc) return;
+// Converte os campos do formulário em um objeto para o Firestore
+function formToData(formEl) {
+  const data = {};
 
-      // Fundo
-      setIframeStyle("#main-nav", "background-color", dados.fundoCor, true);
+  const formData = new FormData(formEl);
+  for (const [name, value] of formData.entries()) {
+    // Se o campo estiver em branco, não sobrescreve o que já existe no Firestore
+    if (typeof value === "string" && value.trim() === "") {
+      continue;
+    }
 
-      // Cor das letras
-      setIframeStyle("#main-nav a, #main-nav span[data-field]", "color", dados.linksCor, true);
+    if (name.startsWith("links.")) {
+      const key = name.split(".")[1];
+      if (!data.links) data.links = {};
+      data.links[key] = value;
+    } else {
+      data[name] = value;
+    }
+  }
 
-      // Botão Agendar
-      setIframeStyle("#nav-btn", "background-color", dados.btnCor, true);
-      setIframeStyle("#nav-btn", "color", dados.btnTextoCor, true);
+  return data;
+}
 
-      // Tamanho e fonte
-      carregarFonteIframe(dados.fonte);
-      setIframeStyle("#main-nav", "font-size", dados.letraTamanho + "px", true);
-      setIframeStyle("#main-nav", "font-family", `'${dados.fonte}', sans-serif`, true);
+// Preenche o formulário com dados vindos do Firestore
+function preencherFormulario(data) {
+  if (!data) return;
 
-      // Layout / posicionamento
-      const inner = doc.querySelector("#main-nav > div");
-      if (inner) {
-        inner.style.display = "flex";
-        inner.style.alignItems = "center";
-        if (dados.layout === "logo-esq-links-dir") {
-          inner.style.justifyContent = "space-between";
-          inner.style.flexDirection  = "row";
-        } else if (dados.layout === "logo-esq-links-centro") {
-          inner.style.justifyContent = "space-between";
-          const linksEl = doc.querySelector("#main-nav nav");
-          if (linksEl) {
-            linksEl.style.position = "absolute";
-            linksEl.style.left     = "50%";
-            linksEl.style.transform = "translateX(-50%)";
-          }
-        } else if (dados.layout === "logo-centro") {
-          inner.style.justifyContent = "center";
-          inner.style.position = "relative";
-          const logo = doc.querySelector("#main-nav > div > div:first-child");
-          if (logo) { logo.style.position = "absolute"; logo.style.left = "50%"; logo.style.transform = "translateX(-50%)"; }
-        }
+  Array.from(form.elements).forEach((el) => {
+    if (!el.name) return;
+
+    if (el.name.startsWith("links.")) {
+      const key = el.name.split(".")[1];
+      if (data.links && data.links[key]) {
+        el.value = data.links[key];
       }
-    },
-  },
-
-};
-
-// ── Helpers de UI ─────────────────────────────────────────────────────
-function colorRow(id, label, valor) {
-  return `
-    <div class="flex items-center justify-between">
-      <label class="text-sm text-gray-600">${label}</label>
-      <div class="flex items-center gap-2">
-        <span id="ctrl-${id}-hex" class="text-xs font-mono text-gray-400">${valor}</span>
-        <input id="ctrl-${id}" type="color" value="${valor}" />
-      </div>
-    </div>`;
-}
-
-function layoutBtn(valor, atual, titulo, preview) {
-  const ativo = valor === atual;
-  return `
-    <button data-layout="${valor}"
-      class="layout-btn text-left border rounded-xl px-3 py-2.5 transition text-xs ${ativo ? "border-gray-800 bg-gray-50 font-semibold text-gray-800" : "border-gray-200 text-gray-500 hover:border-gray-400"}">
-      <span class="block font-mono text-[10px] mb-0.5 opacity-60">${preview}</span>
-      ${titulo}
-    </button>`;
-}
-
-// ── Abrir seção no painel ─────────────────────────────────────────────
-function abrirSecao(id) {
-  const secao = SECOES[id];
-  if (!secao) return;
-
-  // Botões da barra
-  document.querySelectorAll(".btn-secao").forEach(b => b.classList.remove("ativo"));
-  document.querySelector(`.btn-secao[data-secao="${id}"]`)?.classList.add("ativo");
-
-  secaoAtiva = id;
-  painelTitulo.textContent = secao.titulo;
-
-  // Dados salvos ou defaults
-  const dados = { ...secao.defaults, ...(dadosAtuais?.estilos?.[id] || {}) };
-  painelConteudo.innerHTML = secao.renderControles(dados);
-
-  // Registrar listeners dos controles
-  registrarListeners(id, dados);
-
-  // Abrir painel
-  painelEdicao.classList.add("aberto");
-}
-
-function fecharSecao() {
-  painelEdicao.classList.remove("aberto");
-  document.querySelectorAll(".btn-secao").forEach(b => b.classList.remove("ativo"));
-  secaoAtiva = null;
-}
-
-// ── Registrar listeners dinâmicos dos controles ───────────────────────
-function registrarListeners(id, dados) {
-  const secao = SECOES[id];
-
-  // Color pickers
-  painelConteudo.querySelectorAll("input[type=color]").forEach(input => {
-    const campo = input.id.replace("ctrl-", "");
-    const hex   = document.getElementById(`ctrl-${campo}-hex`);
-    input.addEventListener("input", () => {
-      dados[campo] = input.value;
-      if (hex) hex.textContent = input.value;
-      secao.aplicar(dados);
-    });
+    } else if (Object.prototype.hasOwnProperty.call(data, el.name)) {
+      el.value = data[el.name];
+    }
   });
 
-  // Range sliders
-  const slider = document.getElementById("ctrl-letraTamanho");
-  const sliderVal = document.getElementById("ctrl-letraTamanho-val");
-  if (slider) {
-    slider.addEventListener("input", () => {
-      dados.letraTamanho = slider.value;
-      if (sliderVal) sliderVal.textContent = slider.value + "px";
-      secao.aplicar(dados);
-    });
+  // Carrega logo salva
+  if (data.logoUrl && previewLogo) {
+    previewLogo.src = data.logoUrl;
+    previewLogo.classList.remove("hidden");
+    if (logoPlaceholder) logoPlaceholder.classList.add("hidden");
+    atualizarMiniLogoModal(data.logoUrl);
   }
 
-  // Select de fonte
-  const selectFonte = document.getElementById("ctrl-fonte");
-  if (selectFonte) {
-    selectFonte.addEventListener("change", () => {
-      dados.fonte = selectFonte.value;
-      secao.aplicar(dados);
-    });
+  // Carrega foto de perfil salva
+  if (previewFoto && data.fotoUrl) {
+    previewFoto.src = data.fotoUrl;
   }
 
-  // Botões de layout
-  painelConteudo.querySelectorAll(".layout-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      dados.layout = btn.dataset.layout;
-      // Atualiza visual dos botões
-      painelConteudo.querySelectorAll(".layout-btn").forEach(b => {
-        b.classList.remove("border-gray-800", "bg-gray-50", "font-semibold", "text-gray-800");
-        b.classList.add("border-gray-200", "text-gray-500");
-      });
-      btn.classList.remove("border-gray-200", "text-gray-500");
-      btn.classList.add("border-gray-800", "bg-gray-50", "font-semibold", "text-gray-800");
-      secao.aplicar(dados);
-    });
-  });
+  // Carrega opacidade salva da foto
+  const opacidadeFoto = data.fotoOpacidade !== undefined ? data.fotoOpacidade : 100;
+  if (sliderOpacidadeFoto) {
+    sliderOpacidadeFoto.value = opacidadeFoto;
+    if (labelOpacidadeFoto) labelOpacidadeFoto.textContent = `${opacidadeFoto}%`;
+  }
+  aplicarOpacidadeFoto(opacidadeFoto);
 
-  // Guarda referência dos dados editados para o salvar
-  painelConteudo._dadosAtivos = dados;
+  // Carrega banner salvo
+  if (previewHero && data.bannerUrl) {
+    previewHero.dataset.bannerUrl = data.bannerUrl;
+    const opacidade = data.bannerOpacidade !== undefined ? data.bannerOpacidade : 85;
+    if (sliderOpacidade) {
+      sliderOpacidade.value = opacidade;
+      if (labelOpacidade) labelOpacidade.textContent = `${opacidade}%`;
+    }
+    aplicarOpacidadeBanner(opacidade, data.bannerUrl);
+  }
+
+  // Sincroniza inputs com o preview visual
+  syncInputsToPreview();
 }
 
-// ── Salvar no Firestore ───────────────────────────────────────────────
-async function salvarSecao() {
-  if (!secaoAtiva) return;
-  const dados = painelConteudo._dadosAtivos;
-  if (!dados) return;
+// Copia valores dos inputs para o preview visual
+function syncInputsToPreview() {
+  previewFields.forEach((el) => {
+    const key = el.dataset.previewField;
+    const input = form.elements.namedItem(key);
+    if (input && typeof input.value === "string" && input.value.trim() !== "") {
+      el.textContent = input.value;
+    }
+  });
+}
 
-  btnSalvar.disabled = true;
-  btnSalvar.textContent = "Salvando...";
-  msgSalvar.classList.add("hidden");
+// Configura edição no preview: ao digitar no bloco visual, atualiza o input oculto
+function setupPreviewEditing() {
+  previewFields.forEach((el) => {
+    el.addEventListener("input", () => {
+      const key = el.dataset.previewField;
+      const input = form.elements.namedItem(key);
+      if (input) {
+        input.value = el.textContent.trim();
+      }
+    });
+  });
+}
+
+// Valida a foto antes de enviar
+function validarFoto(file) {
+  return new Promise((resolve, reject) => {
+    // Máx. 5 MB
+    if (file.size > 5 * 1024 * 1024) {
+      reject("A foto é muito grande. Use uma imagem de até 5 MB.");
+      return;
+    }
+
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const proporcao = img.width / img.height;
+      // Ideal 4:5 (0.8) — aceita entre 0.6 e 1.1
+      if (proporcao < 0.6 || proporcao > 1.1) {
+        reject(
+          `Proporção fora do ideal. Use uma foto no formato retrato (ex.: 800×1000 px). Sua imagem: ${img.width}×${img.height} px.`
+        );
+      } else {
+        resolve();
+      }
+    };
+    img.onerror = () => reject("Não foi possível ler a imagem.");
+    img.src = url;
+  });
+}
+
+// Aplica opacidade na foto de perfil
+function aplicarOpacidadeFoto(valor) {
+  if (!previewFoto) return;
+  previewFoto.style.opacity = valor / 100;
+}
+
+// Aplica opacidade do filtro no banner do hero
+function aplicarOpacidadeBanner(valor, bannerUrl) {
+  if (!previewHero) return;
+  const opacidade = valor / 100;
+  const bgUrl = bannerUrl || previewHero.dataset.bannerUrl ||
+    "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070";
+  previewHero.style.backgroundImage =
+    `linear-gradient(rgba(249,247,242,${opacidade}), rgba(249,247,242,${opacidade})), url('${bgUrl}')`;
+  previewHero.style.backgroundSize = "cover";
+  previewHero.style.backgroundPosition = "center";
+}
+
+// Upload genérico para Cloudinary — retorna a URL
+async function uploadCloudinary(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_PRESET);
+  formData.append("folder", "portfolio");
+
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+    { method: "POST", body: formData }
+  );
+  const json = await res.json();
+  if (!json.secure_url) throw new Error("URL não retornada");
+  return json.secure_url;
+}
+
+// Upload da foto para Cloudinary e salva URL no Firestore
+async function uploadFoto(file) {
+  mostrarMensagem("Enviando foto...", "sucesso");
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_PRESET);
+  formData.append("folder", "portfolio");
 
   try {
+    const url = await uploadCloudinary(file);
+    previewFoto.src = url;
     const ref = doc(db, "portfolios", "principal");
-    await setDoc(ref, { estilos: { [secaoAtiva]: dados } }, { merge: true });
-    dadosAtuais.estilos = { ...dadosAtuais.estilos, [secaoAtiva]: dados };
-    mostrarMsg("Salvo com sucesso!", "ok");
+    await setDoc(ref, { fotoUrl: url }, { merge: true });
+    mostrarMensagem("Foto atualizada com sucesso!");
   } catch (err) {
     console.error(err);
-    mostrarMsg("Erro ao salvar.", "erro");
-  } finally {
-    btnSalvar.disabled = false;
-    btnSalvar.textContent = "Salvar alterações";
+    mostrarMensagem("Erro ao enviar foto. Tente novamente.", "erro");
   }
 }
 
-function mostrarMsg(texto, tipo) {
-  msgSalvar.textContent = texto;
-  msgSalvar.className = "text-xs text-center mt-2 " + (tipo === "ok" ? "text-green-600" : "text-red-500");
-  msgSalvar.classList.remove("hidden");
-  setTimeout(() => msgSalvar.classList.add("hidden"), 3000);
-}
-
-// ── Carregar dados do Firestore ───────────────────────────────────────
-async function carregarDados() {
+// Upload do banner Hero
+async function uploadBanner(file) {
+  mostrarMensagem("Enviando banner...", "sucesso");
   try {
-    const snap = await getDoc(doc(db, "portfolios", "principal"));
-    dadosAtuais = snap.exists() ? snap.data() : {};
+    const url = await uploadCloudinary(file);
+    previewHero.dataset.bannerUrl = url;
+    const opacidade = sliderOpacidade ? Number(sliderOpacidade.value) : 85;
+    aplicarOpacidadeBanner(opacidade, url);
+    const ref = doc(db, "portfolios", "principal");
+    await setDoc(ref, { bannerUrl: url }, { merge: true });
+    mostrarMensagem("Banner atualizado com sucesso!");
   } catch (err) {
-    console.error("Erro ao carregar dados:", err);
+    console.error(err);
+    mostrarMensagem("Erro ao enviar banner. Tente novamente.", "erro");
   }
 }
 
-// ── Iniciar painel ────────────────────────────────────────────────────
-async function iniciarPainel() {
-  await carregarDados();
+// Upload da logo
+async function uploadLogo(file) {
+  mostrarMensagem("Enviando logo...");
+  try {
+    const url = await uploadCloudinary(file);
+    if (previewLogo) { previewLogo.src = url; previewLogo.classList.remove("hidden"); }
+    if (logoPlaceholder) logoPlaceholder.classList.add("hidden");
+    atualizarMiniLogoModal(url);
+    const ref = doc(db, "portfolios", "principal");
+    await setDoc(ref, { logoUrl: url }, { merge: true });
+    mostrarMensagem("Logo atualizada com sucesso!");
+  } catch (err) {
+    console.error(err);
+    mostrarMensagem("Erro ao enviar logo.", "erro");
+  }
+}
 
-  // Listeners dos botões de seção
-  document.querySelectorAll(".btn-secao").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.dataset.secao;
-      if (secaoAtiva === id) {
-        fecharSecao();
-      } else {
-        // Aguarda iframe carregar antes de aplicar
-        if (iframe.contentDocument?.readyState === "complete") {
-          abrirSecao(id);
-        } else {
-          iframe.addEventListener("load", () => abrirSecao(id), { once: true });
-        }
-      }
-    });
+// Carrega uma fonte do Google Fonts dinamicamente
+function carregarFonte(nomeFonte) {
+  if (!nomeFonte) return;
+  const id = `gfont-${nomeFonte.replace(/\s+/g, "-")}`;
+  if (document.getElementById(id)) return; // já carregada
+  const link = document.createElement("link");
+  link.id   = id;
+  link.rel  = "stylesheet";
+  link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(nomeFonte)}:wght@400;500;600;700&display=swap`;
+  document.head.appendChild(link);
+}
+
+// Aplica estilos (fontes e cores) no preview do admin
+function aplicarEstilos(estilos = {}) {
+  const root = document.documentElement;
+
+  // Fontes — carrega do Google Fonts se necessário
+  const prevTitulo = document.getElementById("prev-titulo");
+  const prevTexto  = document.getElementById("prev-texto");
+  const prevBotao  = document.getElementById("prev-botao");
+
+  if (estilos.fonteTitulos) {
+    carregarFonte(estilos.fonteTitulos);
+    const ff = `'${estilos.fonteTitulos}', serif`;
+    document.querySelectorAll("h1,h2,h3,.font-serif").forEach(el => el.style.fontFamily = ff);
+    if (prevTitulo) prevTitulo.style.fontFamily = ff;
+  }
+  if (estilos.fonteTexto) {
+    carregarFonte(estilos.fonteTexto);
+    const ff = `'${estilos.fonteTexto}', sans-serif`;
+    document.querySelectorAll("p,span:not(.text-sage)").forEach(el => el.style.fontFamily = ff);
+    if (prevTexto) prevTexto.style.fontFamily = ff;
+  }
+  if (estilos.fonteNav) {
+    const navEl = document.getElementById("preview-nav");
+    if (navEl) navEl.style.fontFamily = estilos.fonteNav;
+    root.style.setProperty("--fonte-nav", estilos.fonteNav);
+  }
+
+  // Aplica cada cor via CSS var
+  coresCfg.forEach(({ id, css, def }) => {
+    const val = estilos[id] || def;
+    root.style.setProperty(css, val);
   });
 
-  // Fechar painel
-  fecharPainel?.addEventListener("click", fecharSecao);
+  // As cores do preview atualizam via CSS vars automaticamente.
+  // Só precisamos aplicar as fontes via JS pois não há CSS var para font-family.
+  if (prevTitulo && estilos.fonteTitulos) prevTitulo.style.fontFamily = `'${estilos.fonteTitulos}', serif`;
+  if (prevTexto  && estilos.fonteTexto)   prevTexto.style.fontFamily  = `'${estilos.fonteTexto}', sans-serif`;
 
-  // Salvar
-  btnSalvar?.addEventListener("click", salvarSecao);
+  // Seção contato
+  const previewContato = document.getElementById("preview-contato");
+  if (previewContato && estilos["cor-fundo-contato"]) {
+    previewContato.style.backgroundColor = estilos["cor-fundo-contato"];
+  }
 
-  // Quando iframe carrega, aplica estilos salvos automaticamente
-  iframe.addEventListener("load", () => {
-    const estilos = dadosAtuais?.estilos || {};
-    Object.entries(SECOES).forEach(([id, secao]) => {
-      const dados = { ...secao.defaults, ...(estilos[id] || {}) };
-      secao.aplicar(dados);
+  // Fundo alternado (sessões)
+  const previewSessoes = document.getElementById("preview-sessoes");
+  if (previewSessoes && estilos["cor-fundo-alt"]) {
+    previewSessoes.style.backgroundColor = estilos["cor-fundo-alt"];
+  }
+
+  // Nav
+  const previewNav = document.querySelector("#app-section nav");
+  if (previewNav) {
+    if (estilos["cor-nav"])       previewNav.style.backgroundColor = estilos["cor-nav"];
+    if (estilos["cor-nav-texto"]) {
+      previewNav.querySelectorAll("a, span").forEach(el => el.style.color = estilos["cor-nav-texto"]);
+    }
+  }
+
+  // Seção sobre
+  const previewSobre = document.getElementById("preview-sobre");
+  if (previewSobre && estilos["cor-sobre-fundo"]) {
+    previewSobre.style.backgroundColor = estilos["cor-sobre-fundo"];
+  }
+
+  // Cards
+  const radius = estilos["cards-radius"] ? `${estilos["cards-radius"]}px` : null;
+  const sombra = estilos["cards-sombra"] || null;
+  document.querySelectorAll(".sessao-card-preview").forEach(card => {
+    if (estilos["cor-cards"])  card.style.backgroundColor = estilos["cor-cards"];
+    if (radius)                card.style.borderRadius    = radius;
+    if (sombra)                card.style.boxShadow       = sombra;
+  });
+  root.style.setProperty("--cards-radius", radius || "1rem");
+  root.style.setProperty("--cards-sombra", sombra || "0 1px 3px rgba(0,0,0,0.06)");
+
+  // Footer
+  const previewFooter = document.getElementById("preview-footer");
+  if (previewFooter) {
+    if (estilos["cor-footer-fundo"]) previewFooter.style.backgroundColor = estilos["cor-footer-fundo"];
+    if (estilos["cor-footer-texto"]) previewFooter.querySelectorAll("p").forEach(p => p.style.color = estilos["cor-footer-texto"]);
+  }
+
+  // Slider de radius: atualiza label
+  const radiusLabel = document.getElementById("cards-radius-val");
+  if (radiusLabel && estilos["cards-radius"] !== undefined) {
+    radiusLabel.textContent = `${estilos["cards-radius"]}px`;
+  }
+
+  // Espaçamento das seções
+  if (estilos["espacamento-secoes"]) {
+    root.style.setProperty("--py-secoes", estilos["espacamento-secoes"]);
+  }
+  // Tamanho dos títulos
+  if (estilos["tamanho-titulos"]) {
+    root.style.setProperty("--titulo-scale", estilos["tamanho-titulos"]);
+  }
+  // Alinhamento no hero
+  const heroEl = document.getElementById("preview-hero");
+  if (heroEl && estilos["hero-alinhamento"]) {
+    heroEl.style.textAlign = estilos["hero-alinhamento"];
+  }
+  // Animação dos cards
+  if (estilos["cards-animacao"] === false || estilos["cards-animacao"] === "false") {
+    document.body.classList.add("sem-animacao-cards");
+  } else {
+    document.body.classList.remove("sem-animacao-cards");
+  }
+  // Borda decorativa da foto
+  if (estilos["cor-borda-foto"]) {
+    root.style.setProperty("--cor-borda-foto", estilos["cor-borda-foto"]);
+    document.querySelectorAll(".borda-foto").forEach(el => {
+      el.style.borderColor = estilos["cor-borda-foto"];
     });
+  }
+}
+
+// Preenche os controles de estilo com os valores salvos
+function preencherEstilos(estilos) {
+  if (!estilos) return;
+  if (estilos.fonteTitulos && fonteTitulos) fonteTitulos.value = estilos.fonteTitulos;
+  if (estilos.fonteTexto   && fonteTexto)   fonteTexto.value   = estilos.fonteTexto;
+  const fonteNavEl = document.getElementById("fonte-nav");
+  if (estilos.fonteNav && fonteNavEl) fonteNavEl.value = estilos.fonteNav;
+
+  coresCfg.forEach(({ id, hex }) => {
+    const input = document.getElementById(id);
+    const label = document.getElementById(hex);
+    if (input && estilos[id]) {
+      input.value = estilos[id];
+      if (label) label.textContent = estilos[id];
+    }
+  });
+
+  // Campos não-cor
+  const radiusEl = document.getElementById("cards-radius");
+  const radiusLabel = document.getElementById("cards-radius-val");
+  if (radiusEl && estilos["cards-radius"] !== undefined) {
+    radiusEl.value = estilos["cards-radius"];
+    if (radiusLabel) radiusLabel.textContent = `${estilos["cards-radius"]}px`;
+  }
+  const sombraEl = document.getElementById("cards-sombra");
+  if (sombraEl && estilos["cards-sombra"]) sombraEl.value = estilos["cards-sombra"];
+
+  const espacamentoEl = document.getElementById("espacamento-secoes");
+  if (espacamentoEl && estilos["espacamento-secoes"]) espacamentoEl.value = estilos["espacamento-secoes"];
+  const tamanhoEl = document.getElementById("tamanho-titulos");
+  if (tamanhoEl && estilos["tamanho-titulos"]) tamanhoEl.value = estilos["tamanho-titulos"];
+  const alinhamentoEl = document.getElementById("hero-alinhamento");
+  if (alinhamentoEl && estilos["hero-alinhamento"]) alinhamentoEl.value = estilos["hero-alinhamento"];
+  const animacaoEl = document.getElementById("cards-animacao");
+  if (animacaoEl && estilos["cards-animacao"] !== undefined) animacaoEl.checked = estilos["cards-animacao"] !== false && estilos["cards-animacao"] !== "false";
+
+  aplicarEstilos(estilos);
+}
+
+// Lê todos os valores do modal e retorna objeto de estilos
+function lerEstilosDoModal() {
+  const fonteNavEl = document.getElementById("fonte-nav");
+  const estilos = {
+    fonteTitulos: fonteTitulos?.value || "Playfair Display",
+    fonteTexto:   fonteTexto?.value   || "Inter",
+    fonteNav:     fonteNavEl?.value   || "",
+  };
+  coresCfg.forEach(({ id, def }) => {
+    const input = document.getElementById(id);
+    estilos[id] = input ? input.value : def;
+  });
+  const radiusEl       = document.getElementById("cards-radius");
+  const sombraEl       = document.getElementById("cards-sombra");
+  const espacamentoEl  = document.getElementById("espacamento-secoes");
+  const tamanhoEl      = document.getElementById("tamanho-titulos");
+  const alinhamentoEl  = document.getElementById("hero-alinhamento");
+  const animacaoEl     = document.getElementById("cards-animacao");
+  if (radiusEl)      estilos["cards-radius"]       = Number(radiusEl.value);
+  if (sombraEl)      estilos["cards-sombra"]        = sombraEl.value;
+  if (espacamentoEl) estilos["espacamento-secoes"]  = espacamentoEl.value;
+  if (tamanhoEl)     estilos["tamanho-titulos"]     = tamanhoEl.value;
+  if (alinhamentoEl) estilos["hero-alinhamento"]    = alinhamentoEl.value;
+  if (animacaoEl)    estilos["cards-animacao"]      = animacaoEl.checked;
+  return estilos;
+}
+
+async function carregarDadosIniciais() {
+  try {
+    const ref = doc(db, "portfolios", "principal");
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      const data = snap.data();
+      preencherFormulario(data);
+      if (data.estilos) preencherEstilos(data.estilos);
+    }
+  } catch (err) {
+    console.error(err);
+    mostrarMensagem("Erro ao carregar dados. Veja o console.", "erro");
+  }
+}
+
+// Login com e-mail/senha
+loginButton.addEventListener("click", async () => {
+  try {
+    await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
+  } catch (err) {
+    console.error(err);
+    mostrarMensagem("Erro no login. Confira e-mail e senha.", "erro");
+  }
+});
+
+// Logout
+if (logoutButton) {
+  logoutButton.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error(err);
+      mostrarMensagem("Erro ao sair.", "erro");
+    }
   });
 }
+
+// Observa estado de autenticação
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    // logado: mostra app, esconde login
+    loginSection.classList.add("hidden");
+    appSection.classList.remove("hidden");
+    if (logoutButton) logoutButton.classList.remove("hidden");
+
+    // Garante que preview está configurado
+    setupPreviewEditing();
+
+    // Configura botão de upload da foto
+    if (btnUploadFoto && inputFoto) {
+      btnUploadFoto.addEventListener("click", () => inputFoto.click());
+      inputFoto.addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        try {
+          await validarFoto(file);
+          uploadFoto(file);
+        } catch (msg) {
+          mostrarMensagem(msg, "erro");
+          inputFoto.value = "";
+        }
+      });
+    }
+
+    // Slider de opacidade da foto de perfil
+    if (sliderOpacidadeFoto) {
+      sliderOpacidadeFoto.addEventListener("input", () => {
+        const val = Number(sliderOpacidadeFoto.value);
+        if (labelOpacidadeFoto) labelOpacidadeFoto.textContent = `${val}%`;
+        aplicarOpacidadeFoto(val);
+      });
+
+      sliderOpacidadeFoto.addEventListener("change", async () => {
+        const val = Number(sliderOpacidadeFoto.value);
+        const ref = doc(db, "portfolios", "principal");
+        await setDoc(ref, { fotoOpacidade: val }, { merge: true });
+      });
+    }
+
+    // Mapeamento: qual seção mostra quais cards do modal
+    const TODOS_CARDS = [
+      "modal-hero", "modal-nav", "modal-contato",
+      "modal-sobre", "modal-cards", "modal-publicos",
+      "modal-footer", "modal-preview",
+    ];
+    const SECAO_MAP = {
+      "modal-nav":      { titulo: "Barra de navegação",     cards: ["modal-nav"] },
+      "modal-hero":     { titulo: "Hero & Configurações",    cards: ["modal-hero"] },
+      "modal-sobre":    { titulo: "Sobre mim",               cards: ["modal-sobre"] },
+      "modal-cards":    { titulo: "Sessões de atendimento",  cards: ["modal-cards"] },
+      "modal-publicos": { titulo: "Seção Públicos",          cards: ["modal-publicos"] },
+      "modal-contato":  { titulo: "Seção Contato",           cards: ["modal-contato"] },
+      "modal-footer":   { titulo: "Rodapé",                  cards: ["modal-footer"] },
+    };
+    const modalTitulo = document.getElementById("modal-titulo");
+
+    function abrirModalEstilos(alvoId) {
+      if (!modalEstilos) return;
+      modalEstilos.classList.remove("hidden");
+      const config = SECAO_MAP[alvoId];
+      // Se não há config, mostra tudo (acionado pelo botão da sidebar)
+      if (modalTitulo) modalTitulo.textContent = config ? config.titulo : "Editar estilo";
+
+      TODOS_CARDS.forEach(id => {
+        const card = document.getElementById(id);
+        if (!card) return;
+        if (!config || id === "modal-preview") {
+          card.classList.remove("hidden");
+        } else {
+          card.classList.toggle("hidden", !config.cards.includes(id));
+        }
+      });
+
+      // Scroll ao topo do modal
+      const scroll = modalEstilos.querySelector(".overflow-y-auto");
+      if (scroll) scroll.scrollTop = 0;
+    }
+
+    // Abre / fecha modal de estilos
+    if (toggleEstilos) {
+      toggleEstilos.classList.remove("hidden");
+      toggleEstilos.addEventListener("click", () => abrirModalEstilos(null));
+    }
+    if (fecharEstilos)  fecharEstilos.addEventListener("click",  () => modalEstilos.classList.add("hidden"));
+    if (modalOverlay)   modalOverlay.addEventListener("click",   () => modalEstilos.classList.add("hidden"));
+
+    // Botões "Editar" no hover das seções — abre modal contextual
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-abrir-estilo]");
+      if (!btn) return;
+      abrirModalEstilos(btn.dataset.abrirEstilo);
+    });
+
+    // Preview em tempo real: color pickers
+    coresCfg.forEach(({ id, hex }) => {
+      const input = document.getElementById(id);
+      const label = document.getElementById(hex);
+      if (!input) return;
+      input.addEventListener("input", () => {
+        if (label) label.textContent = input.value;
+        aplicarEstilos(lerEstilosDoModal());
+      });
+    });
+
+    // Preview em tempo real: fontes
+    [fonteTitulos, fonteTexto].forEach(sel => {
+      if (!sel) return;
+      sel.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
+    });
+
+    // Logo upload
+    if (areaLogo && inputLogo) {
+      areaLogo.addEventListener("click", () => inputLogo.click());
+      inputLogo.addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 3 * 1024 * 1024) {
+          mostrarMensagem("Logo muito grande. Máx. 3 MB.", "erro");
+          return;
+        }
+        await uploadLogo(file);
+        inputLogo.value = "";
+      });
+    }
+
+    // Carrega logo do Firestore (se existir)
+    if (previewLogo && typeof carregarDadosIniciais !== "undefined") {
+      // será feito dentro de preencherFormulario via carregarDadosIniciais
+    }
+
+    // Preview em tempo real: selects de layout e efeitos
+    ["espacamento-secoes", "tamanho-titulos", "hero-alinhamento", "fonte-nav"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
+    });
+
+    // Botão logo no modal-nav → reutiliza inputLogo
+    const btnLogoModal = document.getElementById("btn-logo-modal");
+    if (btnLogoModal && inputLogo) btnLogoModal.addEventListener("click", () => inputLogo.click());
+    const animacaoEl2 = document.getElementById("cards-animacao");
+    if (animacaoEl2) animacaoEl2.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
+
+    // Preview em tempo real: slider radius
+    const radiusEl = document.getElementById("cards-radius");
+    const radiusLabel = document.getElementById("cards-radius-val");
+    if (radiusEl) {
+      radiusEl.addEventListener("input", () => {
+        if (radiusLabel) radiusLabel.textContent = `${radiusEl.value}px`;
+        aplicarEstilos(lerEstilosDoModal());
+      });
+    }
+
+    // Preview em tempo real: select sombra
+    const sombraEl = document.getElementById("cards-sombra");
+    if (sombraEl) {
+      sombraEl.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
+    }
+
+    // Slider de opacidade do banner
+    if (sliderOpacidade) {
+      sliderOpacidade.addEventListener("input", () => {
+        const val = Number(sliderOpacidade.value);
+        if (labelOpacidade) labelOpacidade.textContent = `${val}%`;
+        aplicarOpacidadeBanner(val);
+      });
+
+      sliderOpacidade.addEventListener("change", async () => {
+        const val = Number(sliderOpacidade.value);
+        const ref = doc(db, "portfolios", "principal");
+        await setDoc(ref, { bannerOpacidade: val }, { merge: true });
+      });
+    }
+
+    // Configura botão de upload do banner (preview e modal)
+    // Botões de upload do banner (modal e legado) acionam o mesmo input
+    if (btnUploadBannerModal) btnUploadBannerModal.addEventListener("click", () => inputBanner?.click());
+    if (btnUploadBanner)      btnUploadBanner.addEventListener("click",      () => inputBanner?.click());
+
+    // Listener do input fica sempre registrado, independente de qual botão acionar
+    if (inputBanner) {
+      inputBanner.addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+          mostrarMensagem("O banner é muito grande. Use uma imagem de até 5 MB.", "erro");
+          inputBanner.value = "";
+          return;
+        }
+        uploadBanner(file);
+      });
+    }
+
+    await carregarDadosIniciais();
+  } else {
+    // deslogado: mostra login, esconde app
+    appSection.classList.add("hidden");
+    loginSection.classList.remove("hidden");
+    if (logoutButton) logoutButton.classList.add("hidden");
+    form.reset();
+  }
+});
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  try {
+    const data = formToData(form);
+    // Sempre inclui os estilos atuais para não precisar de dois botões de salvar
+    data.estilos = lerEstilosDoModal();
+    const ref = doc(db, "portfolios", "principal");
+    await setDoc(ref, data, { merge: true });
+    mostrarMensagem("Alterações salvas com sucesso!");
+  } catch (err) {
+    console.error(err);
+    mostrarMensagem("Erro ao salvar. Veja o console.", "erro");
+  }
+});
