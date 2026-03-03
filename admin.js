@@ -212,7 +212,11 @@ btnCloseSettings.addEventListener("click", fecharSettings);
 settingsOverlay.addEventListener("click", fecharSettings);
 
 // Botões de edição contextual nas seções
-document.querySelectorAll(".sec-edit-btn").forEach((btn) => {
+document.querySelectorAll(".admin-sec").forEach((sec) => {
+  const btn = sec.querySelector(".sec-edit-btn");
+  if (!btn) return;
+  sec.addEventListener("mouseenter", () => btn.classList.add("visivel"));
+  sec.addEventListener("mouseleave", () => btn.classList.remove("visivel"));
   btn.addEventListener("click", (e) => {
     e.stopPropagation();
     abrirPainelSecao(btn.dataset.secao);

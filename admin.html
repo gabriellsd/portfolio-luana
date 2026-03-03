@@ -163,7 +163,7 @@
     .up-btn:hover { background: #E5E7EB; }
 
     /* ── Botões de edição contextual por seção ────────────────── */
-    .admin-sec { position: relative; }
+    section.admin-sec { position: relative; }
     .sec-edit-btn {
       position: absolute;
       top: 1rem; right: 1rem;
@@ -178,7 +178,7 @@
       cursor: pointer; border: none; white-space: nowrap;
       box-shadow: 0 2px 8px rgba(0,0,0,0.18);
     }
-    .admin-sec:hover .sec-edit-btn { opacity: 1; pointer-events: auto; }
+    .sec-edit-btn.visivel { opacity: 1; pointer-events: auto; }
 
     /* Grupos do painel: ocultos por padrão, visíveis via JS */
     [data-group] { display: none; }
