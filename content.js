@@ -54,9 +54,6 @@ async function carregarConteudo() {
       // 1. Atualiza todas as CSS custom properties de uma vez
       const mapaCSS = {
         "cor-primaria":      "--primary-sage",
-        "cor-titulos":       "--cor-titulos",
-        "cor-texto":         "--text-dark",
-        "cor-texto-claro":   "--cor-texto-claro",
         "cor-fundo":         "--soft-cream",
         "cor-fundo-alt":     "--cor-fundo-alt",
         "cor-fundo-contato": "--cor-contato",
@@ -133,19 +130,6 @@ async function carregarConteudo() {
           p.style.setProperty("color", e["cor-footer-texto"], "important")
         );
       }
-
-      // Títulos globais (base; seções específicas sobrescreverão abaixo)
-      if (e["cor-titulos"]) document.querySelectorAll("h1, h2, h3").forEach(el =>
-        el.style.setProperty("color", e["cor-titulos"], "important")
-      );
-
-      // Texto do corpo (base global)
-      if (e["cor-texto"]) document.body.style.color = e["cor-texto"];
-
-      // Texto secundário
-      if (e["cor-texto-claro"]) document.querySelectorAll(".text-gray-500, .text-gray-600, .opacity-80").forEach(el =>
-        el.style.color = e["cor-texto-claro"]
-      );
 
       // Botões de contato (WhatsApp / Email) — excluindo o botão Agendar da nav
       if (e["cor-botao"] || e["cor-botao-texto"]) {
