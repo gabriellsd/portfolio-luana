@@ -11,9 +11,6 @@ import {
   X,
   ChevronRight,
   Heart,
-  Loader2,
-  CheckCircle,
-  AlertCircle,
   Plus,
   Minus,
   Brain,
@@ -21,8 +18,6 @@ import {
   Compass,
   Navigation,
 } from 'lucide-react';
-
-const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
 
 const psico = {
   name: 'Luana Sakovicz',
@@ -128,38 +123,12 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [formStatus, setFormStatus] = useState('idle');
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    if (!FORMSPREE_ID) {
-      setFormStatus('error');
-      return;
-    }
-    setFormStatus('loading');
-    try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      if (res.ok) {
-        setFormStatus('success');
-        setFormData({ name: '', email: '', message: '' });
-      } else {
-        setFormStatus('error');
-      }
-    } catch {
-      setFormStatus('error');
-    }
-  };
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-800 font-sans">
@@ -519,69 +488,6 @@ export default function App() {
             </a>
           </div>
 
-          <div className="bg-white text-stone-900 p-8 rounded-3xl shadow-2xl max-w-lg mx-auto">
-            <h3 className="text-xl font-bold mb-6">Envie uma mensagem</h3>
-
-            {formStatus === 'success' ? (
-              <div className="py-8 flex flex-col items-center gap-4 text-teal-700">
-                <CheckCircle className="w-12 h-12" />
-                <p className="font-semibold text-lg">Mensagem enviada!</p>
-                <p className="text-stone-500 text-sm">Luana entrará em contato em breve.</p>
-                <button
-                  onClick={() => setFormStatus('idle')}
-                  className="mt-2 text-sm text-teal-600 underline"
-                >
-                  Enviar outra mensagem
-                </button>
-              </div>
-            ) : (
-              <form className="space-y-4" onSubmit={handleFormSubmit}>
-                <input
-                  type="text"
-                  placeholder="Seu Nome"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full p-4 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none transition-all"
-                />
-                <input
-                  type="email"
-                  placeholder="Seu E-mail"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full p-4 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none transition-all"
-                />
-                <textarea
-                  placeholder="Conte um pouco sobre o que você busca na terapia..."
-                  rows="4"
-                  required
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full p-4 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none transition-all resize-none"
-                />
-                {formStatus === 'error' && (
-                  <p className="text-red-500 text-sm flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4" />
-                    Erro ao enviar. Tente pelo WhatsApp ou e-mail.
-                  </p>
-                )}
-                <button
-                  type="submit"
-                  disabled={formStatus === 'loading'}
-                  className="w-full bg-teal-700 text-white py-4 rounded-xl font-bold hover:bg-teal-800 transition-all disabled:bg-stone-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {formStatus === 'loading' ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" /> Enviando...
-                    </>
-                  ) : (
-                    'Enviar Mensagem'
-                  )}
-                </button>
-              </form>
-            )}
-          </div>
         </div>
       </section>
 
