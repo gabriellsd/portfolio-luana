@@ -41,19 +41,19 @@ const specialties = [
   {
     title: 'Psicoterapia Individual',
     description:
-      'Atendimento focado no autoconhecimento e resolução de conflitos internos para adultos e adolescentes.',
+      'Espaço seguro para autoconhecimento, elaboração de conflitos internos e desenvolvimento emocional.',
     icon: <User className="w-6 h-6" />,
   },
   {
     title: 'Ansiedade e Depressão',
     description:
-      'Acompanhamento especializado para manejo de sintomas e busca por qualidade de vida.',
+      'Acompanhamento especializado para manejo de sintomas e busca por mais qualidade de vida.',
     icon: <Heart className="w-6 h-6" />,
   },
   {
-    title: 'Orientação Profissional',
+    title: 'Crianças, Adolescentes e Adultos',
     description:
-      'Auxílio na descoberta de caminhos na carreira e transições profissionais importantes.',
+      'Atendimento adaptado a cada fase da vida, respeitando as particularidades e necessidades de cada faixa etária.',
     icon: <BookOpen className="w-6 h-6" />,
   },
 ];
