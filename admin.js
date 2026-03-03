@@ -182,17 +182,42 @@ function mostrarMsg(texto, tipo = "ok") {
 }
 
 // ── Painel de configurações ───────────────────────────────────
-function abrirSettings() {
+const SECAO_MAP = {
+  nav:      { nome: "Navegação",            grupos: ["nav"] },
+  hero:     { nome: "Hero (Topo)",          grupos: ["hero"] },
+  sobre:    { nome: "Sobre mim",            grupos: ["sobre"] },
+  sessoes:  { nome: "Sessões",              grupos: ["sessoes"] },
+  publicos: { nome: "Públicos",             grupos: ["publicos"] },
+  contato:  { nome: "Contato",              grupos: ["contato"] },
+  geral:    { nome: "Configurações Gerais", grupos: ["geral"] },
+};
+
+function abrirPainelSecao(secao) {
+  const cfg = SECAO_MAP[secao] || SECAO_MAP.geral;
+  document.getElementById("panel-secao-nome").textContent = cfg.nome;
+  document.querySelectorAll("[data-group]").forEach((el) => {
+    el.classList.toggle("group-visible", cfg.grupos.includes(el.dataset.group));
+  });
   settingsPanel.classList.add("open");
   settingsOverlay.classList.add("open");
 }
+
 function fecharSettings() {
   settingsPanel.classList.remove("open");
   settingsOverlay.classList.remove("open");
 }
-btnSettings.addEventListener("click", abrirSettings);
+
+btnSettings.addEventListener("click", () => abrirPainelSecao("geral"));
 btnCloseSettings.addEventListener("click", fecharSettings);
 settingsOverlay.addEventListener("click", fecharSettings);
+
+// Botões de edição contextual nas seções
+document.querySelectorAll(".sec-edit-btn").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    abrirPainelSecao(btn.dataset.secao);
+  });
+});
 
 // Sliders do painel
 cfgBannerOpacity.addEventListener("input", () => {
