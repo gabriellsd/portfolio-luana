@@ -11,14 +11,11 @@ import {
   X,
   ChevronRight,
   Heart,
-  Sparkles,
-  Send,
   Loader2,
   CheckCircle,
   AlertCircle,
 } from 'lucide-react';
 
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
 
 const psico = {
@@ -68,11 +65,6 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const [reflectionText, setReflectionText] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
-  const [isLoadingAi, setIsLoadingAi] = useState(false);
-  const [errorAi, setErrorAi] = useState('');
-
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle'); // idle | loading | success | error
 
@@ -81,60 +73,6 @@ export default function App() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const handleGeminiReflection = async () => {
-    if (!reflectionText.trim()) return;
-
-    setIsLoadingAi(true);
-    setErrorAi('');
-    setAiResponse('');
-
-    const systemPrompt = `Você é um assistente de acolhimento para o site da Psicóloga ${psico.name}. 
-    O usuário vai descrever brevemente como está se sentindo. Sua tarefa é:
-    1. Validar o sentimento de forma empática e profissional (máximo 2 frases).
-    2. Sugerir uma pergunta reflexiva para ele levar para a primeira sessão de terapia.
-    3. Manter um tom calmo, ético e encorajador.
-    Importante: Não dê diagnósticos nem conselhos médicos.`;
-
-    let retries = 0;
-    const maxRetries = 5;
-
-    const callApi = async () => {
-      try {
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: reflectionText }] }],
-              systemInstruction: { parts: [{ text: systemPrompt }] },
-            }),
-          }
-        );
-
-        if (!response.ok) throw new Error('API request failed');
-
-        const data = await response.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        setAiResponse(text ?? 'Não foi possível gerar uma resposta. Tente novamente.');
-      } catch {
-        if (retries < maxRetries) {
-          retries++;
-          const delay = Math.pow(2, retries) * 500;
-          await new Promise((res) => setTimeout(res, delay));
-          return callApi();
-        }
-        setErrorAi(
-          'Desculpe, não consegui processar sua reflexão agora. Que tal enviar sua mensagem diretamente abaixo?'
-        );
-      } finally {
-        setIsLoadingAi(false);
-      }
-    };
-
-    await callApi();
-  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -326,64 +264,6 @@ export default function App() {
               alt="Ambiente de consultório"
               className="rounded-3xl shadow-xl rotate-2 hover:rotate-0 transition-transform duration-500"
             />
-          </div>
-        </div>
-      </section>
-
-      {/* AI Reflexão Section */}
-      <section className="py-24 bg-stone-100 px-6">
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-white p-8 md:p-12 rounded-[40px] shadow-xl border border-stone-200">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-teal-100 text-teal-700 rounded-lg">
-                <Sparkles className="w-6 h-6" />
-              </div>
-              <h2 className="text-2xl font-serif text-stone-900">Primeiro Passo ✨</h2>
-            </div>
-
-            <p className="text-stone-600 mb-8 leading-relaxed">
-              Às vezes é difícil saber por onde começar na terapia. Experimente descrever em uma
-              frase como você tem se sentido ultimamente, e nossa IA de acolhimento ajudará você a
-              refletir.
-            </p>
-
-            <div className="relative mb-6">
-              <textarea
-                value={reflectionText}
-                onChange={(e) => setReflectionText(e.target.value)}
-                placeholder="Ex: Tenho me sentido muito cansado e sem motivação no trabalho..."
-                className="w-full p-6 bg-stone-50 border border-stone-200 rounded-2xl focus:ring-2 focus:ring-teal-500 outline-none transition-all resize-none italic text-stone-700 pr-20"
-                rows="3"
-              />
-              <button
-                onClick={handleGeminiReflection}
-                disabled={isLoadingAi || !reflectionText.trim()}
-                className="absolute bottom-4 right-4 bg-teal-700 text-white p-3 rounded-xl hover:bg-teal-800 disabled:bg-stone-300 disabled:cursor-not-allowed transition-all shadow-lg shadow-teal-700/20 flex items-center gap-2"
-                aria-label="Enviar reflexão"
-              >
-                {isLoadingAi ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Send className="w-5 h-5" />
-                )}
-              </button>
-            </div>
-
-            {aiResponse && (
-              <div className="p-6 bg-teal-50 border border-teal-100 rounded-2xl">
-                <p className="text-teal-900 leading-relaxed italic">"{aiResponse}"</p>
-                <p className="mt-4 text-xs text-teal-600 font-medium uppercase tracking-wider">
-                  — Sugestão de reflexão para sua sessão
-                </p>
-              </div>
-            )}
-
-            {errorAi && (
-              <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                {errorAi}
-              </div>
-            )}
           </div>
         </div>
       </section>
