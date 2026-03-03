@@ -1,7 +1,7 @@
 # Portfolio — Luana Sakovicz | Psicóloga Clínica
 
 Site de apresentação profissional da psicóloga Luana Sakovicz.  
-**URL em produção:** https://portfolio-luana.vercel.app
+**URL em produção:** https://portfolio-luana-sakovicz.vercel.app
 
 ---
 
