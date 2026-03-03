@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useReveal } from './useReveal';
 import {
   User,
   BookOpen,
@@ -124,6 +125,14 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
 
+  const heroRef = useReveal(0);
+  const servicesRef = useReveal(0);
+  const aboutRef = useReveal(0);
+  const approachRef = useReveal(0);
+  const faqRef = useReveal(0);
+  const locationRef = useReveal(0);
+  const contactRef = useReveal(0);
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
@@ -197,7 +206,7 @@ export default function App() {
 
       {/* Hero Section */}
       <section id="home" className="pt-32 pb-20 md:pt-48 md:pb-32 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
+        <div ref={heroRef} className="reveal max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1 space-y-6 text-center md:text-left">
             <h2 className="text-teal-700 font-medium tracking-widest uppercase text-sm">
               Bem-vinda(o)
@@ -240,7 +249,7 @@ export default function App() {
 
       {/* Services Section */}
       <section id="services" className="py-24 bg-white px-6">
-        <div className="max-w-6xl mx-auto">
+        <div ref={servicesRef} className="reveal max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-serif text-stone-900 mb-4">Áreas de Atuação</h2>
             <p className="text-stone-500 max-w-2xl mx-auto">
@@ -276,7 +285,7 @@ export default function App() {
 
       {/* About Section */}
       <section id="about" className="py-24 px-6 overflow-hidden">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+        <div ref={aboutRef} className="reveal max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
           <div className="flex-1 order-2 md:order-1">
             <h2 className="text-3xl font-serif text-stone-900 mb-6">Sobre Mim</h2>
             <div className="space-y-4 text-stone-600 leading-relaxed">
@@ -317,7 +326,7 @@ export default function App() {
 
       {/* Abordagem Section */}
       <section className="py-24 bg-white px-6">
-        <div className="max-w-6xl mx-auto">
+        <div ref={approachRef} className="reveal max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-serif text-stone-900 mb-4">Minha Abordagem</h2>
             <p className="text-stone-500 max-w-2xl mx-auto">
@@ -342,7 +351,7 @@ export default function App() {
 
       {/* FAQ Section */}
       <section id="faq" className="py-24 bg-stone-100 px-6">
-        <div className="max-w-3xl mx-auto">
+        <div ref={faqRef} className="reveal max-w-3xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-serif text-stone-900 mb-4">Perguntas Frequentes</h2>
             <p className="text-stone-500">
@@ -382,7 +391,7 @@ export default function App() {
 
       {/* Localização Section */}
       <section className="py-24 bg-white px-6">
-        <div className="max-w-6xl mx-auto">
+        <div ref={locationRef} className="reveal max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-serif text-stone-900 mb-4">Onde Fica</h2>
             <p className="text-stone-500">
@@ -451,7 +460,7 @@ export default function App() {
 
       {/* Contact Section */}
       <section id="contact" className="py-24 bg-teal-900 text-white px-6">
-        <div className="max-w-4xl mx-auto text-center">
+        <div ref={contactRef} className="reveal max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-serif mb-8">Vamos conversar?</h2>
           <p className="text-teal-100 mb-12 text-lg">
             Sinta-se à vontade para entrar em contato. Responderei o mais breve possível.
