@@ -9,120 +9,32 @@
     <style>
         :root {
             --primary-sage: #8DAA91;
-            --soft-cream: #F9F7F2;
-            --text-dark: #4A4A4A;
-            --accent-tan: #D4B996;
-            --cor-titulos: #2D2D2D;
-            --cor-texto-claro: #6B7280;
-            --cor-fundo-alt: #F5F5F4;
-            --cor-contato: #8DAA91;
-            --cor-botao: #8DAA91;
-            --cor-botao-texto: #FFFFFF;
-            /* nav */
-            --cor-nav: #FFFFFF;
-            --cor-nav-texto: #374151;
-            /* sobre */
-            --cor-sobre-fundo: #FFFFFF;
-            /* cards */
-            --cor-cards: #FFFFFF;
-            --cards-radius: 1rem;
-            --cards-sombra: 0 1px 3px rgba(0,0,0,0.06);
-            /* footer */
-            --cor-footer-fundo: #F1F0EB;
-            --cor-footer-texto: #6B7280;
-            /* layout */
-            --py-secoes: 6rem;
-            --titulo-scale: 1;
-            /* efeitos */
-            --cor-borda-foto: #8DAA91;
-            /* nav específicos */
-            --cor-nav-btn: ;
-            --cor-nav-btn-texto: ;
-            --fonte-nav: ;
-            /* cores por seção (sobreescrevem o global quando definidas) */
-            --cor-hero-titulo: ;
-            --cor-hero-texto: ;
-            --cor-sobre-titulo: ;
-            --cor-sobre-texto: ;
-            --cor-sessoes-titulo: ;
-            --cor-sessoes-texto: ;
-            --cor-publicos-titulo: ;
-            --cor-publicos-texto: ;
         }
-        /* Cor de título e texto específicos por seção */
-        .hero-gradient h1, .hero-gradient h2, .hero-gradient h3 { color: var(--cor-hero-titulo, var(--cor-titulos)); }
-        .hero-gradient p { color: var(--cor-hero-texto, var(--text-dark)); }
-        #sobre h1, #sobre h2, #sobre h3 { color: var(--cor-sobre-titulo, var(--cor-titulos)); }
-        #sobre p, #sobre span:not(.bg-sage) { color: var(--cor-sobre-texto, var(--text-dark)); }
-        #atendimento h1, #atendimento h2, #atendimento h3 { color: var(--cor-sessoes-titulo, var(--cor-titulos)); }
-        #atendimento p { color: var(--cor-sessoes-texto, var(--text-dark)); }
-        #publico h1, #publico h2, #publico h3 { color: var(--cor-publicos-titulo, var(--cor-titulos)); }
-        #publico p { color: var(--cor-publicos-texto, var(--text-dark)); }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--soft-cream);
-            color: var(--text-dark);
+            background-color: #F9F7F2;
+            color: #4A4A4A;
             scroll-behavior: smooth;
         }
         h1, h2, h3, .font-serif {
             font-family: 'Playfair Display', serif;
         }
-        .bg-sage { background-color: var(--primary-sage); }
+        .bg-sage   { background-color: var(--primary-sage); }
         .text-sage { color: var(--primary-sage); }
         .border-sage { border-color: var(--primary-sage); }
-
-        nav.fixed {
-            background-color: var(--cor-nav) !important;
-        }
-        nav.fixed a, nav.fixed span[data-field] {
-            color: var(--cor-nav-texto) !important;
-        }
-        nav.fixed { font-family: var(--fonte-nav, inherit); }
-        nav.fixed #nav-btn {
-            background-color: var(--cor-nav-btn, var(--cor-botao)) !important;
-            color: var(--cor-nav-btn-texto, var(--cor-botao-texto, #fff)) !important;
-        }
-        section#sobre {
-            background-color: var(--cor-sobre-fundo);
-        }
-        .sessao-card {
-            background-color: var(--cor-cards) !important;
-            border-radius: var(--cards-radius) !important;
-            box-shadow: var(--cards-sombra) !important;
-        }
-        footer {
-            background-color: var(--cor-footer-fundo) !important;
-        }
-        footer p {
-            color: var(--cor-footer-texto) !important;
-        }
-
         .hero-gradient {
-            background: linear-gradient(rgba(249, 247, 242, 0.8), rgba(249, 247, 242, 0.8)), 
+            background: linear-gradient(rgba(249, 247, 242, 0.85), rgba(249, 247, 242, 0.85)),
                         url('https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070');
             background-size: cover;
             background-position: center;
         }
-
-        /* Espaçamento dinâmico das seções */
-        #sobre, #atendimento, #publico, #contato {
-            padding-top: var(--py-secoes) !important;
-            padding-bottom: var(--py-secoes) !important;
+        .sessao-card {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
-        /* Escala dos títulos */
-        h1 { font-size: calc(3.75rem * var(--titulo-scale)) !important; }
-        h2 { font-size: calc(2.25rem * var(--titulo-scale)) !important; }
-        h3 { font-size: calc(1.25rem * var(--titulo-scale)) !important; }
-        /* Borda decorativa da foto */
-        .borda-foto { border-color: var(--cor-borda-foto) !important; }
-        /* Desativar animação hover dos cards */
-        body.sem-animacao-cards .card-hover:hover {
-            transform: none !important;
-            box-shadow: var(--cards-sombra) !important;
-        }
-        .card-hover {
-            transition: all 0.3s ease;
-        }
+        .borda-foto { border-color: var(--primary-sage); }
+        .card-hover { transition: all 0.3s ease; }
         .card-hover:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.05);

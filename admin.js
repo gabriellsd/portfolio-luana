@@ -14,754 +14,218 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db  = getFirestore(app);
 const auth = getAuth(app);
 
-const form = document.getElementById("portfolio-form");
-const msgEl = document.getElementById("mensagem");
+// ── Elementos de UI ───────────────────────────────────────────
+const loginSection   = document.getElementById("login-section");
+const appSection     = document.getElementById("app-section");
+const loginEmail     = document.getElementById("login-email");
+const loginPassword  = document.getElementById("login-password");
+const loginButton    = document.getElementById("login-button");
+const loginError     = document.getElementById("login-error");
+const logoutButton   = document.getElementById("logout-button");
+const form           = document.getElementById("portfolio-form");
+const msgEl          = document.getElementById("mensagem");
 
-const loginSection = document.getElementById("login-section");
-const appSection = document.getElementById("app-section");
-const loginEmail = document.getElementById("login-email");
-const loginPassword = document.getElementById("login-password");
-const loginButton = document.getElementById("login-button");
-const logoutButton = document.getElementById("logout-button");
-const previewFields = document.querySelectorAll("[data-preview-field]");
-const previewFoto = document.getElementById("preview-foto");
-const btnUploadFoto = document.getElementById("btn-upload-foto");
-const inputFoto = document.getElementById("input-foto");
-const previewHero = document.getElementById("preview-hero");
-const btnUploadBanner      = document.getElementById("btn-upload-banner");
-const btnUploadBannerModal = document.getElementById("btn-upload-banner-modal");
-const inputBanner = document.getElementById("input-banner");
-const sliderOpacidade = document.getElementById("banner-opacidade");
-const labelOpacidade = document.getElementById("banner-opacidade-valor");
-const sliderOpacidadeFoto = document.getElementById("foto-opacidade");
-const labelOpacidadeFoto = document.getElementById("foto-opacidade-valor");
+// Imagens
+const previewLogo    = document.getElementById("preview-logo");
+const btnLogo        = document.getElementById("btn-upload-logo");
+const inputLogo      = document.getElementById("input-logo");
+const previewFoto    = document.getElementById("preview-foto");
+const btnFoto        = document.getElementById("btn-upload-foto");
+const inputFoto      = document.getElementById("input-foto");
+const btnBanner      = document.getElementById("btn-upload-banner");
+const inputBanner    = document.getElementById("input-banner");
 
-// Estilos
-const toggleEstilos  = document.getElementById("toggle-estilos");
-const modalEstilos   = document.getElementById("modal-estilos");
-const modalOverlay   = document.getElementById("modal-overlay");
-const fecharEstilos  = document.getElementById("fechar-estilos");
-const fonteTitulos   = document.getElementById("fonte-titulos");
-const fonteTexto     = document.getElementById("fonte-texto");
+// Sliders
+const sliderBanner   = document.getElementById("banner-opacidade");
+const labelBanner    = document.getElementById("banner-opacidade-valor");
+const sliderFoto     = document.getElementById("foto-opacidade");
+const labelFoto      = document.getElementById("foto-opacidade-valor");
 
-// Todos os color pickers
-const coresCfg = [
-  { id: "cor-primaria",      hex: "cor-primaria-hex",       css: "--primary-sage",    def: "#8DAA91" },
-  { id: "cor-fundo",         hex: "cor-fundo-hex",           css: "--soft-cream",      def: "#F9F7F2" },
-  { id: "cor-fundo-alt",     hex: "cor-fundo-alt-hex",       css: "--cor-fundo-alt",   def: "#F5F5F4" },
-  { id: "cor-fundo-contato", hex: "cor-fundo-contato-hex",   css: "--cor-contato",     def: "#8DAA91" },
-  { id: "cor-botao",         hex: "cor-botao-hex",           css: "--cor-botao",       def: "#8DAA91" },
-  { id: "cor-botao-texto",   hex: "cor-botao-texto-hex",     css: "--cor-botao-texto", def: "#FFFFFF" },
-  { id: "cor-nav",           hex: "cor-nav-hex",             css: "--cor-nav",         def: "#FFFFFF" },
-  { id: "cor-nav-texto",     hex: "cor-nav-texto-hex",       css: "--cor-nav-texto",   def: "#374151" },
-  { id: "cor-sobre-fundo",   hex: "cor-sobre-fundo-hex",     css: "--cor-sobre-fundo", def: "#FFFFFF" },
-  { id: "cor-cards",         hex: "cor-cards-hex",           css: "--cor-cards",       def: "#FFFFFF" },
-  { id: "cor-footer-fundo",  hex: "cor-footer-fundo-hex",    css: "--cor-footer-fundo",def: "#F1F0EB" },
-  { id: "cor-footer-texto",  hex: "cor-footer-texto-hex",    css: "--cor-footer-texto",def: "#6B7280" },
-  { id: "cor-borda-foto",       hex: "cor-borda-foto-hex",       css: "--cor-borda-foto",       def: "#8DAA91" },
-  // Nav específicos
-  { id: "cor-nav-btn",          hex: "cor-nav-btn-hex",          css: "--cor-nav-btn",          def: "#8DAA91" },
-  { id: "cor-nav-btn-texto",    hex: "cor-nav-btn-texto-hex",    css: "--cor-nav-btn-texto",    def: "#FFFFFF" },
-  // Cores por seção (sobreescrevem o global apenas para aquela seção)
-  { id: "cor-hero-titulo",      hex: "cor-hero-titulo-hex",      css: "--cor-hero-titulo",      def: "#2D2D2D" },
-  { id: "cor-hero-texto",       hex: "cor-hero-texto-hex",       css: "--cor-hero-texto",       def: "#4A4A4A" },
-  { id: "cor-sobre-titulo",     hex: "cor-sobre-titulo-hex",     css: "--cor-sobre-titulo",     def: "#2D2D2D" },
-  { id: "cor-sobre-texto",      hex: "cor-sobre-texto-hex",      css: "--cor-sobre-texto",      def: "#4A4A4A" },
-  { id: "cor-sessoes-titulo",   hex: "cor-sessoes-titulo-hex",   css: "--cor-sessoes-titulo",   def: "#2D2D2D" },
-  { id: "cor-sessoes-texto",    hex: "cor-sessoes-texto-hex",    css: "--cor-sessoes-texto",    def: "#4A4A4A" },
-  { id: "cor-publicos-titulo",  hex: "cor-publicos-titulo-hex",  css: "--cor-publicos-titulo",  def: "#2D2D2D" },
-  { id: "cor-publicos-texto",   hex: "cor-publicos-texto-hex",   css: "--cor-publicos-texto",   def: "#4A4A4A" },
-];
-
-const CLOUDINARY_CLOUD = "gabriellsd";
+const CLOUDINARY_CLOUD  = "gabriellsd";
 const CLOUDINARY_PRESET = "portfolio-luana";
 
-// Logo
-const areaLogo       = document.getElementById("area-logo");
-const inputLogo      = document.getElementById("input-logo");
-const previewLogo    = document.getElementById("preview-logo");
-const logoPlaceholder= document.getElementById("logo-placeholder");
-
-function atualizarMiniLogoModal(url) {
-  const container = document.getElementById("logo-preview-modal");
-  if (!container) return;
-  container.innerHTML = `<img src="${url}" class="w-full h-full object-contain p-1" />`;
-}
-
-function mostrarMensagem(texto, tipo = "sucesso") {
-  msgEl.textContent = texto;
-  msgEl.classList.remove("hidden");
-  msgEl.classList.remove("bg-red-100", "text-red-700", "bg-emerald-100", "text-emerald-700");
-
-  if (tipo === "erro") {
-    msgEl.classList.add("bg-red-100", "text-red-700");
-  } else {
-    msgEl.classList.add("bg-emerald-100", "text-emerald-700");
-  }
-
-  setTimeout(() => {
-    msgEl.classList.add("hidden");
-  }, 4000);
-}
-
-// Converte os campos do formulário em um objeto para o Firestore
-function formToData(formEl) {
-  const data = {};
-
-  const formData = new FormData(formEl);
-  for (const [name, value] of formData.entries()) {
-    // Se o campo estiver em branco, não sobrescreve o que já existe no Firestore
-    if (typeof value === "string" && value.trim() === "") {
-      continue;
-    }
-
-    if (name.startsWith("links.")) {
-      const key = name.split(".")[1];
-      if (!data.links) data.links = {};
-      data.links[key] = value;
-    } else {
-      data[name] = value;
-    }
-  }
-
-  return data;
-}
-
-// Preenche o formulário com dados vindos do Firestore
-function preencherFormulario(data) {
-  if (!data) return;
-
-  Array.from(form.elements).forEach((el) => {
-    if (!el.name) return;
-
-    if (el.name.startsWith("links.")) {
-      const key = el.name.split(".")[1];
-      if (data.links && data.links[key]) {
-        el.value = data.links[key];
-      }
-    } else if (Object.prototype.hasOwnProperty.call(data, el.name)) {
-      el.value = data[el.name];
-    }
-  });
-
-  // Carrega logo salva
-  if (data.logoUrl && previewLogo) {
-    previewLogo.src = data.logoUrl;
-    previewLogo.classList.remove("hidden");
-    if (logoPlaceholder) logoPlaceholder.classList.add("hidden");
-    atualizarMiniLogoModal(data.logoUrl);
-  }
-
-  // Carrega foto de perfil salva
-  if (previewFoto && data.fotoUrl) {
-    previewFoto.src = data.fotoUrl;
-  }
-
-  // Carrega opacidade salva da foto
-  const opacidadeFoto = data.fotoOpacidade !== undefined ? data.fotoOpacidade : 100;
-  if (sliderOpacidadeFoto) {
-    sliderOpacidadeFoto.value = opacidadeFoto;
-    if (labelOpacidadeFoto) labelOpacidadeFoto.textContent = `${opacidadeFoto}%`;
-  }
-  aplicarOpacidadeFoto(opacidadeFoto);
-
-  // Carrega banner salvo
-  if (previewHero && data.bannerUrl) {
-    previewHero.dataset.bannerUrl = data.bannerUrl;
-    const opacidade = data.bannerOpacidade !== undefined ? data.bannerOpacidade : 85;
-    if (sliderOpacidade) {
-      sliderOpacidade.value = opacidade;
-      if (labelOpacidade) labelOpacidade.textContent = `${opacidade}%`;
-    }
-    aplicarOpacidadeBanner(opacidade, data.bannerUrl);
-  }
-
-  // Sincroniza inputs com o preview visual
-  syncInputsToPreview();
-}
-
-// Copia valores dos inputs para o preview visual
-function syncInputsToPreview() {
-  previewFields.forEach((el) => {
-    const key = el.dataset.previewField;
-    const input = form.elements.namedItem(key);
-    if (input && typeof input.value === "string" && input.value.trim() !== "") {
-      el.textContent = input.value;
-    }
-  });
-}
-
-// Configura edição no preview: ao digitar no bloco visual, atualiza o input oculto
-function setupPreviewEditing() {
-  previewFields.forEach((el) => {
-    el.addEventListener("input", () => {
-      const key = el.dataset.previewField;
-      const input = form.elements.namedItem(key);
-      if (input) {
-        input.value = el.textContent.trim();
-      }
-    });
-  });
-}
-
-// Valida a foto antes de enviar
-function validarFoto(file) {
-  return new Promise((resolve, reject) => {
-    // Máx. 5 MB
-    if (file.size > 5 * 1024 * 1024) {
-      reject("A foto é muito grande. Use uma imagem de até 5 MB.");
-      return;
-    }
-
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = () => {
-      URL.revokeObjectURL(url);
-      const proporcao = img.width / img.height;
-      // Ideal 4:5 (0.8) — aceita entre 0.6 e 1.1
-      if (proporcao < 0.6 || proporcao > 1.1) {
-        reject(
-          `Proporção fora do ideal. Use uma foto no formato retrato (ex.: 800×1000 px). Sua imagem: ${img.width}×${img.height} px.`
-        );
-      } else {
-        resolve();
-      }
-    };
-    img.onerror = () => reject("Não foi possível ler a imagem.");
-    img.src = url;
-  });
-}
-
-// Aplica opacidade na foto de perfil
-function aplicarOpacidadeFoto(valor) {
-  if (!previewFoto) return;
-  previewFoto.style.opacity = valor / 100;
-}
-
-// Aplica opacidade do filtro no banner do hero
-function aplicarOpacidadeBanner(valor, bannerUrl) {
-  if (!previewHero) return;
-  const opacidade = valor / 100;
-  const bgUrl = bannerUrl || previewHero.dataset.bannerUrl ||
-    "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070";
-  previewHero.style.backgroundImage =
-    `linear-gradient(rgba(249,247,242,${opacidade}), rgba(249,247,242,${opacidade})), url('${bgUrl}')`;
-  previewHero.style.backgroundSize = "cover";
-  previewHero.style.backgroundPosition = "center";
-}
-
-// Upload genérico para Cloudinary — retorna a URL
-async function uploadCloudinary(file) {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", CLOUDINARY_PRESET);
-  formData.append("folder", "portfolio");
-
-  const res = await fetch(
-    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
-    { method: "POST", body: formData }
-  );
-  const json = await res.json();
-  if (!json.secure_url) throw new Error("URL não retornada");
-  return json.secure_url;
-}
-
-// Upload da foto para Cloudinary e salva URL no Firestore
-async function uploadFoto(file) {
-  mostrarMensagem("Enviando foto...", "sucesso");
-
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", CLOUDINARY_PRESET);
-  formData.append("folder", "portfolio");
-
-  try {
-    const url = await uploadCloudinary(file);
-    previewFoto.src = url;
-    const ref = doc(db, "portfolios", "principal");
-    await setDoc(ref, { fotoUrl: url }, { merge: true });
-    mostrarMensagem("Foto atualizada com sucesso!");
-  } catch (err) {
-    console.error(err);
-    mostrarMensagem("Erro ao enviar foto. Tente novamente.", "erro");
-  }
-}
-
-// Upload do banner Hero
-async function uploadBanner(file) {
-  mostrarMensagem("Enviando banner...", "sucesso");
-  try {
-    const url = await uploadCloudinary(file);
-    previewHero.dataset.bannerUrl = url;
-    const opacidade = sliderOpacidade ? Number(sliderOpacidade.value) : 85;
-    aplicarOpacidadeBanner(opacidade, url);
-    const ref = doc(db, "portfolios", "principal");
-    await setDoc(ref, { bannerUrl: url }, { merge: true });
-    mostrarMensagem("Banner atualizado com sucesso!");
-  } catch (err) {
-    console.error(err);
-    mostrarMensagem("Erro ao enviar banner. Tente novamente.", "erro");
-  }
-}
-
-// Upload da logo
-async function uploadLogo(file) {
-  mostrarMensagem("Enviando logo...");
-  try {
-    const url = await uploadCloudinary(file);
-    if (previewLogo) { previewLogo.src = url; previewLogo.classList.remove("hidden"); }
-    if (logoPlaceholder) logoPlaceholder.classList.add("hidden");
-    atualizarMiniLogoModal(url);
-    const ref = doc(db, "portfolios", "principal");
-    await setDoc(ref, { logoUrl: url }, { merge: true });
-    mostrarMensagem("Logo atualizada com sucesso!");
-  } catch (err) {
-    console.error(err);
-    mostrarMensagem("Erro ao enviar logo.", "erro");
-  }
-}
-
-// Carrega uma fonte do Google Fonts dinamicamente
-function carregarFonte(nomeFonte) {
-  if (!nomeFonte) return;
-  const id = `gfont-${nomeFonte.replace(/\s+/g, "-")}`;
-  if (document.getElementById(id)) return; // já carregada
-  const link = document.createElement("link");
-  link.id   = id;
-  link.rel  = "stylesheet";
-  link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(nomeFonte)}:wght@400;500;600;700&display=swap`;
-  document.head.appendChild(link);
-}
-
-// Aplica estilos (fontes e cores) no preview do admin
-function aplicarEstilos(estilos = {}) {
-  const root = document.documentElement;
-
-  // Fontes — atualiza no preview do admin
-  if (estilos.fonteTitulos) {
-    carregarFonte(estilos.fonteTitulos);
-    const ff = `'${estilos.fonteTitulos}', serif`;
-    document.querySelectorAll("h1,h2,h3,.font-serif").forEach(el => el.style.fontFamily = ff);
-  }
-  if (estilos.fonteTexto) {
-    carregarFonte(estilos.fonteTexto);
-    const ff = `'${estilos.fonteTexto}', sans-serif`;
-    document.querySelectorAll("p,span:not(.text-sage)").forEach(el => el.style.fontFamily = ff);
-  }
-  if (estilos.fonteNav) {
-    const navEl = document.getElementById("preview-nav");
-    if (navEl) navEl.style.fontFamily = estilos.fonteNav;
-    root.style.setProperty("--fonte-nav", estilos.fonteNav);
-  }
-
-  // Aplica cada cor via CSS var (para o preview do admin)
-  coresCfg.forEach(({ id, css, def }) => {
-    const val = estilos[id] || def;
-    root.style.setProperty(css, val);
-  });
-
-  // Seção contato
-  const previewContato = document.getElementById("preview-contato");
-  if (previewContato && estilos["cor-fundo-contato"]) {
-    previewContato.style.backgroundColor = estilos["cor-fundo-contato"];
-  }
-
-  // Fundo alternado (sessões)
-  const previewSessoes = document.getElementById("preview-sessoes");
-  if (previewSessoes && estilos["cor-fundo-alt"]) {
-    previewSessoes.style.backgroundColor = estilos["cor-fundo-alt"];
-  }
-
-  // Nav — links (exclui #nav-btn que tem cor própria)
-  const previewNav = document.querySelector("#app-section nav");
-  if (previewNav) {
-    if (estilos["cor-nav"]) previewNav.style.backgroundColor = estilos["cor-nav"];
-    if (estilos["cor-nav-texto"]) {
-      previewNav.querySelectorAll("a, span:not(#nav-btn)").forEach(el => el.style.color = estilos["cor-nav-texto"]);
-    }
-  }
-
-  // Seção sobre
-  const previewSobre = document.getElementById("preview-sobre");
-  if (previewSobre && estilos["cor-sobre-fundo"]) {
-    previewSobre.style.backgroundColor = estilos["cor-sobre-fundo"];
-  }
-
-  // Cards
-  const radius = estilos["cards-radius"] ? `${estilos["cards-radius"]}px` : null;
-  const sombra = estilos["cards-sombra"] || null;
-  document.querySelectorAll(".sessao-card-preview").forEach(card => {
-    if (estilos["cor-cards"])  card.style.backgroundColor = estilos["cor-cards"];
-    if (radius)                card.style.borderRadius    = radius;
-    if (sombra)                card.style.boxShadow       = sombra;
-  });
-  root.style.setProperty("--cards-radius", radius || "1rem");
-  root.style.setProperty("--cards-sombra", sombra || "0 1px 3px rgba(0,0,0,0.06)");
-
-  // Footer
-  const previewFooter = document.getElementById("preview-footer");
-  if (previewFooter) {
-    if (estilos["cor-footer-fundo"]) previewFooter.style.backgroundColor = estilos["cor-footer-fundo"];
-    if (estilos["cor-footer-texto"]) previewFooter.querySelectorAll("p").forEach(p => p.style.color = estilos["cor-footer-texto"]);
-  }
-
-  // Slider de radius: atualiza label
-  const radiusLabel = document.getElementById("cards-radius-val");
-  if (radiusLabel && estilos["cards-radius"] !== undefined) {
-    radiusLabel.textContent = `${estilos["cards-radius"]}px`;
-  }
-
-  // Espaçamento das seções
-  if (estilos["espacamento-secoes"]) {
-    root.style.setProperty("--py-secoes", estilos["espacamento-secoes"]);
-  }
-  // Tamanho dos títulos
-  if (estilos["tamanho-titulos"]) {
-    root.style.setProperty("--titulo-scale", estilos["tamanho-titulos"]);
-  }
-  // Alinhamento no hero
-  const heroEl = document.getElementById("preview-hero");
-  if (heroEl && estilos["hero-alinhamento"]) {
-    heroEl.style.textAlign = estilos["hero-alinhamento"];
-  }
-  // Animação dos cards
-  if (estilos["cards-animacao"] === false || estilos["cards-animacao"] === "false") {
-    document.body.classList.add("sem-animacao-cards");
-  } else {
-    document.body.classList.remove("sem-animacao-cards");
-  }
-  // Borda decorativa da foto
-  if (estilos["cor-borda-foto"]) {
-    root.style.setProperty("--cor-borda-foto", estilos["cor-borda-foto"]);
-    document.querySelectorAll(".borda-foto").forEach(el => {
-      el.style.borderColor = estilos["cor-borda-foto"];
-    });
-  }
-}
-
-// Preenche os controles de estilo com os valores salvos
-function preencherEstilos(estilos) {
-  if (!estilos) return;
-  if (estilos.fonteTitulos && fonteTitulos) fonteTitulos.value = estilos.fonteTitulos;
-  if (estilos.fonteTexto   && fonteTexto)   fonteTexto.value   = estilos.fonteTexto;
-  const fonteNavEl = document.getElementById("fonte-nav");
-  if (estilos.fonteNav && fonteNavEl) fonteNavEl.value = estilos.fonteNav;
-
-  coresCfg.forEach(({ id, hex }) => {
-    const input = document.getElementById(id);
-    const label = document.getElementById(hex);
-    if (input && estilos[id]) {
-      input.value = estilos[id];
-      if (label) label.textContent = estilos[id];
-    }
-  });
-
-  // Campos não-cor
-  const radiusEl = document.getElementById("cards-radius");
-  const radiusLabel = document.getElementById("cards-radius-val");
-  if (radiusEl && estilos["cards-radius"] !== undefined) {
-    radiusEl.value = estilos["cards-radius"];
-    if (radiusLabel) radiusLabel.textContent = `${estilos["cards-radius"]}px`;
-  }
-  const sombraEl = document.getElementById("cards-sombra");
-  if (sombraEl && estilos["cards-sombra"]) sombraEl.value = estilos["cards-sombra"];
-
-  const espacamentoEl = document.getElementById("espacamento-secoes");
-  if (espacamentoEl && estilos["espacamento-secoes"]) espacamentoEl.value = estilos["espacamento-secoes"];
-  const tamanhoEl = document.getElementById("tamanho-titulos");
-  if (tamanhoEl && estilos["tamanho-titulos"]) tamanhoEl.value = estilos["tamanho-titulos"];
-  const alinhamentoEl = document.getElementById("hero-alinhamento");
-  if (alinhamentoEl && estilos["hero-alinhamento"]) alinhamentoEl.value = estilos["hero-alinhamento"];
-  const animacaoEl = document.getElementById("cards-animacao");
-  if (animacaoEl && estilos["cards-animacao"] !== undefined) animacaoEl.checked = estilos["cards-animacao"] !== false && estilos["cards-animacao"] !== "false";
-
-  aplicarEstilos(estilos);
-}
-
-// Lê todos os valores do modal e retorna objeto de estilos
-function lerEstilosDoModal() {
-  const fonteNavEl = document.getElementById("fonte-nav");
-  const estilos = {
-    fonteTitulos: fonteTitulos?.value || "Playfair Display",
-    fonteTexto:   fonteTexto?.value   || "Inter",
-    fonteNav:     fonteNavEl?.value   || "",
-  };
-  coresCfg.forEach(({ id, def }) => {
-    const input = document.getElementById(id);
-    estilos[id] = input ? input.value : def;
-  });
-  const radiusEl       = document.getElementById("cards-radius");
-  const sombraEl       = document.getElementById("cards-sombra");
-  const espacamentoEl  = document.getElementById("espacamento-secoes");
-  const tamanhoEl      = document.getElementById("tamanho-titulos");
-  const alinhamentoEl  = document.getElementById("hero-alinhamento");
-  const animacaoEl     = document.getElementById("cards-animacao");
-  if (radiusEl)      estilos["cards-radius"]       = Number(radiusEl.value);
-  if (sombraEl)      estilos["cards-sombra"]        = sombraEl.value;
-  if (espacamentoEl) estilos["espacamento-secoes"]  = espacamentoEl.value;
-  if (tamanhoEl)     estilos["tamanho-titulos"]     = tamanhoEl.value;
-  if (alinhamentoEl) estilos["hero-alinhamento"]    = alinhamentoEl.value;
-  if (animacaoEl)    estilos["cards-animacao"]      = animacaoEl.checked;
-  return estilos;
-}
-
-async function carregarDadosIniciais() {
-  try {
-    const ref = doc(db, "portfolios", "principal");
-    const snap = await getDoc(ref);
-    if (snap.exists()) {
-      const data = snap.data();
-      preencherFormulario(data);
-      if (data.estilos) preencherEstilos(data.estilos);
-    }
-  } catch (err) {
-    console.error(err);
-    mostrarMensagem("Erro ao carregar dados. Veja o console.", "erro");
-  }
-}
-
-// Login com e-mail/senha
-loginButton.addEventListener("click", async () => {
-  try {
-    await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
-  } catch (err) {
-    console.error(err);
-    mostrarMensagem("Erro no login. Confira e-mail e senha.", "erro");
-  }
-});
-
-// Logout
-if (logoutButton) {
-  logoutButton.addEventListener("click", async () => {
-    try {
-      await signOut(auth);
-    } catch (err) {
-      console.error(err);
-      mostrarMensagem("Erro ao sair.", "erro");
-    }
-  });
-}
-
-// Observa estado de autenticação
-onAuthStateChanged(auth, async (user) => {
+// ── Auth ──────────────────────────────────────────────────────
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    // logado: mostra app, esconde login
     loginSection.classList.add("hidden");
     appSection.classList.remove("hidden");
-    if (logoutButton) logoutButton.classList.remove("hidden");
-
-    // Garante que preview está configurado
-    setupPreviewEditing();
-
-    // Configura botão de upload da foto
-    if (btnUploadFoto && inputFoto) {
-      btnUploadFoto.addEventListener("click", () => inputFoto.click());
-      inputFoto.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        try {
-          await validarFoto(file);
-          uploadFoto(file);
-        } catch (msg) {
-          mostrarMensagem(msg, "erro");
-          inputFoto.value = "";
-        }
-      });
-    }
-
-    // Slider de opacidade da foto de perfil
-    if (sliderOpacidadeFoto) {
-      sliderOpacidadeFoto.addEventListener("input", () => {
-        const val = Number(sliderOpacidadeFoto.value);
-        if (labelOpacidadeFoto) labelOpacidadeFoto.textContent = `${val}%`;
-        aplicarOpacidadeFoto(val);
-      });
-
-      sliderOpacidadeFoto.addEventListener("change", async () => {
-        const val = Number(sliderOpacidadeFoto.value);
-        const ref = doc(db, "portfolios", "principal");
-        await setDoc(ref, { fotoOpacidade: val }, { merge: true });
-      });
-    }
-
-    // Mapeamento: qual seção mostra quais cards do modal
-    const TODOS_CARDS = [
-      "modal-hero", "modal-nav", "modal-contato",
-      "modal-sobre", "modal-cards", "modal-publicos",
-      "modal-footer",
-    ];
-    const SECAO_MAP = {
-      "modal-nav":      { titulo: "Barra de navegação",     cards: ["modal-nav"] },
-      "modal-hero":     { titulo: "Hero & Configurações",    cards: ["modal-hero"] },
-      "modal-sobre":    { titulo: "Sobre mim",               cards: ["modal-sobre"] },
-      "modal-cards":    { titulo: "Sessões de atendimento",  cards: ["modal-cards"] },
-      "modal-publicos": { titulo: "Seção Públicos",          cards: ["modal-publicos"] },
-      "modal-contato":  { titulo: "Seção Contato",           cards: ["modal-contato"] },
-      "modal-footer":   { titulo: "Rodapé",                  cards: ["modal-footer"] },
-    };
-    const modalTitulo = document.getElementById("modal-titulo");
-
-    function abrirModalEstilos(alvoId) {
-      if (!modalEstilos) return;
-      modalEstilos.classList.remove("hidden");
-      const config = SECAO_MAP[alvoId];
-      // Se não há config, mostra tudo (acionado pelo botão da sidebar)
-      if (modalTitulo) modalTitulo.textContent = config ? config.titulo : "Editar estilo";
-
-      TODOS_CARDS.forEach(id => {
-        const card = document.getElementById(id);
-        if (!card) return;
-        if (!config) {
-          card.classList.remove("hidden");
-        } else {
-          card.classList.toggle("hidden", !config.cards.includes(id));
-        }
-      });
-
-      // Scroll ao topo do modal
-      const scroll = modalEstilos.querySelector(".overflow-y-auto");
-      if (scroll) scroll.scrollTop = 0;
-    }
-
-    // Abre / fecha modal de estilos
-    if (toggleEstilos) {
-      toggleEstilos.classList.remove("hidden");
-      toggleEstilos.addEventListener("click", () => abrirModalEstilos(null));
-    }
-    if (fecharEstilos)  fecharEstilos.addEventListener("click",  () => modalEstilos.classList.add("hidden"));
-    if (modalOverlay)   modalOverlay.addEventListener("click",   () => modalEstilos.classList.add("hidden"));
-
-    // Botões "Editar" no hover das seções — abre modal contextual
-    document.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-abrir-estilo]");
-      if (!btn) return;
-      abrirModalEstilos(btn.dataset.abrirEstilo);
-    });
-
-    // Preview em tempo real: color pickers
-    coresCfg.forEach(({ id, hex }) => {
-      const input = document.getElementById(id);
-      const label = document.getElementById(hex);
-      if (!input) return;
-      input.addEventListener("input", () => {
-        if (label) label.textContent = input.value;
-        aplicarEstilos(lerEstilosDoModal());
-      });
-    });
-
-    // Preview em tempo real: fontes
-    [fonteTitulos, fonteTexto].forEach(sel => {
-      if (!sel) return;
-      sel.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
-    });
-
-    // Logo upload
-    if (areaLogo && inputLogo) {
-      areaLogo.addEventListener("click", () => inputLogo.click());
-      inputLogo.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (file.size > 3 * 1024 * 1024) {
-          mostrarMensagem("Logo muito grande. Máx. 3 MB.", "erro");
-          return;
-        }
-        await uploadLogo(file);
-        inputLogo.value = "";
-      });
-    }
-
-    // Carrega logo do Firestore (se existir)
-    if (previewLogo && typeof carregarDadosIniciais !== "undefined") {
-      // será feito dentro de preencherFormulario via carregarDadosIniciais
-    }
-
-    // Preview em tempo real: selects de layout e efeitos
-    ["espacamento-secoes", "tamanho-titulos", "hero-alinhamento", "fonte-nav"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
-    });
-
-    // Botão logo no modal-nav → reutiliza inputLogo
-    const btnLogoModal = document.getElementById("btn-logo-modal");
-    if (btnLogoModal && inputLogo) btnLogoModal.addEventListener("click", () => inputLogo.click());
-    const animacaoEl2 = document.getElementById("cards-animacao");
-    if (animacaoEl2) animacaoEl2.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
-
-    // Preview em tempo real: slider radius
-    const radiusEl = document.getElementById("cards-radius");
-    const radiusLabel = document.getElementById("cards-radius-val");
-    if (radiusEl) {
-      radiusEl.addEventListener("input", () => {
-        if (radiusLabel) radiusLabel.textContent = `${radiusEl.value}px`;
-        aplicarEstilos(lerEstilosDoModal());
-      });
-    }
-
-    // Preview em tempo real: select sombra
-    const sombraEl = document.getElementById("cards-sombra");
-    if (sombraEl) {
-      sombraEl.addEventListener("change", () => aplicarEstilos(lerEstilosDoModal()));
-    }
-
-    // Slider de opacidade do banner
-    if (sliderOpacidade) {
-      sliderOpacidade.addEventListener("input", () => {
-        const val = Number(sliderOpacidade.value);
-        if (labelOpacidade) labelOpacidade.textContent = `${val}%`;
-        aplicarOpacidadeBanner(val);
-      });
-
-      sliderOpacidade.addEventListener("change", async () => {
-        const val = Number(sliderOpacidade.value);
-        const ref = doc(db, "portfolios", "principal");
-        await setDoc(ref, { bannerOpacidade: val }, { merge: true });
-      });
-    }
-
-    // Configura botão de upload do banner (preview e modal)
-    // Botões de upload do banner (modal e legado) acionam o mesmo input
-    if (btnUploadBannerModal) btnUploadBannerModal.addEventListener("click", () => inputBanner?.click());
-    if (btnUploadBanner)      btnUploadBanner.addEventListener("click",      () => inputBanner?.click());
-
-    // Listener do input fica sempre registrado, independente de qual botão acionar
-    if (inputBanner) {
-      inputBanner.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (file.size > 5 * 1024 * 1024) {
-          mostrarMensagem("O banner é muito grande. Use uma imagem de até 5 MB.", "erro");
-          inputBanner.value = "";
-          return;
-        }
-        uploadBanner(file);
-      });
-    }
-
-    await carregarDadosIniciais();
+    carregarDados();
   } else {
-    // deslogado: mostra login, esconde app
-    appSection.classList.add("hidden");
     loginSection.classList.remove("hidden");
-    if (logoutButton) logoutButton.classList.add("hidden");
-    form.reset();
+    appSection.classList.add("hidden");
   }
 });
 
+loginButton.addEventListener("click", async () => {
+  loginError.classList.add("hidden");
+  loginButton.disabled = true;
+  try {
+    await signInWithEmailAndPassword(auth, loginEmail.value.trim(), loginPassword.value);
+  } catch {
+    loginError.classList.remove("hidden");
+  } finally {
+    loginButton.disabled = false;
+  }
+});
+
+loginPassword.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") loginButton.click();
+});
+
+logoutButton.addEventListener("click", () => signOut(auth));
+
+// ── Feedback ──────────────────────────────────────────────────
+function mostrarMensagem(texto, tipo = "sucesso") {
+  msgEl.textContent = texto;
+  msgEl.className =
+    "text-sm font-medium text-center px-4 py-3 rounded-xl " +
+    (tipo === "erro"
+      ? "bg-red-50 text-red-700 border border-red-200"
+      : "bg-emerald-50 text-emerald-700 border border-emerald-200");
+  clearTimeout(mostrarMensagem._t);
+  mostrarMensagem._t = setTimeout(() => { msgEl.className = "hidden"; }, 4000);
+}
+
+// ── Cloudinary ────────────────────────────────────────────────
+async function uploadParaCloudinary(file) {
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("upload_preset", CLOUDINARY_PRESET);
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+    { method: "POST", body: fd }
+  );
+  if (!res.ok) throw new Error("Falha no upload para o Cloudinary");
+  return (await res.json()).secure_url;
+}
+
+// ── Carregar dados ────────────────────────────────────────────
+async function carregarDados() {
+  try {
+    const snap = await getDoc(doc(db, "portfolios", "principal"));
+    if (!snap.exists()) return;
+    const data = snap.data();
+
+    // Preenche todos os inputs do formulário
+    Array.from(form.elements).forEach((el) => {
+      if (!el.name) return;
+      if (el.name.startsWith("links.")) {
+        const key = el.name.split(".")[1];
+        if (data.links?.[key]) el.value = data.links[key];
+      } else if (data[el.name] !== undefined) {
+        el.value = data[el.name];
+      }
+    });
+
+    // Logo
+    if (data.logoUrl) {
+      previewLogo.src = data.logoUrl;
+      previewLogo.classList.remove("hidden");
+    }
+
+    // Foto de perfil
+    if (data.fotoUrl) {
+      previewFoto.src = data.fotoUrl;
+      previewFoto.classList.remove("hidden");
+    }
+
+    // Opacidade da foto
+    const opFoto = data.fotoOpacidade ?? 100;
+    sliderFoto.value = opFoto;
+    labelFoto.textContent = `${opFoto}%`;
+
+    // Opacidade do banner
+    const opBanner = data.bannerOpacidade ?? 85;
+    sliderBanner.value = opBanner;
+    labelBanner.textContent = `${opBanner}%`;
+
+  } catch (err) {
+    console.error(err);
+    mostrarMensagem("Erro ao carregar dados.", "erro");
+  }
+}
+
+// ── Salvar formulário ─────────────────────────────────────────
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  const btn = form.querySelector("[type=submit]");
+  btn.disabled = true;
+  btn.textContent = "Salvando…";
 
   try {
-    const data = formToData(form);
-    // Sempre inclui os estilos atuais para não precisar de dois botões de salvar
-    data.estilos = lerEstilosDoModal();
-    const ref = doc(db, "portfolios", "principal");
-    await setDoc(ref, data, { merge: true });
+    const data = {};
+    const fd = new FormData(form);
+    for (const [name, value] of fd.entries()) {
+      if (typeof value === "string" && !value.trim()) continue;
+      if (name.startsWith("links.")) {
+        const key = name.split(".")[1];
+        if (!data.links) data.links = {};
+        data.links[key] = value.trim();
+      } else {
+        data[name] = value;
+      }
+    }
+    await setDoc(doc(db, "portfolios", "principal"), data, { merge: true });
     mostrarMensagem("Alterações salvas com sucesso!");
   } catch (err) {
     console.error(err);
-    mostrarMensagem("Erro ao salvar. Veja o console.", "erro");
+    mostrarMensagem("Erro ao salvar. Tente novamente.", "erro");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Salvar alterações`;
   }
 });
+
+// ── Sliders ───────────────────────────────────────────────────
+sliderFoto.addEventListener("input", () => {
+  labelFoto.textContent = `${sliderFoto.value}%`;
+});
+sliderFoto.addEventListener("change", async () => {
+  await setDoc(doc(db, "portfolios", "principal"), { fotoOpacidade: Number(sliderFoto.value) }, { merge: true });
+});
+
+sliderBanner.addEventListener("input", () => {
+  labelBanner.textContent = `${sliderBanner.value}%`;
+});
+sliderBanner.addEventListener("change", async () => {
+  await setDoc(doc(db, "portfolios", "principal"), { bannerOpacidade: Number(sliderBanner.value) }, { merge: true });
+});
+
+// ── Upload de imagens ─────────────────────────────────────────
+async function handleUpload({ inputEl, previewEl, firestoreKey, label }) {
+  const file = inputEl.files[0];
+  if (!file) return;
+  try {
+    mostrarMensagem(`Enviando ${label}…`);
+    const url = await uploadParaCloudinary(file);
+    if (previewEl) {
+      previewEl.src = url;
+      previewEl.classList.remove("hidden");
+    }
+    await setDoc(doc(db, "portfolios", "principal"), { [firestoreKey]: url }, { merge: true });
+    mostrarMensagem(`${label} atualizada com sucesso!`);
+  } catch (err) {
+    console.error(err);
+    mostrarMensagem(`Erro ao enviar ${label.toLowerCase()}. Tente novamente.`, "erro");
+  } finally {
+    inputEl.value = "";
+  }
+}
+
+btnLogo.addEventListener("click", () => inputLogo.click());
+inputLogo.addEventListener("change", () =>
+  handleUpload({ inputEl: inputLogo, previewEl: previewLogo, firestoreKey: "logoUrl", label: "Logo" })
+);
+
+btnFoto.addEventListener("click", () => inputFoto.click());
+inputFoto.addEventListener("change", () =>
+  handleUpload({ inputEl: inputFoto, previewEl: previewFoto, firestoreKey: "fotoUrl", label: "Foto" })
+);
+
+btnBanner.addEventListener("click", () => inputBanner.click());
+inputBanner.addEventListener("change", () =>
+  handleUpload({ inputEl: inputBanner, previewEl: null, firestoreKey: "bannerUrl", label: "Banner" })
+);

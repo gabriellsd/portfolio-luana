@@ -3,1194 +3,429 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel do Portfólio</title>
+  <title>Painel Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link id="google-fonts-link" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&family=Raleway:wght@300;400;500;600&family=Nunito:wght@300;400;600&family=Montserrat:wght@300;400;500;600&family=Open+Sans:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;1,300&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary-sage: #8DAA91;
-      --soft-cream: #F9F7F2;
-      --text-dark: #4A4A4A;
-      --accent-tan: #D4B996;
-      --cor-titulos: #2D2D2D;
-      --cor-texto-claro: #6B7280;
-      --cor-fundo-alt: #F5F5F4;
-      --cor-contato: #8DAA91;
-      --cor-botao: #8DAA91;
-      --cor-botao-texto: #FFFFFF;
-      --py-secoes: 6rem;
-      --titulo-scale: 1;
-      --cor-borda-foto: #8DAA91;
-      --cor-nav: #FFFFFF;
-      --cor-nav-texto: #374151;
-      --cor-sobre-fundo: #FFFFFF;
-      --cor-cards: #FFFFFF;
-      --cards-radius: 1rem;
-      --cards-sombra: 0 1px 3px rgba(0,0,0,0.06);
-      --cor-footer-fundo: #F1F0EB;
-      --cor-footer-texto: #6B7280;
-      /* nav específicos */
-      --cor-nav-btn: ;
-      --cor-nav-btn-texto: ;
-      --fonte-nav: ;
-      /* cores por seção */
-      --cor-hero-titulo: ;
-      --cor-hero-texto: ;
-      --cor-sobre-titulo: ;
-      --cor-sobre-texto: ;
-      --cor-sessoes-titulo: ;
-      --cor-sessoes-texto: ;
-      --cor-publicos-titulo: ;
-      --cor-publicos-texto: ;
+    body { font-family: 'Inter', sans-serif; background-color: #F3F4F6; }
+    .card { background: #fff; border-radius: 12px; border: 1px solid #E5E7EB; padding: 1.5rem; }
+    .sec-title {
+      font-size: 0.8rem; font-weight: 700; color: #374151;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      display: flex; align-items: center; gap: 0.5rem;
+      padding-bottom: 0.75rem; margin-bottom: 1rem;
+      border-bottom: 1px solid #F3F4F6;
     }
-    /* Nav específicos no preview */
-    #preview-nav { font-family: var(--fonte-nav, inherit); }
-    #preview-nav #nav-btn {
-      background-color: var(--cor-nav-btn, var(--cor-botao)) !important;
-      color: var(--cor-nav-btn-texto, var(--cor-botao-texto, #fff)) !important;
+    .lbl { display: block; font-size: 0.72rem; font-weight: 600; color: #6B7280; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .inp {
+      width: 100%; font-size: 0.875rem; color: #111827;
+      border: 1px solid #E5E7EB; border-radius: 8px;
+      padding: 0.5rem 0.75rem; background: #fff; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    /* Cores por seção no preview */
-    #preview-hero h1, #preview-hero h2, #preview-hero h3 { color: var(--cor-hero-titulo, var(--cor-titulos)); }
-    #preview-hero p { color: var(--cor-hero-texto, var(--text-dark)); }
-    #preview-sobre h1, #preview-sobre h2, #preview-sobre h3 { color: var(--cor-sobre-titulo, var(--cor-titulos)); }
-    #preview-sobre p, #preview-sobre span:not(.bg-sage):not(.text-sage) { color: var(--cor-sobre-texto, var(--text-dark)); }
-    #preview-sessoes h1, #preview-sessoes h2, #preview-sessoes h3 { color: var(--cor-sessoes-titulo, var(--cor-titulos)); }
-    #preview-sessoes p { color: var(--cor-sessoes-texto, var(--text-dark)); }
-    #preview-publicos h1, #preview-publicos h2, #preview-publicos h3 { color: var(--cor-publicos-titulo, var(--cor-titulos)); }
-    #preview-publicos p { color: var(--cor-publicos-texto, var(--text-dark)); }
-    body {
-      font-family: 'Inter', sans-serif;
-      color: var(--text-dark);
+    .inp:focus { border-color: #8DAA91; box-shadow: 0 0 0 3px rgba(141,170,145,0.15); }
+    textarea.inp { resize: vertical; min-height: 72px; }
+    .upload-btn {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      font-size: 0.75rem; font-weight: 500; color: #374151;
+      background: #F9FAFB; border: 1px solid #E5E7EB;
+      padding: 0.375rem 0.875rem; border-radius: 20px; cursor: pointer;
+      transition: background 0.15s;
     }
-    h1, h2, h3, .font-serif {
-      font-family: 'Playfair Display', serif;
-    }
-    .bg-sage { background-color: var(--primary-sage); }
-    .text-sage { color: var(--primary-sage); }
-    .border-sage { border-color: var(--primary-sage); }
-
-    #preview-sobre, #preview-sessoes, #preview-publicos, #preview-contato {
-      padding-top: var(--py-secoes) !important;
-      padding-bottom: var(--py-secoes) !important;
-    }
-    h1 { font-size: calc(3.75rem * var(--titulo-scale)) !important; }
-    h2 { font-size: calc(2.25rem * var(--titulo-scale)) !important; }
-    h3 { font-size: calc(1.25rem * var(--titulo-scale)) !important; }
-    .borda-foto { border-color: var(--cor-borda-foto) !important; }
-    body.sem-animacao-cards .card-hover:hover { transform: none !important; }
-
-    /* Destaque de borda ao editar */
-    [contenteditable]:focus {
-      outline: 2px dashed var(--primary-sage);
-      border-radius: 4px;
-    }
-
-    /* Botão de editar estilos (aparece no hover da seção) */
-    .btn-editar-estilo {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(4px);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.2s;
-      white-space: nowrap;
-      pointer-events: none;
-    }
-    .grupo-estilo:hover .btn-editar-estilo,
-    .grupo-estilo:focus-within .btn-editar-estilo {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    /* Contorno sutil ao passar o mouse na seção */
-    .grupo-estilo {
-      position: relative;
-    }
-    .grupo-estilo::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 2px dashed transparent;
-      pointer-events: none;
-      transition: border-color 0.2s;
-    }
-    .grupo-estilo:hover::after {
-      border-color: rgba(141,170,145,0.4);
-    }
-
-    .hero-gradient {
-      background: linear-gradient(rgba(249, 247, 242, 0.85), rgba(249, 247, 242, 0.85)),
-                  url('https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&q=80&w=2070');
-      background-size: cover;
-      background-position: center;
-    }
+    .upload-btn:hover { background: #F3F4F6; }
+    .sub-group { background: #F9FAFB; border-radius: 8px; padding: 0.875rem; border: 1px solid #F3F4F6; }
+    .sub-group-title { font-size: 0.72rem; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.75rem; }
   </style>
 </head>
-<body class="bg-slate-200">
-  <div class="min-h-screen flex">
+<body class="min-h-screen">
 
-    <!-- Sidebar -->
-    <aside class="w-64 shrink-0 bg-white border-r border-slate-200 p-6 sticky top-0 h-screen flex flex-col">
-      <div class="mb-6">
-        <span class="text-lg font-serif tracking-widest uppercase text-sage block mb-1">Painel</span>
-        <h1 class="text-sm font-semibold text-slate-700">Portfólio da Luana</h1>
+  <!-- ── LOGIN ──────────────────────────────────────────────────── -->
+  <div id="login-section" class="min-h-screen flex items-center justify-center p-6">
+    <div class="w-full max-w-sm">
+      <div class="text-center mb-8">
+        <div class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h1 class="text-xl font-bold text-gray-900">Painel Admin</h1>
+        <p class="text-sm text-gray-400 mt-1">Acesso restrito ao portfólio</p>
       </div>
-      <p class="text-xs text-slate-400 leading-relaxed mb-6">
-        Clique em qualquer texto para editar. Quando terminar, clique em
-        <strong class="text-slate-600">Salvar alterações</strong>.
-      </p>
-
-      <!-- Links rápidos -->
-      <nav class="space-y-1 text-xs text-slate-500 mb-6">
-        <a href="#preview-hero" class="block hover:text-sage transition">↑ Topo (Hero)</a>
-        <a href="#preview-sobre" class="block hover:text-sage transition">Sobre mim</a>
-        <a href="#preview-sessoes" class="block hover:text-sage transition">Sessões</a>
-        <a href="#preview-publicos" class="block hover:text-sage transition">Públicos</a>
-        <a href="#preview-contato" class="block hover:text-sage transition">Contato</a>
-      </nav>
-
-      <!-- estilos-section vazio (painel agora é modal) -->
-      <div id="estilos-section" class="hidden"></div>
-
-      <div class="mt-auto space-y-2 pt-4 border-t border-slate-100">
-        <!-- Toggle estilos -->
-        <button
-          id="toggle-estilos"
-          type="button"
-          class="hidden w-full px-3 py-2 rounded-md bg-slate-50 text-xs text-slate-600 hover:bg-slate-100 transition text-left flex items-center gap-2"
-        >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="9" cy="6" r="2" fill="white"/><circle cx="15" cy="12" r="2" fill="white"/><circle cx="9" cy="18" r="2" fill="white"/></svg>
-          Fontes e cores
+      <div class="card space-y-4">
+        <div>
+          <label class="lbl">E-mail</label>
+          <input id="login-email" type="email" placeholder="seu@email.com" class="inp" />
+        </div>
+        <div>
+          <label class="lbl">Senha</label>
+          <input id="login-password" type="password" placeholder="••••••••" class="inp" />
+        </div>
+        <button id="login-button" class="w-full bg-[#8DAA91] text-white font-semibold py-2.5 rounded-lg text-sm hover:opacity-90 transition">
+          Entrar
         </button>
-        <button
-          id="logout-button"
-          type="button"
-          class="hidden w-full px-3 py-2 rounded-md bg-slate-100 text-xs text-slate-600 hover:bg-slate-200 transition"
-        >
-          Sair
-        </button>
-      </div>
-    </aside>
-
-    <!-- Main -->
-    <main class="flex-1 overflow-y-auto">
-
-      <!-- ───── Login ───── -->
-      <section
-        id="login-section"
-        class="min-h-screen flex items-center justify-center p-6"
-      >
-        <div class="w-full max-w-sm bg-white rounded-2xl shadow-sm p-8 space-y-5">
-          <div class="text-center">
-            <span class="text-2xl font-serif tracking-widest uppercase text-sage block mb-1">Portfólio</span>
-            <p class="text-xs text-slate-400">Faça login para editar o conteúdo</p>
-          </div>
-
-          <label class="block text-sm">
-            <span class="text-slate-600">E-mail</span>
-            <input
-              id="login-email"
-              type="email"
-              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-sage"
-            />
-          </label>
-
-          <label class="block text-sm">
-            <span class="text-slate-600">Senha</span>
-            <input
-              id="login-password"
-              type="password"
-              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-sage"
-            />
-          </label>
-
-          <button
-            id="login-button"
-            type="button"
-            class="w-full py-2.5 rounded-full bg-sage text-white text-sm font-medium hover:opacity-90 transition"
-          >
-            Entrar
-          </button>
-        </div>
-      </section>
-
-      <!-- ───── App (só aparece logada) ───── -->
-      <section id="app-section" class="hidden">
-
-        <!-- Barra fixa de salvar -->
-        <div class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200 px-6 py-3 flex items-center justify-between">
-          <span class="text-xs text-slate-500">Edite os textos abaixo e salve quando terminar</span>
-          <div class="flex items-center gap-3">
-            <div id="mensagem" class="hidden text-xs rounded-md px-3 py-1.5"></div>
-            <button
-              type="submit"
-              form="portfolio-form"
-              class="px-5 py-2 rounded-full bg-sage text-white text-sm font-medium hover:opacity-90 transition shadow-sm"
-            >
-              Salvar alterações
-            </button>
-          </div>
-        </div>
-
-        <!-- ══════════════════════════════════════════ -->
-        <!--  PREVIEWS VISUAIS (editáveis)             -->
-        <!-- ══════════════════════════════════════════ -->
-
-        <!-- Nav -->
-        <nav class="grupo-estilo w-full bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex justify-between items-center">
-          <button type="button" class="btn-editar-estilo" data-abrir-estilo="modal-nav">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Editar cores da nav
-          </button>
-          <!-- Logo upload -->
-          <div class="flex items-center gap-3">
-            <div class="group/logo relative cursor-pointer" id="area-logo">
-              <div id="logo-placeholder" class="w-10 h-10 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center hover:border-sage transition-colors" title="Clique para enviar logo">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              </div>
-              <img id="preview-logo" src="" alt="Logo" class="hidden h-10 w-auto object-contain rounded-lg">
-              <div class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg opacity-0 group-hover/logo:opacity-100 transition-opacity pointer-events-none">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              </div>
-            </div>
-            <input id="input-logo" type="file" accept="image/*" class="hidden">
-            <span
-              class="text-xl font-serif tracking-widest uppercase text-sage outline-none"
-              data-preview-field="navBrand"
-              contenteditable="true"
-            >
-              Psicologia Clínica
-            </span>
-          </div>
-          <div class="flex space-x-8 text-sm uppercase tracking-wider font-medium text-gray-600 items-center">
-            <span>Sobre</span>
-            <span>Atendimento</span>
-            <span>Público</span>
-            <!-- Botão Agendar da nav: texto editável, link no modal -->
-            <span
-              id="nav-btn"
-              data-preview-field="navBtnTexto"
-              contenteditable="true"
-              class="bg-sage text-white px-5 py-2 rounded-full outline-none cursor-text"
-              title="Clique para editar o texto · Link: use Editar nav"
-            >Agendar</span>
-          </div>
-        </nav>
-
-        <!-- Hero -->
-        <section id="preview-hero" class="relative min-h-[60vh] flex items-center justify-center hero-gradient px-6 text-center group/hero">
-          <!-- Botões do hero -->
-          <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover/hero:opacity-100 transition-opacity z-10">
-            <button
-              type="button"
-              class="flex items-center gap-1.5 bg-black/50 text-white text-xs font-medium px-3 py-2 rounded-full"
-              data-abrir-estilo="modal-hero"
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-              Editar hero
-            </button>
-          </div>
-          <!-- input de upload do banner (acionado pelo botão no modal) -->
-          <input id="input-banner" type="file" accept="image/*" class="hidden" />
-
-          <div class="max-w-3xl relative z-10">
-            <div class="mb-6 inline-block p-4 rounded-full bg-white shadow-sm">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            </div>
-            <h1
-              class="text-4xl md:text-5xl mb-6 text-gray-800"
-              data-preview-field="heroTitle"
-              contenteditable="true"
-            >
-              Cuidando da sua história com sensibilidade e ética.
-            </h1>
-            <p
-              class="text-lg italic text-gray-600 mb-4"
-              data-preview-field="heroSubtitle"
-              contenteditable="true"
-            >
-              "Acredito que cada trajetória merece ser compreendida com respeito e responsabilidade."
-            </p>
-          </div>
-
-          <!-- Dica: opacidade agora no modal de edição -->
-          <div class="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover/hero:opacity-100 transition-opacity pointer-events-none">
-            <p class="text-white/70 text-xs bg-black/40 rounded-full px-3 py-1">Use "Editar hero" para ajustar opacidade</p>
-          </div>
-        </section>
-
-        <!-- Sobre mim -->
-        <section id="preview-sobre" class="grupo-estilo py-24 px-6 bg-white">
-          <button type="button" class="btn-editar-estilo" data-abrir-estilo="modal-sobre">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Editar fundo
-          </button>
-          <div class="max-w-6xl mx-auto flex flex-row items-center gap-16">
-            <div class="w-1/2 shrink-0">
-              <div class="relative group">
-                <div class="borda-foto absolute -top-4 -left-4 w-full h-full border-2 border-sage rounded-lg"></div>
-                <img
-                  id="preview-foto"
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000"
-                  alt="Foto Profissional"
-                  class="relative rounded-lg shadow-xl grayscale-[20%] w-full object-cover"
-                />
-                <!-- Overlay: apenas botão trocar foto -->
-                <div class="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity p-4">
-                  <button
-                    id="btn-upload-foto"
-                    type="button"
-                    class="flex items-center gap-2 bg-black/50 text-white text-xs font-medium px-4 py-2 rounded-full"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    Trocar foto
-                  </button>
-                  <p class="text-white/60 text-xs mt-2">Opacidade: use "Editar seção"</p>
-                </div>
-                <input id="input-foto" type="file" accept="image/*" class="hidden" />
-              </div>
-            </div>
-            <div class="w-1/2">
-              <h2
-                class="text-3xl md:text-4xl mb-6"
-                data-preview-field="sobreTitulo"
-                contenteditable="true"
-              >
-                Sobre mim
-              </h2>
-              <p
-                class="text-gray-600 leading-relaxed mb-6"
-                data-preview-field="sobreTexto"
-                contenteditable="true"
-              >
-                Sou psicóloga com atuação clínica, dedicada a oferecer um espaço de escuta sensível e acolhedora. Meu trabalho é guiado pela construção de vínculo e pelo respeito à singularidade de cada pessoa, respeitando sempre o seu tempo e processo.
-              </p>
-
-              <div class="space-y-4">
-                <div class="flex items-start gap-4">
-                  <span
-                    class="bg-sage/10 p-2 rounded text-sage font-bold"
-                    data-preview-field="abordagemLabel"
-                    contenteditable="true"
-                  >
-                    Abordagem
-                  </span>
-                  <div>
-                    <p
-                      class="font-medium"
-                      data-preview-field="abordagemTitulo"
-                      contenteditable="true"
-                    >
-                      Terapia Cognitivo Comportamental (TCC)
-                    </p>
-                    <p
-                      class="text-sm text-gray-500"
-                      data-preview-field="abordagemDescricao"
-                      contenteditable="true"
-                    >
-                      Foco em padrões de pensamento e comportamento para promover mudanças saudáveis.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="flex items-start gap-4">
-                  <span
-                    class="bg-sage/10 p-2 rounded text-sage font-bold"
-                    data-preview-field="formacaoLabel"
-                    contenteditable="true"
-                  >
-                    Formação
-                  </span>
-                  <div>
-                    <p
-                      class="font-medium"
-                      data-preview-field="formacaoTitulo"
-                      contenteditable="true"
-                    >
-                      Bacharel em Psicologia
-                    </p>
-                    <p
-                      class="text-sm text-gray-500"
-                      data-preview-field="formacaoInstituicao"
-                      contenteditable="true"
-                    >
-                      Nome da Instituição de Ensino
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Sessões -->
-        <section id="preview-sessoes" class="grupo-estilo py-24 px-6 bg-stone-50">
-          <button type="button" class="btn-editar-estilo" data-abrir-estilo="modal-cards">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Editar cards
-          </button>
-          <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-              <h2
-                class="text-3xl md:text-4xl mb-4"
-                data-preview-field="sessaoTitulo"
-                contenteditable="true"
-              >
-                Como funcionam as sessões
-              </h2>
-              <div class="h-1 w-20 bg-sage mx-auto"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
-                <h3
-                  class="font-semibold mb-3"
-                  data-preview-field="modalidadeTitulo"
-                  contenteditable="true"
-                >
-                  Modalidade
-                </h3>
-                <p
-                  class="text-gray-600 text-sm"
-                  data-preview-field="modalidadeTexto"
-                  contenteditable="true"
-                >
-                  Atendimento Presencial e Online (via plataforma segura).
-                </p>
-              </div>
-              <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
-                <h3
-                  class="font-semibold mb-3"
-                  data-preview-field="duracaoTitulo"
-                  contenteditable="true"
-                >
-                  Duração
-                </h3>
-                <p
-                  class="text-gray-600 text-sm"
-                  data-preview-field="duracaoTexto"
-                  contenteditable="true"
-                >
-                  As sessões têm duração aproximada de 50 minutos.
-                </p>
-              </div>
-              <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
-                <h3
-                  class="font-semibold mb-3"
-                  data-preview-field="frequenciaTitulo"
-                  contenteditable="true"
-                >
-                  Frequência
-                </h3>
-                <p
-                  class="text-gray-600 text-sm"
-                  data-preview-field="frequenciaTexto"
-                  contenteditable="true"
-                >
-                  Geralmente semanais, ajustadas conforme a necessidade clínica.
-                </p>
-              </div>
-              <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
-                <h3
-                  class="font-semibold mb-3"
-                  data-preview-field="agendamentoTitulo"
-                  contenteditable="true"
-                >
-                  Agendamento
-                </h3>
-                <p
-                  class="text-gray-600 text-sm"
-                  data-preview-field="agendamentoTexto"
-                  contenteditable="true"
-                >
-                  Totalmente digital via WhatsApp para sua comodidade.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Públicos -->
-        <section id="preview-publicos" class="grupo-estilo py-24 px-6 bg-white">
-          <button type="button" class="btn-editar-estilo" data-abrir-estilo="modal-publicos">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Editar seção
-          </button>
-          <div class="max-w-6xl mx-auto">
-            <h2
-              class="text-3xl md:text-4xl text-center mb-16"
-              data-preview-field="publicoTitulo"
-              contenteditable="true"
-            >
-              Públicos Atendidos
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <div class="text-center space-y-4">
-                <div class="text-4xl mb-4 outline-none cursor-text" data-preview-field="iconeCriancas" contenteditable="true" title="Clique para editar o ícone">🧸</div>
-                <h3
-                  class="text-2xl font-serif"
-                  data-preview-field="criancasTitulo"
-                  contenteditable="true"
-                >
-                  Crianças
-                </h3>
-                <p
-                  class="text-gray-600 leading-relaxed"
-                  data-preview-field="criancasTexto"
-                  contenteditable="true"
-                >
-                  Atendimento lúdico e sensível, focado no desenvolvimento infantil e orientação constante aos pais ou responsáveis.
-                </p>
-              </div>
-
-              <div class="text-center space-y-4">
-                <div class="text-4xl mb-4 outline-none cursor-text" data-preview-field="iconeAdolescentes" contenteditable="true" title="Clique para editar o ícone">🌱</div>
-                <h3
-                  class="text-2xl font-serif"
-                  data-preview-field="adolescentesTitulo"
-                  contenteditable="true"
-                >
-                  Adolescentes
-                </h3>
-                <p
-                  class="text-gray-600 leading-relaxed"
-                  data-preview-field="adolescentesTexto"
-                  contenteditable="true"
-                >
-                  Apoio em fases de transição, busca por identidade, manejo de ansiedade e os desafios típicos da juventude.
-                </p>
-              </div>
-
-              <div class="text-center space-y-4">
-                <div class="text-4xl mb-4 outline-none cursor-text" data-preview-field="iconeAdultos" contenteditable="true" title="Clique para editar o ícone">🌿</div>
-                <h3
-                  class="text-2xl font-serif"
-                  data-preview-field="adultosTitulo"
-                  contenteditable="true"
-                >
-                  Adultos
-                </h3>
-                <p
-                  class="text-gray-600 leading-relaxed"
-                  data-preview-field="adultosTexto"
-                  contenteditable="true"
-                >
-                  Foco em autoconhecimento, gestão da ansiedade, conflitos em relacionamentos e fortalecimento da autoestima.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Contato -->
-        <section id="preview-contato" class="grupo-estilo py-24 px-6 bg-sage text-white">
-          <button type="button" class="btn-editar-estilo" data-abrir-estilo="modal-contato">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Editar seção
-          </button>
-          <div class="max-w-4xl mx-auto text-center">
-            <h2
-              class="text-3xl md:text-4xl mb-8 font-serif"
-              data-preview-field="contatoTitulo"
-              contenteditable="true"
-            >
-              Vamos iniciar essa jornada?
-            </h2>
-            <p
-              class="text-lg mb-12 opacity-90"
-              data-preview-field="contatoTexto"
-              contenteditable="true"
-            >
-              Escolha a melhor forma para conversarmos e agendarmos sua primeira consulta.
-            </p>
-
-            <div class="flex flex-col md:flex-row justify-center gap-6">
-              <!-- Botão WhatsApp -->
-              <div class="flex items-center justify-center gap-3 bg-white text-sage px-8 py-4 rounded-full font-semibold shadow-lg">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.012 2c-5.508 0-9.987 4.479-9.987 9.988 0 1.757.455 3.409 1.25 4.853l-1.325 4.832 4.95-1.298c1.405.765 3.007 1.201 4.712 1.201 5.508 0 9.988-4.479 9.988-9.988s-4.48-9.988-9.988-9.988zm5.952 14.12c-.255.719-1.493 1.319-2.054 1.396-.51.07-1.164.085-3.085-.714-2.458-1.018-4.043-3.52-4.165-3.684-.122-.164-.993-1.322-.993-2.52s.624-1.788.847-2.032c.224-.244.488-.305.651-.305s.326.001.468.008c.149.006.35-.056.549.426.203.491.693 1.687.753 1.809.061.122.102.264.02.427-.082.163-.122.264-.244.407-.122.143-.255.32-.366.429-.122.122-.251.255-.109.497.143.242.635 1.047 1.365 1.696.942.839 1.738 1.1 1.982 1.222.244.122.387.102.529-.061.143-.163.611-.712.774-.954.163-.244.326-.204.549-.122.224.081 1.424.671 1.668.793.244.122.407.183.468.285.061.102.061.59-.194 1.309z"/></svg>
-                <span data-preview-field="whatsappTexto" contenteditable="true">Agendar pelo WhatsApp</span>
-              </div>
-
-              <!-- Botão E-mail -->
-              <div class="flex items-center justify-center gap-3 bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                <span data-preview-field="emailTexto" contenteditable="true">Enviar E-mail</span>
-              </div>
-            </div>
-
-            <div class="mt-16 pt-16 border-t border-white/20">
-              <div class="flex flex-col items-center gap-2">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <p
-                  class="font-medium"
-                  data-preview-field="localLabel"
-                  contenteditable="true"
-                >
-                  Atendimento Presencial
-                </p>
-                <p
-                  class="text-sm opacity-80"
-                  data-preview-field="localEndereco"
-                  contenteditable="true"
-                >
-                  Rua Exemplo, 123 - Sala 45, Centro Comercial. Cidade - Estado.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Rodapé -->
-        <footer class="grupo-estilo py-8 bg-stone-100 text-center text-xs text-gray-500 uppercase tracking-widest">
-          <button type="button" class="btn-editar-estilo" data-abrir-estilo="modal-footer">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Editar rodapé
-          </button>
-          <p data-preview-field="footerTexto" contenteditable="true">
-            © 2026 | Nome da Psicóloga | CRP 00/00000
-          </p>
-          <!-- Redes sociais -->
-          <div class="flex justify-center gap-4 mt-3 text-slate-400">
-            <div class="flex items-center gap-1.5 text-[10px]">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              <input id="preview-instagram" type="text" name="links.instagram" form="portfolio-form" placeholder="Link do Instagram" class="border-b border-dashed border-slate-300 bg-transparent text-[10px] text-slate-500 outline-none w-36 focus:border-sage" />
-            </div>
-            <div class="flex items-center gap-1.5 text-[10px]">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-              <input id="preview-linkedin" type="text" name="links.linkedin" form="portfolio-form" placeholder="Link do LinkedIn" class="border-b border-dashed border-slate-300 bg-transparent text-[10px] text-slate-500 outline-none w-36 focus:border-sage" />
-            </div>
-          </div>
-        </footer>
-
-        <!-- ══════════════════════════════════════════ -->
-        <!--  CAMPOS OCULTOS para o Firestore          -->
-        <!-- ══════════════════════════════════════════ -->
-        <form id="portfolio-form" class="hidden">
-          <!-- Hero -->
-          <input type="text" name="navBrand" />
-          <input type="text" name="pageTitle" />
-          <input type="text" name="heroTitle" />
-          <textarea name="heroSubtitle"></textarea>
-          <!-- Sobre mim -->
-          <input type="text" name="sobreTitulo" />
-          <textarea name="sobreTexto"></textarea>
-          <input type="text" name="abordagemLabel" />
-          <input type="text" name="abordagemTitulo" />
-          <textarea name="abordagemDescricao"></textarea>
-          <input type="text" name="formacaoLabel" />
-          <input type="text" name="formacaoTitulo" />
-          <input type="text" name="formacaoInstituicao" />
-          <!-- Sessões -->
-          <input type="text" name="sessaoTitulo" />
-          <input type="text" name="modalidadeTitulo" />
-          <textarea name="modalidadeTexto"></textarea>
-          <input type="text" name="duracaoTitulo" />
-          <textarea name="duracaoTexto"></textarea>
-          <input type="text" name="frequenciaTitulo" />
-          <textarea name="frequenciaTexto"></textarea>
-          <input type="text" name="agendamentoTitulo" />
-          <textarea name="agendamentoTexto"></textarea>
-          <!-- Públicos -->
-          <input type="text" name="publicoTitulo" />
-          <input type="text" name="criancasTitulo" />
-          <textarea name="criancasTexto"></textarea>
-          <input type="text" name="adolescentesTitulo" />
-          <textarea name="adolescentesTexto"></textarea>
-          <input type="text" name="adultosTitulo" />
-          <textarea name="adultosTexto"></textarea>
-          <!-- Contato -->
-          <input type="text" name="contatoTitulo" />
-          <textarea name="contatoTexto"></textarea>
-          <input type="text" name="whatsappTexto" />
-          <input type="text" name="emailTexto" />
-          <input type="text" name="localLabel" />
-          <textarea name="localEndereco"></textarea>
-          <input type="text" name="footerTexto" />
-          <!-- Ícones públicos -->
-          <input type="text" name="iconeCriancas" />
-          <input type="text" name="iconeAdolescentes" />
-          <input type="text" name="iconeAdultos" />
-        </form>
-
-      </section><!-- fim app-section -->
-    </main>
-  </div>
-
-  <!-- Modal de Estilos -->
-  <div id="modal-estilos" class="hidden fixed inset-0 z-50 flex">
-    <!-- Overlay -->
-    <div id="modal-overlay" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-
-    <!-- Painel lateral -->
-    <div class="relative ml-auto w-80 h-full bg-white shadow-2xl flex flex-col overflow-hidden">
-      <div class="px-5 py-4 border-b border-slate-100">
-        <div class="flex items-center justify-between mb-1">
-          <h2 id="modal-titulo" class="text-sm font-semibold text-slate-700">Fontes e Cores</h2>
-          <button id="fechar-estilos" class="text-slate-400 hover:text-slate-600 text-lg leading-none">✕</button>
-        </div>
-      </div>
-
-      <div class="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-
-        <!-- ── HERO / BANNER ─────────────────────────── -->
-        <div id="modal-hero" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Hero & Configurações Gerais</p>
-          </div>
-          <div class="px-4 py-3 space-y-3 bg-white">
-            <!-- ── Aparência geral do site ── -->
-            <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Aparência geral do site</p>
-            <div class="space-y-1 pb-1">
-              <label class="text-xs text-slate-500">Fonte dos títulos</label>
-              <select id="fonte-titulos" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="Playfair Display">Playfair Display (padrão)</option>
-                <option value="Cormorant Garamond">Cormorant Garamond</option>
-                <option value="Lora">Lora</option>
-                <option value="Merriweather">Merriweather</option>
-                <option value="EB Garamond">EB Garamond</option>
-              </select>
-            </div>
-            <div class="space-y-1 pb-1">
-              <label class="text-xs text-slate-500">Fonte do corpo do texto</label>
-              <select id="fonte-texto" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="Inter">Inter (padrão)</option>
-                <option value="Lato">Lato</option>
-                <option value="Open Sans">Open Sans</option>
-                <option value="Raleway">Raleway</option>
-                <option value="Nunito">Nunito</option>
-                <option value="Montserrat">Montserrat</option>
-              </select>
-            </div>
-            <div class="flex items-center justify-between py-1 border-b border-slate-50">
-              <p class="text-xs font-medium text-slate-700">Cor de destaque</p>
-              <div class="flex items-center gap-2">
-                <span id="cor-primaria-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
-                <input id="cor-primaria" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between py-1 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Fundo do site</p>
-                <p class="text-[10px] text-slate-400">hero e seções claras</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-fundo-hex" class="text-[10px] font-mono text-slate-400">#F9F7F2</span>
-                <input id="cor-fundo" type="color" value="#F9F7F2" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="space-y-1 pb-1">
-              <p class="text-xs font-medium text-slate-700">Espaçamento entre seções</p>
-              <select id="espacamento-secoes" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="3rem">Compacto</option>
-                <option value="6rem" selected>Normal (padrão)</option>
-                <option value="8rem">Amplo</option>
-              </select>
-            </div>
-            <div class="space-y-1 pb-1">
-              <p class="text-xs font-medium text-slate-700">Tamanho dos títulos</p>
-              <select id="tamanho-titulos" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="0.8">Pequeno</option>
-                <option value="1" selected>Médio (padrão)</option>
-                <option value="1.2">Grande</option>
-                <option value="1.4">Extra grande</option>
-              </select>
-            </div>
-            <div class="space-y-1 border-b border-slate-100 pb-3">
-              <p class="text-xs font-medium text-slate-700">Alinhamento no hero</p>
-              <select id="hero-alinhamento" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="center" selected>Centralizado</option>
-                <option value="left">À esquerda</option>
-              </select>
-            </div>
-            <!-- ── Banner ── -->
-            <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Banner do hero</p>
-            <!-- Botão trocar banner -->
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Imagem de fundo</p>
-                <p class="text-[10px] text-slate-400">Ideal: 1920×1080px · Máx. 5 MB</p>
-              </div>
-              <button
-                id="btn-upload-banner-modal"
-                type="button"
-                class="flex items-center gap-1.5 text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded-full transition"
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Trocar banner
-              </button>
-            </div>
-            <!-- Opacidade do banner -->
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between">
-                <p class="text-xs font-medium text-slate-700">Opacidade do filtro</p>
-                <span id="banner-opacidade-valor" class="text-[10px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">85%</span>
-              </div>
-              <input id="banner-opacidade" type="range" min="0" max="100" value="85" class="w-full accent-sage cursor-pointer" />
-              <div class="flex justify-between text-[10px] text-slate-400"><span>Transparente</span><span>Opaco</span></div>
-            </div>
-            <!-- Cores do texto do hero -->
-            <div class="pt-1 border-t border-slate-100 space-y-1">
-              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider pt-1">Texto do hero</p>
-              <div class="flex items-center justify-between py-1">
-                <p class="text-xs font-medium text-slate-700">Cor do título</p>
-                <div class="flex items-center gap-2">
-                  <span id="cor-hero-titulo-hex" class="text-[10px] font-mono text-slate-400">#2D2D2D</span>
-                  <input id="cor-hero-titulo" type="color" value="#2D2D2D" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-                </div>
-              </div>
-              <div class="flex items-center justify-between py-1">
-                <p class="text-xs font-medium text-slate-700">Cor do texto</p>
-                <div class="flex items-center gap-2">
-                  <span id="cor-hero-texto-hex" class="text-[10px] font-mono text-slate-400">#4A4A4A</span>
-                  <input id="cor-hero-texto" type="color" value="#4A4A4A" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── BARRA DE NAVEGAÇÃO ─────────────────────── -->
-        <div id="modal-nav" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="15" y2="18"/></svg>
-            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Barra de navegação</p>
-          </div>
-          <div class="px-4 py-3 space-y-2 bg-white">
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Fundo da nav</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-nav-hex" class="text-[10px] font-mono text-slate-400">#FFFFFF</span>
-                <input id="cor-nav" type="color" value="#FFFFFF" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Texto dos links</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-nav-texto-hex" class="text-[10px] font-mono text-slate-400">#374151</span>
-                <input id="cor-nav-texto" type="color" value="#374151" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <!-- Fonte da nav -->
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <p class="text-xs font-medium text-slate-700">Fonte da nav</p>
-              <select id="fonte-nav" class="text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white max-w-[160px]">
-                <option value="">Mesma do site</option>
-                <option value="Inter, sans-serif">Inter</option>
-                <option value="Playfair Display, serif">Playfair Display</option>
-                <option value="Lato, sans-serif">Lato</option>
-                <option value="Raleway, sans-serif">Raleway</option>
-                <option value="Nunito, sans-serif">Nunito</option>
-                <option value="Montserrat, sans-serif">Montserrat</option>
-                <option value="Open Sans, sans-serif">Open Sans</option>
-                <option value="Cormorant Garamond, serif">Cormorant Garamond</option>
-                <option value="Lora, serif">Lora</option>
-              </select>
-            </div>
-            <!-- Botão Agendar da nav -->
-            <div class="pt-1 space-y-3">
-              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Botão "Agendar"</p>
-              <div class="flex items-center justify-between py-1 border-b border-slate-50">
-                <p class="text-xs font-medium text-slate-700">Cor do botão</p>
-                <div class="flex items-center gap-2">
-                  <span id="cor-nav-btn-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
-                  <input id="cor-nav-btn" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-                </div>
-              </div>
-              <div class="flex items-center justify-between py-1 border-b border-slate-50">
-                <p class="text-xs font-medium text-slate-700">Cor do texto do botão</p>
-                <div class="flex items-center gap-2">
-                  <span id="cor-nav-btn-texto-hex" class="text-[10px] font-mono text-slate-400">#FFFFFF</span>
-                  <input id="cor-nav-btn-texto" type="color" value="#FFFFFF" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-                </div>
-              </div>
-              <div class="space-y-1">
-                <label class="text-xs text-slate-500">Texto do botão</label>
-                <input type="text" name="navBtnTexto" form="portfolio-form" placeholder="Agendar" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white outline-none focus:border-sage" />
-              </div>
-              <div class="space-y-1">
-                <label class="text-xs text-slate-500">Link do botão</label>
-                <input type="text" name="links.navBtn" form="portfolio-form" placeholder="#contato ou https://..." class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white outline-none focus:border-sage" />
-              </div>
-            </div>
-            <!-- Logo -->
-            <div class="pt-2 border-t border-slate-100 space-y-2">
-              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Logo</p>
-              <div class="flex items-center gap-3">
-                <div id="logo-preview-modal" class="w-10 h-10 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden shrink-0">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <p class="text-[10px] text-slate-400 mb-1">PNG recomendado · Máx. 2 MB</p>
-                  <button type="button" id="btn-logo-modal" class="flex items-center gap-1.5 text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded-full transition">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    Trocar logo
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── SEÇÃO CONTATO ─────────────────────────── -->
-        <div id="modal-contato" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.79-1.79a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Seção Contato</p>
-          </div>
-          <div class="px-4 py-3 space-y-3 bg-white">
-            <!-- Fundo da seção -->
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Cor de fundo</p>
-                <p class="text-[10px] text-slate-400">bloco de agendamento</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-fundo-contato-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
-                <input id="cor-fundo-contato" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <!-- Cor dos botões de contato -->
-            <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider pt-1">Botões de contato</p>
-            <div class="flex items-center justify-between py-1 border-b border-slate-50">
-              <p class="text-xs font-medium text-slate-700">Fundo dos botões</p>
-              <div class="flex items-center gap-2">
-                <span id="cor-botao-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
-                <input id="cor-botao" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between py-1 border-b border-slate-50">
-              <p class="text-xs font-medium text-slate-700">Texto dos botões</p>
-              <div class="flex items-center gap-2">
-                <span id="cor-botao-texto-hex" class="text-[10px] font-mono text-slate-400">#FFFFFF</span>
-                <input id="cor-botao-texto" type="color" value="#FFFFFF" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <!-- Links dos botões -->
-            <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider pt-1">Links dos botões</p>
-            <div class="space-y-1">
-              <label class="text-xs text-slate-500">Link WhatsApp</label>
-              <input type="text" name="links.whatsapp" form="portfolio-form" placeholder="https://wa.me/5511999999999" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white outline-none focus:border-sage" />
-            </div>
-            <div class="space-y-1">
-              <label class="text-xs text-slate-500">Link E-mail</label>
-              <input type="text" name="links.email" form="portfolio-form" placeholder="mailto:contato@email.com" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white outline-none focus:border-sage" />
-            </div>
-          </div>
-        </div>
-
-        <!-- ── SEÇÃO SOBRE MIM ────────────────────────── -->
-        <div id="modal-sobre" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Seção "Sobre mim"</p>
-          </div>
-          <div class="px-4 py-3 space-y-3 bg-white">
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Fundo da seção</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-sobre-fundo-hex" class="text-[10px] font-mono text-slate-400">#FFFFFF</span>
-                <input id="cor-sobre-fundo" type="color" value="#FFFFFF" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <!-- Opacidade da foto -->
-            <div class="space-y-1.5 border-b border-slate-50 pb-3">
-              <div class="flex items-center justify-between">
-                <p class="text-xs font-medium text-slate-700">Opacidade da foto</p>
-                <span id="foto-opacidade-valor" class="text-[10px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">100%</span>
-              </div>
-              <input id="foto-opacidade" type="range" min="10" max="100" value="100" class="w-full accent-sage cursor-pointer" />
-              <div class="flex justify-between text-[10px] text-slate-400"><span>Suave</span><span>Normal</span></div>
-              <p class="text-[10px] text-slate-400">Ideal: 800×1000px · Máx. 5 MB</p>
-            </div>
-            <!-- Cores do texto desta seção -->
-            <div class="space-y-1">
-              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Texto desta seção</p>
-              <div class="flex items-center justify-between py-1">
-                <p class="text-xs font-medium text-slate-700">Cor do título</p>
-                <div class="flex items-center gap-2">
-                  <span id="cor-sobre-titulo-hex" class="text-[10px] font-mono text-slate-400">#2D2D2D</span>
-                  <input id="cor-sobre-titulo" type="color" value="#2D2D2D" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-                </div>
-              </div>
-              <div class="flex items-center justify-between py-1">
-                <p class="text-xs font-medium text-slate-700">Cor do texto</p>
-                <div class="flex items-center gap-2">
-                  <span id="cor-sobre-texto-hex" class="text-[10px] font-mono text-slate-400">#4A4A4A</span>
-                  <input id="cor-sobre-texto" type="color" value="#4A4A4A" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-                </div>
-              </div>
-              <div class="flex items-center justify-between py-1 pt-2 border-t border-slate-50">
-                <div>
-                  <p class="text-xs font-medium text-slate-700">Borda decorativa da foto</p>
-                  <p class="text-[10px] text-slate-400">moldura colorida</p>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span id="cor-borda-foto-hex" class="text-[10px] font-mono text-slate-400">#8DAA91</span>
-                  <input id="cor-borda-foto" type="color" value="#8DAA91" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── CARDS DAS SESSÕES ──────────────────────── -->
-        <div id="modal-cards" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 1 4 0"/></svg>
-            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Seção Sessões</p>
-          </div>
-          <div class="px-4 py-3 space-y-3 bg-white">
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Fundo da seção</p>
-                <p class="text-[10px] text-slate-400">cor de fundo das sessões</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-fundo-alt-hex" class="text-[10px] font-mono text-slate-400">#F5F5F4</span>
-                <input id="cor-fundo-alt" type="color" value="#F5F5F4" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Fundo dos cards</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-cards-hex" class="text-[10px] font-mono text-slate-400">#FFFFFF</span>
-                <input id="cor-cards" type="color" value="#FFFFFF" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between">
-                <p class="text-xs font-medium text-slate-700">Arredondamento</p>
-                <span id="cards-radius-val" class="text-[10px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">16px</span>
-              </div>
-              <input id="cards-radius" type="range" min="0" max="32" step="2" value="16" class="w-full accent-sage cursor-pointer" />
-              <div class="flex justify-between text-[10px] text-slate-400">
-                <span>Reto</span><span>Médio</span><span>Redondo</span>
-              </div>
-            </div>
-            <div class="space-y-1 border-b border-slate-50 pb-3">
-              <p class="text-xs font-medium text-slate-700">Sombra</p>
-              <select id="cards-sombra" class="w-full text-xs border border-slate-200 rounded-md px-2 py-1.5 bg-white">
-                <option value="none">Nenhuma</option>
-                <option value="0 1px 3px rgba(0,0,0,0.06)" selected>Suave (padrão)</option>
-                <option value="0 4px 12px rgba(0,0,0,0.10)">Média</option>
-                <option value="0 8px 24px rgba(0,0,0,0.15)">Forte</option>
-              </select>
-            </div>
-            <!-- Cores do texto desta seção -->
-            <div class="space-y-1">
-              <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Texto desta seção</p>
-              <div class="flex items-center justify-between py-1">
-                <p class="text-xs font-medium text-slate-700">Cor do título</p>
-                <div class="flex items-center gap-2">
-                  <span id="cor-sessoes-titulo-hex" class="text-[10px] font-mono text-slate-400">#2D2D2D</span>
-                  <input id="cor-sessoes-titulo" type="color" value="#2D2D2D" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-                </div>
-              </div>
-              <div class="flex items-center justify-between py-1 border-b border-slate-50 pb-3">
-                <p class="text-xs font-medium text-slate-700">Cor do texto</p>
-                <div class="flex items-center gap-2">
-                  <span id="cor-sessoes-texto-hex" class="text-[10px] font-mono text-slate-400">#4A4A4A</span>
-                  <input id="cor-sessoes-texto" type="color" value="#4A4A4A" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-                </div>
-              </div>
-              <!-- Animação dos cards -->
-              <div class="flex items-center justify-between py-2 pt-3">
-                <div>
-                  <p class="text-xs font-medium text-slate-700">Animação dos cards</p>
-                  <p class="text-[10px] text-slate-400">efeito ao passar o mouse</p>
-                </div>
-                <label class="relative inline-flex items-center cursor-pointer">
-                  <input id="cards-animacao" type="checkbox" checked class="sr-only peer">
-                  <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-sage after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── SEÇÃO PÚBLICOS ─────────────────────────── -->
-        <div id="modal-publicos" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Seção Públicos</p>
-          </div>
-          <div class="px-4 py-3 space-y-1 bg-white">
-            <p class="text-[10px] text-slate-400 pb-1">Ícones e textos editáveis clicando no preview.</p>
-            <div class="flex items-center justify-between py-1">
-              <p class="text-xs font-medium text-slate-700">Cor do título</p>
-              <div class="flex items-center gap-2">
-                <span id="cor-publicos-titulo-hex" class="text-[10px] font-mono text-slate-400">#2D2D2D</span>
-                <input id="cor-publicos-titulo" type="color" value="#2D2D2D" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between py-1">
-              <p class="text-xs font-medium text-slate-700">Cor do texto</p>
-              <div class="flex items-center gap-2">
-                <span id="cor-publicos-texto-hex" class="text-[10px] font-mono text-slate-400">#4A4A4A</span>
-                <input id="cor-publicos-texto" type="color" value="#4A4A4A" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="modal-footer" class="rounded-xl border border-slate-200 overflow-hidden">
-          <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="18" x2="21" y2="18"/><line x1="3" y1="13" x2="21" y2="13"/><line x1="3" y1="8" x2="12" y2="8"/></svg>
-            <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Rodapé</p>
-          </div>
-          <div class="px-4 py-3 space-y-2 bg-white">
-            <div class="flex items-center justify-between py-1.5 border-b border-slate-50">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Fundo do rodapé</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-footer-fundo-hex" class="text-[10px] font-mono text-slate-400">#F1F0EB</span>
-                <input id="cor-footer-fundo" type="color" value="#F1F0EB" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-            <div class="flex items-center justify-between py-1.5">
-              <div>
-                <p class="text-xs font-medium text-slate-700">Texto do rodapé</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span id="cor-footer-texto-hex" class="text-[10px] font-mono text-slate-400">#6B7280</span>
-                <input id="cor-footer-texto" type="color" value="#6B7280" class="w-8 h-8 rounded-lg cursor-pointer border border-slate-200 p-0.5" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-      </div>
-
-      <!-- Aviso: salvar pelo botão principal -->
-      <div class="px-5 py-3 border-t border-slate-100 bg-slate-50">
-        <p class="text-[10px] text-slate-400 text-center">As alterações são salvas ao clicar <strong>Salvar alterações</strong> na barra principal.</p>
+        <p id="login-error" class="text-xs text-red-500 text-center hidden">E-mail ou senha incorretos.</p>
       </div>
     </div>
   </div>
 
-  <script type="module" src="./admin.js"></script>
+  <!-- ── APP ────────────────────────────────────────────────────── -->
+  <div id="app-section" class="hidden">
+
+    <!-- Header fixo -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div class="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 bg-green-50 rounded-lg flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span class="font-bold text-gray-900 text-sm">Painel Admin</span>
+        </div>
+        <button id="logout-button" class="text-xs text-gray-400 hover:text-red-500 transition flex items-center gap-1.5">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
+      </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto px-6 py-8 space-y-5">
+
+      <!-- Mensagem de feedback -->
+      <div id="mensagem" class="hidden text-sm font-medium text-center px-4 py-3 rounded-xl"></div>
+
+      <form id="portfolio-form" class="space-y-5">
+
+        <!-- ── MARCA & NAVEGAÇÃO ─────────────────────────────────── -->
+        <div class="card">
+          <p class="sec-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Marca &amp; Navegação
+          </p>
+          <div class="space-y-4">
+            <!-- Logo -->
+            <div>
+              <label class="lbl">Logo</label>
+              <div class="flex items-center gap-3">
+                <img id="preview-logo" src="" alt="Logo" class="h-9 hidden object-contain rounded" />
+                <button id="btn-upload-logo" type="button" class="upload-btn">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Enviar logo
+                </button>
+                <input id="input-logo" type="file" accept="image/*" class="hidden" />
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="lbl">Nome da marca</label>
+                <input type="text" name="navBrand" placeholder="Ex: Luana Silva · Psicóloga" class="inp" />
+              </div>
+              <div>
+                <label class="lbl">Texto do botão "Agendar"</label>
+                <input type="text" name="navBtnTexto" placeholder="Agendar" class="inp" />
+              </div>
+            </div>
+            <div>
+              <label class="lbl">Link do botão "Agendar" (WhatsApp ou âncora)</label>
+              <input type="text" name="links.navBtn" placeholder="https://wa.me/55... ou #contato" class="inp" />
+            </div>
+            <div>
+              <label class="lbl">Título da página (SEO)</label>
+              <input type="text" name="pageTitle" placeholder="Ex: Luana Silva | Psicologia Clínica" class="inp" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── HERO ──────────────────────────────────────────────── -->
+        <div class="card">
+          <p class="sec-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Hero (Topo da página)
+          </p>
+          <div class="space-y-4">
+            <!-- Banner -->
+            <div>
+              <label class="lbl">Imagem de fundo</label>
+              <div class="flex items-center gap-3">
+                <button id="btn-upload-banner" type="button" class="upload-btn">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Trocar banner
+                </button>
+                <input id="input-banner" type="file" accept="image/*" class="hidden" />
+                <span class="text-[11px] text-gray-400">Ideal: 1920×1080 · Máx. 5 MB</span>
+              </div>
+            </div>
+            <!-- Opacidade banner -->
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="lbl mb-0">Opacidade do filtro</label>
+                <span id="banner-opacidade-valor" class="text-xs font-mono text-gray-400 bg-gray-100 px-2 py-0.5 rounded">85%</span>
+              </div>
+              <input id="banner-opacidade" type="range" min="0" max="100" value="85" class="w-full accent-[#8DAA91]" />
+              <div class="flex justify-between text-[10px] text-gray-400 mt-1"><span>Transparente</span><span>Opaco</span></div>
+            </div>
+            <div>
+              <label class="lbl">Título principal</label>
+              <input type="text" name="heroTitle" placeholder="Ex: Cuidando da sua história com sensibilidade e ética." class="inp" />
+            </div>
+            <div>
+              <label class="lbl">Frase / subtítulo</label>
+              <textarea name="heroSubtitle" placeholder='"Acredito que cada trajetória merece ser compreendida com respeito."' class="inp"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SOBRE MIM ──────────────────────────────────────────── -->
+        <div class="card">
+          <p class="sec-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Sobre mim
+          </p>
+          <div class="space-y-4">
+            <!-- Foto -->
+            <div>
+              <label class="lbl">Foto de perfil</label>
+              <div class="flex items-center gap-3">
+                <img id="preview-foto" src="" alt="Foto" class="h-14 w-14 object-cover rounded-lg hidden border border-gray-200" />
+                <div>
+                  <button id="btn-upload-foto" type="button" class="upload-btn">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Enviar foto
+                  </button>
+                  <p class="text-[11px] text-gray-400 mt-1">Ideal: 800×1000 · Máx. 5 MB</p>
+                </div>
+                <input id="input-foto" type="file" accept="image/*" class="hidden" />
+              </div>
+            </div>
+            <!-- Opacidade foto -->
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="lbl mb-0">Opacidade da foto</label>
+                <span id="foto-opacidade-valor" class="text-xs font-mono text-gray-400 bg-gray-100 px-2 py-0.5 rounded">100%</span>
+              </div>
+              <input id="foto-opacidade" type="range" min="10" max="100" value="100" class="w-full accent-[#8DAA91]" />
+            </div>
+            <div>
+              <label class="lbl">Título da seção</label>
+              <input type="text" name="sobreTitulo" placeholder="Sobre mim" class="inp" />
+            </div>
+            <div>
+              <label class="lbl">Texto principal</label>
+              <textarea name="sobreTexto" class="inp" style="min-height:100px" placeholder="Sou psicóloga com atuação clínica..."></textarea>
+            </div>
+            <!-- Abordagem -->
+            <div class="sub-group">
+              <p class="sub-group-title">Abordagem</p>
+              <div class="grid grid-cols-3 gap-3 mb-3">
+                <div>
+                  <label class="lbl">Rótulo</label>
+                  <input type="text" name="abordagemLabel" placeholder="Abordagem" class="inp" />
+                </div>
+                <div class="col-span-2">
+                  <label class="lbl">Título</label>
+                  <input type="text" name="abordagemTitulo" placeholder="Terapia Cognitivo Comportamental (TCC)" class="inp" />
+                </div>
+              </div>
+              <div>
+                <label class="lbl">Descrição</label>
+                <textarea name="abordagemDescricao" class="inp" placeholder="Foco em padrões de pensamento..."></textarea>
+              </div>
+            </div>
+            <!-- Formação -->
+            <div class="sub-group">
+              <p class="sub-group-title">Formação</p>
+              <div class="grid grid-cols-3 gap-3 mb-3">
+                <div>
+                  <label class="lbl">Rótulo</label>
+                  <input type="text" name="formacaoLabel" placeholder="Formação" class="inp" />
+                </div>
+                <div class="col-span-2">
+                  <label class="lbl">Título</label>
+                  <input type="text" name="formacaoTitulo" placeholder="Bacharel em Psicologia" class="inp" />
+                </div>
+              </div>
+              <div>
+                <label class="lbl">Instituição</label>
+                <input type="text" name="formacaoInstituicao" placeholder="Nome da Instituição de Ensino" class="inp" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SESSÕES ─────────────────────────────────────────────── -->
+        <div class="card">
+          <p class="sec-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 1 4 0"/></svg>
+            Sessões de Atendimento
+          </p>
+          <div class="space-y-4">
+            <div>
+              <label class="lbl">Título da seção</label>
+              <input type="text" name="sessaoTitulo" placeholder="Como funcionam as sessões" class="inp" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Card 1 -->
+              <div class="sub-group">
+                <p class="sub-group-title">Card 1 — Modalidade</p>
+                <div class="space-y-2">
+                  <div><label class="lbl">Título</label><input type="text" name="modalidadeTitulo" class="inp" /></div>
+                  <div><label class="lbl">Texto</label><textarea name="modalidadeTexto" class="inp"></textarea></div>
+                </div>
+              </div>
+              <!-- Card 2 -->
+              <div class="sub-group">
+                <p class="sub-group-title">Card 2 — Duração</p>
+                <div class="space-y-2">
+                  <div><label class="lbl">Título</label><input type="text" name="duracaoTitulo" class="inp" /></div>
+                  <div><label class="lbl">Texto</label><textarea name="duracaoTexto" class="inp"></textarea></div>
+                </div>
+              </div>
+              <!-- Card 3 -->
+              <div class="sub-group">
+                <p class="sub-group-title">Card 3 — Frequência</p>
+                <div class="space-y-2">
+                  <div><label class="lbl">Título</label><input type="text" name="frequenciaTitulo" class="inp" /></div>
+                  <div><label class="lbl">Texto</label><textarea name="frequenciaTexto" class="inp"></textarea></div>
+                </div>
+              </div>
+              <!-- Card 4 -->
+              <div class="sub-group">
+                <p class="sub-group-title">Card 4 — Agendamento</p>
+                <div class="space-y-2">
+                  <div><label class="lbl">Título</label><input type="text" name="agendamentoTitulo" class="inp" /></div>
+                  <div><label class="lbl">Texto</label><textarea name="agendamentoTexto" class="inp"></textarea></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── PÚBLICOS ────────────────────────────────────────────── -->
+        <div class="card">
+          <p class="sec-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Públicos Atendidos
+          </p>
+          <div class="space-y-4">
+            <div>
+              <label class="lbl">Título da seção</label>
+              <input type="text" name="publicoTitulo" placeholder="Públicos Atendidos" class="inp" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Crianças -->
+              <div class="sub-group">
+                <p class="sub-group-title">🧸 Crianças</p>
+                <div class="space-y-2">
+                  <div><label class="lbl">Emoji</label><input type="text" name="iconeCriancas" placeholder="🧸" class="inp" /></div>
+                  <div><label class="lbl">Título</label><input type="text" name="criancasTitulo" class="inp" /></div>
+                  <div><label class="lbl">Texto</label><textarea name="criancasTexto" class="inp"></textarea></div>
+                </div>
+              </div>
+              <!-- Adolescentes -->
+              <div class="sub-group">
+                <p class="sub-group-title">🌱 Adolescentes</p>
+                <div class="space-y-2">
+                  <div><label class="lbl">Emoji</label><input type="text" name="iconeAdolescentes" placeholder="🌱" class="inp" /></div>
+                  <div><label class="lbl">Título</label><input type="text" name="adolescentesTitulo" class="inp" /></div>
+                  <div><label class="lbl">Texto</label><textarea name="adolescentesTexto" class="inp"></textarea></div>
+                </div>
+              </div>
+              <!-- Adultos -->
+              <div class="sub-group sm:col-span-2">
+                <p class="sub-group-title">🌿 Adultos</p>
+                <div class="grid grid-cols-3 gap-3">
+                  <div><label class="lbl">Emoji</label><input type="text" name="iconeAdultos" placeholder="🌿" class="inp" /></div>
+                  <div><label class="lbl">Título</label><input type="text" name="adultosTitulo" class="inp" /></div>
+                  <div><label class="lbl">Texto</label><textarea name="adultosTexto" class="inp"></textarea></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CONTATO ─────────────────────────────────────────────── -->
+        <div class="card">
+          <p class="sec-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.36 19.36 0 0 1 1.64 5 2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.09a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+            Contato
+          </p>
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="lbl">Título da seção</label>
+                <input type="text" name="contatoTitulo" placeholder="Vamos iniciar essa jornada?" class="inp" />
+              </div>
+              <div>
+                <label class="lbl">Subtítulo / texto</label>
+                <input type="text" name="contatoTexto" placeholder="Escolha a melhor forma..." class="inp" />
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="lbl">Texto botão WhatsApp</label>
+                <input type="text" name="whatsappTexto" placeholder="Agendar pelo WhatsApp" class="inp" />
+              </div>
+              <div>
+                <label class="lbl">Texto botão E-mail</label>
+                <input type="text" name="emailTexto" placeholder="Enviar E-mail" class="inp" />
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="lbl">Rótulo localização</label>
+                <input type="text" name="localLabel" placeholder="Atendimento Presencial" class="inp" />
+              </div>
+              <div>
+                <label class="lbl">Endereço</label>
+                <input type="text" name="localEndereco" placeholder="Rua Exemplo, 123 — Cidade/Estado" class="inp" />
+              </div>
+            </div>
+            <!-- Links -->
+            <div class="sub-group">
+              <p class="sub-group-title">Links de contato</p>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="lbl">WhatsApp</label>
+                  <input type="url" name="links.whatsapp" placeholder="https://wa.me/55..." class="inp" />
+                </div>
+                <div>
+                  <label class="lbl">E-mail</label>
+                  <input type="url" name="links.email" placeholder="mailto:voce@email.com" class="inp" />
+                </div>
+                <div>
+                  <label class="lbl">Instagram</label>
+                  <input type="url" name="links.instagram" placeholder="https://instagram.com/..." class="inp" />
+                </div>
+                <div>
+                  <label class="lbl">LinkedIn</label>
+                  <input type="url" name="links.linkedin" placeholder="https://linkedin.com/in/..." class="inp" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── RODAPÉ ──────────────────────────────────────────────── -->
+        <div class="card">
+          <p class="sec-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8DAA91" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            Rodapé
+          </p>
+          <div>
+            <label class="lbl">Texto do rodapé</label>
+            <input type="text" name="footerTexto" placeholder="© 2026 | Nome da Psicóloga | CRP 00/00000" class="inp" />
+          </div>
+        </div>
+
+        <!-- ── SALVAR ───────────────────────────────────────────────── -->
+        <div class="flex items-center justify-between py-2">
+          <p class="text-xs text-gray-400">As alterações são aplicadas ao site após salvar.</p>
+          <button type="submit" class="bg-[#8DAA91] text-white font-semibold px-8 py-2.5 rounded-xl text-sm hover:opacity-90 transition flex items-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Salvar alterações
+          </button>
+        </div>
+
+      </form>
+    </main>
+  </div>
+
+  <script type="module" src="admin.js"></script>
 </body>
 </html>
