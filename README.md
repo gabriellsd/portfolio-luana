@@ -46,10 +46,7 @@ npm run dev
 
 ## Variáveis de Ambiente (`.env`)
 
-```env
-VITE_GEMINI_API_KEY=   # Chave da API do Google Gemini (aistudio.google.com)
-VITE_FORMSPREE_ID=     # ID do formulário Formspree (formspree.io) — não usado atualmente
-```
+Copie o arquivo `.env.example`, renomeie para `.env` e preencha as chaves necessárias.
 
 > O arquivo `.env` **não vai para o Git** (está no `.gitignore`).  
 > Na Vercel, as variáveis ficam em: **Settings → Environment Variables**.
@@ -81,21 +78,9 @@ portfolio-luana/
 
 ## Dados da Psicóloga
 
-Todos os dados ficam no objeto `psico` no topo de `src/App.jsx`:
+Todos os dados ficam no objeto `psico` no topo de `src/App.jsx`. Para atualizar qualquer informação (nome, CRP, telefone, e-mail, redes sociais), edite esse objeto diretamente.
 
-```js
-const psico = {
-  name: 'Luana Sakovicz',
-  crp: 'CRP 06/123456',        // ← atualizar quando o CRP sair
-  crpStatus: 'em processo de registro',
-  whatsapp: '5541991369954',   // formato: 55 + DDD + número (sem símbolos)
-  whatsappDisplay: '(41) 99136-9954',
-  email: 'luana.sakovicz@gmail.com',
-  instagram: 'https://www.instagram.com/lu_sakovicz',
-  linkedin: 'https://www.linkedin.com/in/luana-sakovicz-353b7111b',
-  city: 'Campo Largo, PR',
-};
-```
+> O CRP deve ser atualizado assim que o registro profissional for emitido.
 
 ---
 
