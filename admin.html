@@ -8,10 +8,36 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
     /* ── Estilos do site (idêntico ao index.html) ─────────────── */
-    :root { --primary-sage: #8DAA91; }
+    :root {
+      --primary-sage: #8DAA91;
+      --cor-fundo: #F9F7F2;
+      /* nav */
+      --cor-nav: #ffffff;
+      --cor-nav-texto: #374151;
+      --cor-nav-btn: #8DAA91;
+      --cor-nav-btn-texto: #ffffff;
+      /* hero */
+      --cor-hero-titulo: #1f2937;
+      --cor-hero-texto: #4b5563;
+      /* sobre */
+      --cor-sobre-fundo: #ffffff;
+      --cor-sobre-titulo: #1f2937;
+      --cor-sobre-texto: #4b5563;
+      /* sessões */
+      --cor-sessoes-fundo: #f5f5f4;
+      --cor-sessoes-titulo: #1f2937;
+      --cor-sessoes-texto: #4b5563;
+      /* públicos */
+      --cor-publicos-titulo: #1f2937;
+      --cor-publicos-texto: #4b5563;
+      /* contato */
+      --cor-contato-fundo: #8DAA91;
+      /* título scale */
+      --titulo-scale: 1;
+    }
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #F9F7F2;
+      background-color: var(--cor-fundo);
       color: #4A4A4A;
       scroll-behavior: smooth;
     }
@@ -29,6 +55,28 @@
     .borda-foto { border-color: var(--primary-sage); }
     .card-hover { transition: all 0.3s ease; }
     .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+    /* ── Regras de estilo dinâmico (preview) ────────────────── */
+    #main-nav { background-color: var(--cor-nav) !important; }
+    #main-nav a { color: var(--cor-nav-texto) !important; }
+    #main-nav [data-field="navBrand"] { color: var(--cor-nav-texto) !important; }
+    #main-nav [data-field="navBtnTexto"] {
+      background-color: var(--cor-nav-btn) !important;
+      color: var(--cor-nav-btn-texto) !important;
+    }
+    #hero-section h1 { color: var(--cor-hero-titulo) !important; }
+    #hero-section p  { color: var(--cor-hero-texto) !important; }
+    h1 { font-size: calc(3.75rem * var(--titulo-scale)) !important; }
+    h2 { font-size: calc(2.25rem * var(--titulo-scale)) !important; }
+    h3 { font-size: calc(1.25rem * var(--titulo-scale)) !important; }
+    #sobre { background-color: var(--cor-sobre-fundo) !important; }
+    #sobre h2 { color: var(--cor-sobre-titulo) !important; }
+    #sobre p  { color: var(--cor-sobre-texto) !important; }
+    #atendimento { background-color: var(--cor-sessoes-fundo) !important; }
+    #atendimento h2, #atendimento h3 { color: var(--cor-sessoes-titulo) !important; }
+    #atendimento p  { color: var(--cor-sessoes-texto) !important; }
+    #publico h2, #publico h3 { color: var(--cor-publicos-titulo) !important; }
+    #publico p      { color: var(--cor-publicos-texto) !important; }
+    #contato        { background-color: var(--cor-contato-fundo) !important; }
 
     /* ── Modo admin ──────────────────────────────────────────── */
     body.admin-mode { padding-top: 44px; }
@@ -394,6 +442,202 @@
       <button id="btn-close-settings" class="text-gray-400 hover:text-gray-700 transition">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
+    </div>
+
+    <!-- ── APARÊNCIA GERAL ─────────────────────────────────── -->
+    <div class="cfg-section">
+      <p class="cfg-title">🎨 Aparência Geral</p>
+      <div class="space-y-3">
+        <div>
+          <label class="cfg-lbl">Fonte dos títulos</label>
+          <select id="fonte-titulos" class="cfg-inp">
+            <option value="Playfair Display">Playfair Display (padrão)</option>
+            <option value="Cormorant Garamond">Cormorant Garamond</option>
+            <option value="Lora">Lora</option>
+            <option value="Merriweather">Merriweather</option>
+            <option value="EB Garamond">EB Garamond</option>
+          </select>
+        </div>
+        <div>
+          <label class="cfg-lbl">Fonte do texto</label>
+          <select id="fonte-texto" class="cfg-inp">
+            <option value="Inter">Inter (padrão)</option>
+            <option value="Lato">Lato</option>
+            <option value="Open Sans">Open Sans</option>
+            <option value="Raleway">Raleway</option>
+            <option value="Nunito">Nunito</option>
+            <option value="Montserrat">Montserrat</option>
+          </select>
+        </div>
+        <div>
+          <label class="cfg-lbl">Tamanho dos títulos</label>
+          <select id="tamanho-titulos" class="cfg-inp">
+            <option value="0.8">Pequeno</option>
+            <option value="1" selected>Normal (padrão)</option>
+            <option value="1.2">Grande</option>
+            <option value="1.4">Extra grande</option>
+          </select>
+        </div>
+        <div class="flex items-center justify-between">
+          <label class="cfg-lbl mb-0">Cor de destaque</label>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-primaria-hex" class="text-[10px] font-mono text-gray-400">#8DAA91</span>
+            <input id="cor-primaria" type="color" value="#8DAA91" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <label class="cfg-lbl mb-0">Fundo do site</label>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-fundo-hex" class="text-[10px] font-mono text-gray-400">#F9F7F2</span>
+            <input id="cor-fundo" type="color" value="#F9F7F2" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── NAVEGAÇÃO ──────────────────────────────────────── -->
+    <div class="cfg-section">
+      <p class="cfg-title">Navegação</p>
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Fundo</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-nav-hex" class="text-[10px] font-mono text-gray-400">#ffffff</span>
+            <input id="cor-nav" type="color" value="#ffffff" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Cor do texto</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-nav-texto-hex" class="text-[10px] font-mono text-gray-400">#374151</span>
+            <input id="cor-nav-texto" type="color" value="#374151" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Botão fundo</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-nav-btn-hex" class="text-[10px] font-mono text-gray-400">#8DAA91</span>
+            <input id="cor-nav-btn" type="color" value="#8DAA91" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Botão texto</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-nav-btn-texto-hex" class="text-[10px] font-mono text-gray-400">#ffffff</span>
+            <input id="cor-nav-btn-texto" type="color" value="#ffffff" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HERO ───────────────────────────────────────────── -->
+    <div class="cfg-section">
+      <p class="cfg-title">Hero (Topo)</p>
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Cor do título</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-hero-titulo-hex" class="text-[10px] font-mono text-gray-400">#1f2937</span>
+            <input id="cor-hero-titulo" type="color" value="#1f2937" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Cor do texto</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-hero-texto-hex" class="text-[10px] font-mono text-gray-400">#4b5563</span>
+            <input id="cor-hero-texto" type="color" value="#4b5563" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SOBRE MIM ──────────────────────────────────────── -->
+    <div class="cfg-section">
+      <p class="cfg-title">Sobre mim</p>
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Fundo</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-sobre-fundo-hex" class="text-[10px] font-mono text-gray-400">#ffffff</span>
+            <input id="cor-sobre-fundo" type="color" value="#ffffff" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Cor do título</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-sobre-titulo-hex" class="text-[10px] font-mono text-gray-400">#1f2937</span>
+            <input id="cor-sobre-titulo" type="color" value="#1f2937" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Cor do texto</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-sobre-texto-hex" class="text-[10px] font-mono text-gray-400">#4b5563</span>
+            <input id="cor-sobre-texto" type="color" value="#4b5563" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SESSÕES ────────────────────────────────────────── -->
+    <div class="cfg-section">
+      <p class="cfg-title">Sessões</p>
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Fundo</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-sessoes-fundo-hex" class="text-[10px] font-mono text-gray-400">#f5f5f4</span>
+            <input id="cor-sessoes-fundo" type="color" value="#f5f5f4" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Cor do título</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-sessoes-titulo-hex" class="text-[10px] font-mono text-gray-400">#1f2937</span>
+            <input id="cor-sessoes-titulo" type="color" value="#1f2937" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Cor do texto</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-sessoes-texto-hex" class="text-[10px] font-mono text-gray-400">#4b5563</span>
+            <input id="cor-sessoes-texto" type="color" value="#4b5563" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PÚBLICOS ───────────────────────────────────────── -->
+    <div class="cfg-section">
+      <p class="cfg-title">Públicos</p>
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Cor do título</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-publicos-titulo-hex" class="text-[10px] font-mono text-gray-400">#1f2937</span>
+            <input id="cor-publicos-titulo" type="color" value="#1f2937" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-600">Cor do texto</span>
+          <div class="flex items-center gap-1.5">
+            <span id="cor-publicos-texto-hex" class="text-[10px] font-mono text-gray-400">#4b5563</span>
+            <input id="cor-publicos-texto" type="color" value="#4b5563" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONTATO ────────────────────────────────────────── -->
+    <div class="cfg-section">
+      <p class="cfg-title">Contato</p>
+      <div class="flex items-center justify-between">
+        <span class="text-xs text-gray-600">Cor de fundo</span>
+        <div class="flex items-center gap-1.5">
+          <span id="cor-contato-fundo-hex" class="text-[10px] font-mono text-gray-400">#8DAA91</span>
+          <input id="cor-contato-fundo" type="color" value="#8DAA91" class="w-7 h-7 rounded cursor-pointer border border-gray-200 p-0.5" />
+        </div>
+      </div>
     </div>
 
     <!-- Logo -->

@@ -59,6 +59,90 @@ const btnSalvarCfg    = document.getElementById("btn-salvar-cfg");
 const CLOUDINARY_CLOUD  = "gabriellsd";
 const CLOUDINARY_PRESET = "portfolio-luana";
 
+// ── Configuração dos controles de estilo ─────────────────────
+const CORES_CFG = [
+  { id: "cor-primaria",       hex: "cor-primaria-hex",       cssVar: "--primary-sage",        def: "#8DAA91" },
+  { id: "cor-fundo",          hex: "cor-fundo-hex",           cssVar: "--cor-fundo",           def: "#F9F7F2" },
+  { id: "cor-nav",            hex: "cor-nav-hex",             cssVar: "--cor-nav",             def: "#ffffff" },
+  { id: "cor-nav-texto",      hex: "cor-nav-texto-hex",       cssVar: "--cor-nav-texto",       def: "#374151" },
+  { id: "cor-nav-btn",        hex: "cor-nav-btn-hex",         cssVar: "--cor-nav-btn",         def: "#8DAA91" },
+  { id: "cor-nav-btn-texto",  hex: "cor-nav-btn-texto-hex",   cssVar: "--cor-nav-btn-texto",   def: "#ffffff" },
+  { id: "cor-hero-titulo",    hex: "cor-hero-titulo-hex",     cssVar: "--cor-hero-titulo",     def: "#1f2937" },
+  { id: "cor-hero-texto",     hex: "cor-hero-texto-hex",      cssVar: "--cor-hero-texto",      def: "#4b5563" },
+  { id: "cor-sobre-fundo",    hex: "cor-sobre-fundo-hex",     cssVar: "--cor-sobre-fundo",     def: "#ffffff" },
+  { id: "cor-sobre-titulo",   hex: "cor-sobre-titulo-hex",    cssVar: "--cor-sobre-titulo",    def: "#1f2937" },
+  { id: "cor-sobre-texto",    hex: "cor-sobre-texto-hex",     cssVar: "--cor-sobre-texto",     def: "#4b5563" },
+  { id: "cor-sessoes-fundo",  hex: "cor-sessoes-fundo-hex",   cssVar: "--cor-sessoes-fundo",   def: "#f5f5f4" },
+  { id: "cor-sessoes-titulo", hex: "cor-sessoes-titulo-hex",  cssVar: "--cor-sessoes-titulo",  def: "#1f2937" },
+  { id: "cor-sessoes-texto",  hex: "cor-sessoes-texto-hex",   cssVar: "--cor-sessoes-texto",   def: "#4b5563" },
+  { id: "cor-publicos-titulo",hex: "cor-publicos-titulo-hex", cssVar: "--cor-publicos-titulo", def: "#1f2937" },
+  { id: "cor-publicos-texto", hex: "cor-publicos-texto-hex",  cssVar: "--cor-publicos-texto",  def: "#4b5563" },
+  { id: "cor-contato-fundo",  hex: "cor-contato-fundo-hex",   cssVar: "--cor-contato-fundo",   def: "#8DAA91" },
+];
+
+// ── Aplica estilos no preview (CSS vars + fontes) ─────────────
+function aplicarEstilosPreview(estilos) {
+  const root = document.documentElement;
+  CORES_CFG.forEach(({ id, cssVar, def }) => {
+    root.style.setProperty(cssVar, estilos[id] || def);
+  });
+  if (estilos.tamanhoTitulos) root.style.setProperty("--titulo-scale", estilos.tamanhoTitulos);
+  carregarFontesPreview(estilos.fonteTitulos, estilos.fonteTexto);
+}
+
+let _fontesCarregadas = new Set();
+function carregarFontesPreview(fonteTitulos, fonteTexto) {
+  const fontes = [fonteTitulos, fonteTexto].filter(Boolean);
+  fontes.forEach((fonte) => {
+    if (_fontesCarregadas.has(fonte)) return;
+    _fontesCarregadas.add(fonte);
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = `https://fonts.googleapis.com/css2?family=${fonte.replace(/ /g, "+")}:ital,wght@0,400;0,600;1,400&display=swap`;
+    document.head.appendChild(link);
+  });
+  if (fonteTitulos) {
+    document.querySelectorAll("h1,h2,h3,.font-serif").forEach(el => el.style.fontFamily = `'${fonteTitulos}', serif`);
+  }
+  if (fonteTexto) {
+    document.body.style.fontFamily = `'${fonteTexto}', sans-serif`;
+  }
+}
+
+// ── Lerr estilos dos controles do painel ─────────────────────
+function lerEstilos() {
+  const estilos = {};
+  CORES_CFG.forEach(({ id }) => {
+    const el = document.getElementById(id);
+    if (el) estilos[id] = el.value;
+  });
+  const fonteTitulosEl = document.getElementById("fonte-titulos");
+  const fonteTextoEl   = document.getElementById("fonte-texto");
+  const tamanhoEl      = document.getElementById("tamanho-titulos");
+  if (fonteTitulosEl) estilos.fonteTitulos = fonteTitulosEl.value;
+  if (fonteTextoEl)   estilos.fonteTexto   = fonteTextoEl.value;
+  if (tamanhoEl)      estilos.tamanhoTitulos = tamanhoEl.value;
+  return estilos;
+}
+
+// ── Preencher controles com estilos salvos ─────────────────────
+function preencherEstilos(estilos) {
+  CORES_CFG.forEach(({ id, hex }) => {
+    const input = document.getElementById(id);
+    const label = document.getElementById(hex);
+    if (input && estilos[id]) {
+      input.value = estilos[id];
+      if (label) label.textContent = estilos[id];
+    }
+  });
+  const fonteTitulosEl = document.getElementById("fonte-titulos");
+  const fonteTextoEl   = document.getElementById("fonte-texto");
+  const tamanhoEl      = document.getElementById("tamanho-titulos");
+  if (fonteTitulosEl && estilos.fonteTitulos) fonteTitulosEl.value = estilos.fonteTitulos;
+  if (fonteTextoEl   && estilos.fonteTexto)   fonteTextoEl.value   = estilos.fonteTexto;
+  if (tamanhoEl      && estilos.tamanhoTitulos) tamanhoEl.value    = estilos.tamanhoTitulos;
+}
+
 // ── Auth ─────────────────────────────────────────────────────
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -197,6 +281,12 @@ async function carregarDados() {
     if (data.links?.instagram) cfgInstagram.value = data.links.instagram;
     if (data.links?.linkedin) cfgLinkedin.value = data.links.linkedin;
 
+    // Estilos
+    if (data.estilos) {
+      preencherEstilos(data.estilos);
+      aplicarEstilosPreview(data.estilos);
+    }
+
   } catch (err) {
     console.error(err);
     mostrarMsg("Erro ao carregar dados.", "erro");
@@ -231,6 +321,7 @@ btnSalvarCfg.addEventListener("click", async () => {
   btnSalvarCfg.disabled = true;
   try {
     const data = {
+      estilos: lerEstilos(),
       links: {
         navBtn:    cfgNavBtnLink.value.trim()  || null,
         whatsapp:  cfgWhatsapp.value.trim()    || null,
@@ -249,6 +340,22 @@ btnSalvarCfg.addEventListener("click", async () => {
   } finally {
     btnSalvarCfg.disabled = false;
   }
+});
+
+// ── Preview em tempo real dos controles de estilo ─────────────
+CORES_CFG.forEach(({ id, hex }) => {
+  const input = document.getElementById(id);
+  const label = document.getElementById(hex);
+  if (!input) return;
+  input.addEventListener("input", () => {
+    if (label) label.textContent = input.value;
+    aplicarEstilosPreview(lerEstilos());
+  });
+});
+
+["fonte-titulos", "fonte-texto", "tamanho-titulos"].forEach((id) => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener("change", () => aplicarEstilosPreview(lerEstilos()));
 });
 
 // ── Uploads de imagem ─────────────────────────────────────────
