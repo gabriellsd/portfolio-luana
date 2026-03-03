@@ -238,9 +238,9 @@ export default function App() {
             <div className="w-64 h-64 md:w-96 md:h-96 bg-teal-100 rounded-[40px] rotate-6 absolute inset-0 -z-10"></div>
             <div className="w-64 h-64 md:w-96 md:h-96 bg-stone-200 rounded-[40px] overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800"
-                alt="Retrato profissional"
-                className="w-full h-full object-cover"
+                src="/luana-retrato.png"
+                alt="Luana Sakovicz — Psicóloga Clínica"
+                className="w-full h-full object-cover object-top"
               />
             </div>
           </div>
@@ -316,8 +316,8 @@ export default function App() {
           </div>
           <div className="flex-1 order-1 md:order-2 relative">
             <img
-              src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=800"
-              alt="Ambiente de consultório"
+              src="/luana-livro.png"
+              alt="Luana Sakovicz com livro de Desenvolvimento Humano"
               className="rounded-3xl shadow-xl rotate-2 hover:rotate-0 transition-transform duration-500"
             />
           </div>
