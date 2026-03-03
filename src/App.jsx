@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useReveal } from './useReveal';
 import {
-  User,
-  BookOpen,
   MessageCircle,
   Mail,
   MapPin,
@@ -11,7 +9,6 @@ import {
   Menu,
   X,
   ChevronRight,
-  Heart,
   Plus,
   Minus,
   Brain,
@@ -39,22 +36,22 @@ const psico = {
 
 const specialties = [
   {
-    title: 'Psicoterapia Individual',
+    emoji: '🧸',
+    title: 'Crianças',
     description:
-      'Espaço seguro para autoconhecimento, elaboração de conflitos internos e desenvolvimento emocional.',
-    icon: <User className="w-6 h-6" />,
+      'O atendimento infantil é realizado de forma lúdica, utilizando o brincar como principal linguagem da criança. Também ofereço orientação aos pais e responsáveis, que são parceiros fundamentais nesse processo.',
   },
   {
-    title: 'Ansiedade e Depressão',
+    emoji: '🌱',
+    title: 'Adolescentes',
     description:
-      'Acompanhamento especializado para manejo de sintomas e busca por mais qualidade de vida.',
-    icon: <Heart className="w-6 h-6" />,
+      'A adolescência é uma fase de grandes transformações — identidade, pertencimento, relacionamentos e pressões do dia a dia. Ofereço um espaço de escuta sem julgamentos para atravessar esse período com mais segurança.',
   },
   {
-    title: 'Crianças, Adolescentes e Adultos',
+    emoji: '🌿',
+    title: 'Adultos',
     description:
-      'Atendimento adaptado a cada fase da vida, respeitando as particularidades e necessidades de cada faixa etária.',
-    icon: <BookOpen className="w-6 h-6" />,
+      'Atendimento voltado para ansiedade, autoconhecimento, autoestima, relacionamentos e os desafios da vida adulta. Um espaço para se reconectar consigo mesmo e construir uma vida mais equilibrada.',
   },
 ];
 
@@ -81,34 +78,34 @@ const approaches = [
 
 const faqs = [
   {
-    question: 'Como funciona a primeira sessão?',
+    question: 'O atendimento é presencial ou online?',
     answer:
-      'A primeira sessão é uma conversa inicial onde nos conhecemos. Você conta um pouco sobre si, sobre o que te trouxe à terapia e o que espera do processo. Não há pressão — é um espaço seguro para você se sentir à vontade.',
+      'Ofereço as duas modalidades! O atendimento presencial acontece em Campo Largo (PR). O online é realizado por videochamada e atende pacientes de todo o Brasil, com a mesma qualidade e sigilo de uma sessão presencial.',
+  },
+  {
+    question: 'Quanto tempo dura cada sessão?',
+    answer:
+      'As sessões têm duração de 50 minutos, seguindo o padrão da hora-sessão definido pelo Conselho Federal de Psicologia (CFP).',
+  },
+  {
+    question: 'Com que frequência acontecem as sessões?',
+    answer:
+      'A frequência padrão é semanal — uma sessão por semana. Essa regularidade é importante para que o processo terapêutico tenha continuidade e profundidade. Em alguns casos, pode ser ajustada conforme a necessidade.',
+  },
+  {
+    question: 'Para quem é o atendimento?',
+    answer:
+      'Atendo crianças, adolescentes e adultos. Cada faixa etária tem uma abordagem adaptada: com crianças o trabalho é lúdico; com adolescentes o foco é na escuta e identidade; com adultos trabalhamos ansiedade, autoconhecimento, relacionamentos e muito mais.',
+  },
+  {
+    question: 'Como faço para agendar uma consulta?',
+    answer:
+      'O agendamento é feito diretamente pelo WhatsApp. É só mandar uma mensagem e combinamos juntos o melhor dia e horário para você.',
   },
   {
     question: 'Você atende pelo plano de saúde?',
     answer:
       'No momento, os atendimentos são realizados de forma particular. Entre em contato pelo WhatsApp para saber mais sobre os valores e possibilidades de pagamento.',
-  },
-  {
-    question: 'Quanto tempo dura a terapia?',
-    answer:
-      'A duração é individual e depende dos objetivos de cada pessoa. Algumas questões se resolvem em poucos meses; outras demandam um acompanhamento mais longo. O importante é que você sinta progresso no seu próprio ritmo.',
-  },
-  {
-    question: 'Você realiza atendimento online?',
-    answer:
-      'Sim! Ofereço atendimento tanto presencial em Campo Largo (PR) quanto online para todo o Brasil, com a mesma qualidade e sigilo de uma sessão presencial.',
-  },
-  {
-    question: 'Qual o valor da consulta?',
-    answer:
-      'Os valores são informados diretamente pelo WhatsApp. O CFP (Conselho Federal de Psicologia) orienta que os honorários sejam negociados de forma personalizada com cada paciente.',
-  },
-  {
-    question: 'Como sei se a terapia está funcionando?',
-    answer:
-      'Com o tempo você começa a perceber mudanças sutis: reage diferente a situações que antes te travavam, se conhece melhor, tem mais clareza sobre seus sentimentos. Avaliamos juntos o progresso ao longo do processo.',
   },
 ];
 
@@ -254,9 +251,9 @@ export default function App() {
         <div ref={servicesRef} className="reveal max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-serif text-stone-900 mb-4">Áreas de Atuação</h2>
-            <p className="text-stone-500 max-w-2xl mx-auto">
-              Ofereço um espaço seguro para o desenvolvimento da sua saúde mental através de
-              abordagens baseadas em evidências.
+            <p className="text-stone-600 max-w-2xl mx-auto leading-relaxed">
+              Sou psicóloga com atuação clínica, oferecendo atendimento para crianças, adolescentes e adultos.
+              Acredito em uma escuta sensível, ética e acolhedora, respeitando o tempo e a singularidade de cada pessoa.
             </p>
           </div>
 
@@ -266,13 +263,11 @@ export default function App() {
                 key={index}
                 className="p-8 rounded-3xl bg-stone-50 hover:bg-teal-50 border border-stone-100 transition-all group"
               >
-                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform text-teal-600">
-                  {spec.icon}
-                </div>
+                <div className="text-4xl mb-6">{spec.emoji}</div>
                 <h3 className="text-xl font-semibold mb-3 text-stone-800">{spec.title}</h3>
                 <p className="text-stone-600 leading-relaxed mb-6">{spec.description}</p>
                 <a
-                  href={`https://wa.me/${psico.whatsapp}?text=Olá%20Luana%2C%20tenho%20interesse%20em%20${encodeURIComponent(spec.title)}!`}
+                  href={`https://wa.me/${psico.whatsapp}?text=Olá%20Luana%2C%20tenho%20interesse%20em%20atendimento%20para%20${encodeURIComponent(spec.title)}!`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-teal-700 font-medium flex items-center gap-2 text-sm uppercase tracking-wider group-hover:gap-3 transition-all"
