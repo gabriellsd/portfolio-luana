@@ -237,12 +237,12 @@ export default function App() {
             </div>
           </div>
           <div className="flex-1 relative flex justify-center">
-            <div className="w-64 h-64 md:w-96 md:h-96 bg-teal-100 rounded-[40px] rotate-6 absolute inset-0 -z-10"></div>
-            <div className="w-64 h-64 md:w-96 md:h-96 bg-stone-200 rounded-[40px] overflow-hidden shadow-2xl">
+            <div className="w-64 h-80 md:w-80 md:h-[480px] bg-teal-100 rounded-[40px] rotate-6 absolute -z-10"></div>
+            <div className="w-64 h-80 md:w-80 md:h-[480px] bg-stone-200 rounded-[40px] overflow-hidden shadow-2xl">
               <img
                 src="/luana-livro.png"
                 alt="Luana Sakovicz — Psicóloga Clínica"
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover object-center"
               />
             </div>
           </div>
