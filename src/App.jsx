@@ -14,6 +14,12 @@ import {
   Loader2,
   CheckCircle,
   AlertCircle,
+  Plus,
+  Minus,
+  Brain,
+  Shield,
+  Compass,
+  Navigation,
 } from 'lucide-react';
 
 const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
@@ -31,6 +37,8 @@ const psico = {
   instagram: 'https://www.instagram.com/lu_sakovicz',
   linkedin: 'https://www.linkedin.com/in/luana-sakovicz-353b7111b',
   city: 'Campo Largo, PR',
+  address: 'Campo Largo, PR — Atendimento Online e Presencial',
+  mapsLink: 'https://www.google.com/maps/search/Campo+Largo+PR',
 };
 
 const specialties = [
@@ -54,19 +62,74 @@ const specialties = [
   },
 ];
 
+const approaches = [
+  {
+    icon: <Brain className="w-6 h-6" />,
+    title: 'Escuta Ativa',
+    description:
+      'Cada pessoa é única. Meu trabalho começa por ouvir com atenção, sem julgamentos, para compreender sua história e o que te trouxe até aqui.',
+  },
+  {
+    icon: <Shield className="w-6 h-6" />,
+    title: 'Ética e Sigilo',
+    description:
+      'Tudo o que é compartilhado no consultório fica no consultório. O sigilo profissional é a base da relação terapêutica.',
+  },
+  {
+    icon: <Compass className="w-6 h-6" />,
+    title: 'Baseada em Evidências',
+    description:
+      'Utilizo abordagens reconhecidas e validadas cientificamente, adaptadas à necessidade de cada paciente.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'Como funciona a primeira sessão?',
+    answer:
+      'A primeira sessão é uma conversa inicial onde nos conhecemos. Você conta um pouco sobre si, sobre o que te trouxe à terapia e o que espera do processo. Não há pressão — é um espaço seguro para você se sentir à vontade.',
+  },
+  {
+    question: 'Você atende pelo plano de saúde?',
+    answer:
+      'No momento, os atendimentos são realizados de forma particular. Entre em contato pelo WhatsApp para saber mais sobre os valores e possibilidades de pagamento.',
+  },
+  {
+    question: 'Quanto tempo dura a terapia?',
+    answer:
+      'A duração é individual e depende dos objetivos de cada pessoa. Algumas questões se resolvem em poucos meses; outras demandam um acompanhamento mais longo. O importante é que você sinta progresso no seu próprio ritmo.',
+  },
+  {
+    question: 'Você realiza atendimento online?',
+    answer:
+      'Sim! Ofereço atendimento tanto presencial em Campo Largo (PR) quanto online para todo o Brasil, com a mesma qualidade e sigilo de uma sessão presencial.',
+  },
+  {
+    question: 'Qual o valor da consulta?',
+    answer:
+      'Os valores são informados diretamente pelo WhatsApp. O CFP (Conselho Federal de Psicologia) orienta que os honorários sejam negociados de forma personalizada com cada paciente.',
+  },
+  {
+    question: 'Como sei se a terapia está funcionando?',
+    answer:
+      'Com o tempo você começa a perceber mudanças sutis: reage diferente a situações que antes te travavam, se conhece melhor, tem mais clareza sobre seus sentimentos. Avaliamos juntos o progresso ao longo do processo.',
+  },
+];
+
 const navLinks = [
   { name: 'Início', href: '#home' },
   { name: 'Sobre', href: '#about' },
   { name: 'Serviços', href: '#services' },
+  { name: 'FAQ', href: '#faq' },
   { name: 'Contato', href: '#contact' },
 ];
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
+  const [openFaq, setOpenFaq] = useState(null);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [formStatus, setFormStatus] = useState('idle'); // idle | loading | success | error
+  const [formStatus, setFormStatus] = useState('idle');
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -100,9 +163,24 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-800 font-sans">
+
+      {/* Botão flutuante WhatsApp */}
+      <a
+        href={`https://wa.me/${psico.whatsapp}?text=Olá%20Luana%2C%20gostaria%20de%20agendar%20uma%20consulta!`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Falar no WhatsApp"
+        className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-xl shadow-green-500/30 transition-all hover:scale-110 flex items-center gap-2 group"
+      >
+        <MessageCircle className="w-6 h-6" />
+        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap text-sm font-medium pr-1">
+          Fale comigo
+        </span>
+      </a>
+
       {/* Navigation */}
       <nav
-        className={`fixed w-full z-50 transition-all duration-300 ${
+        className={`fixed w-full z-40 transition-all duration-300 ${
           scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
         }`}
       >
@@ -264,6 +342,140 @@ export default function App() {
               alt="Ambiente de consultório"
               className="rounded-3xl shadow-xl rotate-2 hover:rotate-0 transition-transform duration-500"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Abordagem Section */}
+      <section className="py-24 bg-white px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-serif text-stone-900 mb-4">Minha Abordagem</h2>
+            <p className="text-stone-500 max-w-2xl mx-auto">
+              A terapia é um espaço de acolhimento, reflexão e transformação. Estes são os
+              princípios que guiam o meu trabalho.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {approaches.map((item, index) => (
+              <div key={index} className="text-center p-8">
+                <div className="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 mx-auto text-teal-600">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-stone-800">{item.title}</h3>
+                <p className="text-stone-500 leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-24 bg-stone-100 px-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-serif text-stone-900 mb-4">Perguntas Frequentes</h2>
+            <p className="text-stone-500">
+              Tire suas dúvidas sobre o processo terapêutico antes de dar o primeiro passo.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {faqs.map((faq, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl overflow-hidden border border-stone-100 shadow-sm"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full flex justify-between items-center p-6 text-left hover:bg-stone-50 transition-colors"
+                >
+                  <span className="font-semibold text-stone-800 pr-4">{faq.question}</span>
+                  <span className="flex-shrink-0 text-teal-600">
+                    {openFaq === index ? (
+                      <Minus className="w-5 h-5" />
+                    ) : (
+                      <Plus className="w-5 h-5" />
+                    )}
+                  </span>
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 pb-6">
+                    <p className="text-stone-600 leading-relaxed">{faq.answer}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Localização Section */}
+      <section className="py-24 bg-white px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-serif text-stone-900 mb-4">Onde Fica</h2>
+            <p className="text-stone-500">
+              Atendimento presencial em Campo Largo (PR) e online para todo o Brasil.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="space-y-6">
+              <div className="flex items-start gap-4 p-6 bg-stone-50 rounded-2xl">
+                <div className="p-3 bg-teal-100 text-teal-700 rounded-xl flex-shrink-0">
+                  <MapPin className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-stone-800 mb-1">Atendimento Presencial</h4>
+                  <p className="text-stone-500 text-sm">Campo Largo, PR</p>
+                  <a
+                    href={psico.mapsLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-teal-600 text-sm font-medium hover:underline mt-2 inline-flex items-center gap-1"
+                  >
+                    Ver no Google Maps <ChevronRight className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-6 bg-stone-50 rounded-2xl">
+                <div className="p-3 bg-teal-100 text-teal-700 rounded-xl flex-shrink-0">
+                  <Navigation className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-stone-800 mb-1">Atendimento Online</h4>
+                  <p className="text-stone-500 text-sm">
+                    Para todo o Brasil, via plataforma segura de videochamada.
+                  </p>
+                </div>
+              </div>
+
+              <a
+                href={`https://wa.me/${psico.whatsapp}?text=Olá%20Luana%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20atendimento!`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-teal-700 text-white px-6 py-3 rounded-full font-medium hover:bg-teal-800 transition-all shadow-lg shadow-teal-700/20"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Consultar disponibilidade
+              </a>
+            </div>
+
+            <div className="rounded-3xl overflow-hidden shadow-xl h-72 md:h-96">
+              <iframe
+                title="Localização Campo Largo PR"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115393.54!2d-49.5298!3d-25.4594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94dce4f6be2a0a53%3A0x4e8e6efa3a3e4b6a!2sCampo%20Largo%2C%20PR!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
           </div>
         </div>
       </section>
