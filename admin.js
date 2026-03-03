@@ -372,10 +372,29 @@ function aplicarEstilos(estilos = {}) {
     root.style.setProperty(css, val);
   });
 
-  // As cores do preview atualizam via CSS vars automaticamente.
-  // Só precisamos aplicar as fontes via JS pois não há CSS var para font-family.
+  // Fontes no preview
   if (prevTitulo && estilos.fonteTitulos) prevTitulo.style.fontFamily = `'${estilos.fonteTitulos}', serif`;
   if (prevTexto  && estilos.fonteTexto)   prevTexto.style.fontFamily  = `'${estilos.fonteTexto}', sans-serif`;
+
+  // ── Preview ao vivo contextual ────────────────────────────────────────────
+  // Usa as cores DA SEÇÃO que está sendo editada — não as globais (que não existem mais)
+  const PREVIEW_CTX = {
+    "modal-hero":     { tk: "cor-hero-titulo",    txk: "cor-hero-texto",    bk: "cor-nav-btn",  btk: "cor-nav-btn-texto" },
+    "modal-nav":      { tk: "cor-nav-texto",       txk: "cor-nav-texto",     bk: "cor-nav-btn",  btk: "cor-nav-btn-texto" },
+    "modal-sobre":    { tk: "cor-sobre-titulo",    txk: "cor-sobre-texto",   bk: "cor-botao",    btk: "cor-botao-texto"   },
+    "modal-cards":    { tk: "cor-sessoes-titulo",  txk: "cor-sessoes-texto", bk: "cor-botao",    btk: "cor-botao-texto"   },
+    "modal-publicos": { tk: "cor-publicos-titulo", txk: "cor-publicos-texto",bk: "cor-botao",    btk: "cor-botao-texto"   },
+    "modal-contato":  { tk: "cor-titulos",         txk: "cor-fundo-contato", bk: "cor-botao",    btk: "cor-botao-texto"   },
+    "modal-footer":   { tk: "cor-titulos",         txk: "cor-footer-texto",  bk: "cor-botao",    btk: "cor-botao-texto"   },
+  };
+  const ctx = PREVIEW_CTX[currentSectionAlvo] || { tk: "cor-titulos", txk: "cor-texto", bk: "cor-botao", btk: "cor-botao-texto" };
+  const defTitulo = "#2D2D2D", defTexto = "#4A4A4A", defBtn = "#8DAA91", defBtnTx = "#ffffff";
+  if (prevTitulo) prevTitulo.style.color           = estilos[ctx.tk]  || defTitulo;
+  if (prevTexto)  prevTexto.style.color            = estilos[ctx.txk] || defTexto;
+  if (prevBotao) {
+    prevBotao.style.backgroundColor                = estilos[ctx.bk]  || defBtn;
+    prevBotao.style.color                          = estilos[ctx.btk] || defBtnTx;
+  }
 
   // Seção contato
   const previewContato = document.getElementById("preview-contato");
@@ -601,6 +620,9 @@ onAuthStateChanged(auth, async (user) => {
       });
     }
 
+    // Rastreia qual seção está aberta no modal (para preview contextual)
+    let currentSectionAlvo = null;
+
     // Mapeamento: qual seção mostra quais cards do modal
     const TODOS_CARDS = [
       "modal-hero", "modal-nav", "modal-contato",
@@ -621,6 +643,7 @@ onAuthStateChanged(auth, async (user) => {
     function abrirModalEstilos(alvoId) {
       if (!modalEstilos) return;
       modalEstilos.classList.remove("hidden");
+      currentSectionAlvo = alvoId || null;
       const config = SECAO_MAP[alvoId];
       // Se não há config, mostra tudo (acionado pelo botão da sidebar)
       if (modalTitulo) modalTitulo.textContent = config ? config.titulo : "Editar estilo";
