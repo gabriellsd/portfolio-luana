@@ -238,7 +238,7 @@ export default function App() {
             <div className="w-64 h-64 md:w-96 md:h-96 bg-teal-100 rounded-[40px] rotate-6 absolute inset-0 -z-10"></div>
             <div className="w-64 h-64 md:w-96 md:h-96 bg-stone-200 rounded-[40px] overflow-hidden shadow-2xl">
               <img
-                src="/luana-retrato.png"
+                src="/luana-livro.png"
                 alt="Luana Sakovicz — Psicóloga Clínica"
                 className="w-full h-full object-cover object-top"
               />
@@ -316,7 +316,7 @@ export default function App() {
           </div>
           <div className="flex-1 order-1 md:order-2 relative">
             <img
-              src="/luana-livro.png"
+              src="/luana-retrato.png"
               alt="Luana Sakovicz com livro de Desenvolvimento Humano"
               className="rounded-3xl shadow-xl rotate-2 hover:rotate-0 transition-transform duration-500"
             />
