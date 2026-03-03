@@ -389,12 +389,12 @@ function aplicarEstilos(estilos = {}) {
     previewSessoes.style.backgroundColor = estilos["cor-fundo-alt"];
   }
 
-  // Nav
+  // Nav — links (exclui #nav-btn que tem cor própria)
   const previewNav = document.querySelector("#app-section nav");
   if (previewNav) {
-    if (estilos["cor-nav"])       previewNav.style.backgroundColor = estilos["cor-nav"];
+    if (estilos["cor-nav"]) previewNav.style.backgroundColor = estilos["cor-nav"];
     if (estilos["cor-nav-texto"]) {
-      previewNav.querySelectorAll("a, span").forEach(el => el.style.color = estilos["cor-nav-texto"]);
+      previewNav.querySelectorAll("a, span:not(#nav-btn)").forEach(el => el.style.color = estilos["cor-nav-texto"]);
     }
   }
 

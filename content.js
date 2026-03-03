@@ -91,37 +91,41 @@ async function carregarConteudo() {
       if (e["espacamento-secoes"])         root.style.setProperty("--py-secoes",      e["espacamento-secoes"]);
       if (e["tamanho-titulos"])            root.style.setProperty("--titulo-scale",   e["tamanho-titulos"]);
 
-      // 2. Aplica inline nos elementos — garante override mesmo quando Tailwind tem especificidade maior
-      // Nav
+      // 2. Aplica inline nos elementos — garante override sobre classes Tailwind
+      // Nav — fundo e links (excluindo o botão Agendar que tem cores próprias)
       const nav = document.getElementById("main-nav");
       if (nav) {
-        if (e["cor-nav"])       nav.style.setProperty("background-color", e["cor-nav"], "important");
-        if (e["cor-nav-texto"]) nav.querySelectorAll("a, span").forEach(el =>
+        if (e["cor-nav"]) nav.style.setProperty("background-color", e["cor-nav"], "important");
+        if (e["cor-nav-texto"]) nav.querySelectorAll("a, span:not(#nav-btn)").forEach(el =>
           el.style.setProperty("color", e["cor-nav-texto"], "important")
         );
       }
+      // Botão Agendar da nav — cores independentes dos outros links
+      const navBtn = document.getElementById("nav-btn");
+      if (navBtn) {
+        if (e["cor-nav-btn"]) navBtn.style.setProperty("background-color", e["cor-nav-btn"], "important");
+        if (e["cor-nav-btn-texto"]) navBtn.style.setProperty("color", e["cor-nav-btn-texto"], "important");
+      }
 
-      // Hero / seção de fundo geral
+      // Fundo geral do site
       if (e["cor-fundo"]) document.body.style.backgroundColor = e["cor-fundo"];
 
-      // Sobre mim
+      // Sobre mim — fundo da seção
       const secSobre = document.getElementById("sobre");
       if (secSobre && e["cor-sobre-fundo"]) secSobre.style.setProperty("background-color", e["cor-sobre-fundo"], "important");
 
-      // Atendimento / Sessões
+      // Sessões — fundo da seção e dos cards
       const secAtendimento = document.getElementById("atendimento");
       if (secAtendimento && e["cor-fundo-alt"]) secAtendimento.style.setProperty("background-color", e["cor-fundo-alt"], "important");
-
-      // Cards
       document.querySelectorAll(".sessao-card").forEach(card => {
         if (e["cor-cards"]) card.style.setProperty("background-color", e["cor-cards"], "important");
       });
 
-      // Contato
+      // Contato — fundo da seção
       const secContato = document.getElementById("contato");
       if (secContato && e["cor-fundo-contato"]) secContato.style.setProperty("background-color", e["cor-fundo-contato"], "important");
 
-      // Footer
+      // Footer — fundo e texto
       const footer = document.getElementById("main-footer");
       if (footer) {
         if (e["cor-footer-fundo"]) footer.style.setProperty("background-color", e["cor-footer-fundo"], "important");
@@ -130,26 +134,41 @@ async function carregarConteudo() {
         );
       }
 
-      // Títulos
+      // Títulos globais (base; seções específicas sobrescreverão abaixo)
       if (e["cor-titulos"]) document.querySelectorAll("h1, h2, h3").forEach(el =>
         el.style.setProperty("color", e["cor-titulos"], "important")
       );
 
-      // Texto do corpo
+      // Texto do corpo (base global)
       if (e["cor-texto"]) document.body.style.color = e["cor-texto"];
 
-      // Texto secundário (claro)
+      // Texto secundário
       if (e["cor-texto-claro"]) document.querySelectorAll(".text-gray-500, .text-gray-600, .opacity-80").forEach(el =>
         el.style.color = e["cor-texto-claro"]
       );
 
-      // Botões (fundo e texto)
+      // Botões de contato (WhatsApp / Email) — excluindo o botão Agendar da nav
       if (e["cor-botao"] || e["cor-botao-texto"]) {
-        document.querySelectorAll(".bg-sage").forEach(el => {
-          if (e["cor-botao"])       el.style.setProperty("background-color", e["cor-botao"], "important");
+        document.querySelectorAll(".bg-sage:not(#nav-btn)").forEach(el => {
+          if (e["cor-botao"]) el.style.setProperty("background-color", e["cor-botao"], "important");
           if (e["cor-botao-texto"]) el.style.setProperty("color", e["cor-botao-texto"], "important");
         });
       }
+
+      // ── Cores por seção ──────────────────────────────────────────────────────
+      // Aplicadas DEPOIS do global para sobrescrever onde necessário (inline !important)
+      const secaoCorMap = [
+        { sel: ".hero-gradient", tk: "cor-hero-titulo",    txk: "cor-hero-texto"    },
+        { sel: "#sobre",         tk: "cor-sobre-titulo",   txk: "cor-sobre-texto"   },
+        { sel: "#atendimento",   tk: "cor-sessoes-titulo", txk: "cor-sessoes-texto" },
+        { sel: "#publico",       tk: "cor-publicos-titulo",txk: "cor-publicos-texto"},
+      ];
+      secaoCorMap.forEach(({ sel, tk, txk }) => {
+        const sec = document.querySelector(sel);
+        if (!sec) return;
+        if (e[tk])  sec.querySelectorAll("h1, h2, h3").forEach(el => el.style.setProperty("color", e[tk],  "important"));
+        if (e[txk]) sec.querySelectorAll("p").forEach(el => el.style.setProperty("color", e[txk], "important"));
+      });
 
       // Alinhamento do hero
       if (e["hero-alinhamento"]) {
