@@ -102,8 +102,8 @@ Todos os dados ficam no objeto `psico` no topo de `src/App.jsx`. Para atualizar 
 ### Atualizar o CRP
 Em `src/App.jsx`, alterar:
 ```js
-crp: 'CRP 06/XXXXXX',
-crpStatus: 'registro profissional ativo',
+crp: 'CRP 08/XXXXXX',
+crpStatus: 'em processo de registro',
 ```
 
 ### Trocar uma foto
