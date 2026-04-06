@@ -134,7 +134,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-800 font-sans">
+    <div className="min-h-screen bg-[#DFDEDC] text-[#795650] font-sans">
 
       {/* Botão flutuante WhatsApp */}
       <a
@@ -142,7 +142,7 @@ export default function App() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Falar no WhatsApp"
-        className="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#20bc5a] text-white p-4 rounded-full shadow-xl shadow-green-500/30 transition-all hover:scale-110 flex items-center gap-2 group"
+        className="fixed bottom-6 right-6 z-50 bg-[#795650] hover:bg-[#886762] text-white p-4 rounded-full shadow-xl shadow-[#795650]/30 transition-all hover:scale-110 flex items-center gap-2 group"
       >
         <svg viewBox="0 0 24 24" className="w-6 h-6 fill-white" xmlns="http://www.w3.org/2000/svg">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -155,11 +155,11 @@ export default function App() {
       {/* Navigation */}
       <nav
         className={`fixed w-full z-40 transition-all duration-300 ${
-          scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
+          scrolled ? 'bg-[#DFDEDC]/95 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
-          <span className="text-xl font-serif font-semibold tracking-tight text-teal-800">
+          <span className="text-xl font-serif font-semibold tracking-tight text-[#795650]">
             Psic. {psico.name}
           </span>
 
@@ -168,7 +168,7 @@ export default function App() {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium hover:text-teal-600 transition-colors uppercase tracking-widest"
+                className="text-sm font-medium hover:text-[#886762] transition-colors uppercase tracking-widest"
               >
                 {link.name}
               </a>
@@ -185,13 +185,13 @@ export default function App() {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden bg-white absolute w-full px-6 py-8 border-b border-stone-100 flex flex-col space-y-4 shadow-xl">
+          <div className="md:hidden bg-[#DFDEDC] absolute w-full px-6 py-8 border-b border-[#BDAFAC] flex flex-col space-y-4 shadow-xl">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="text-lg font-medium text-stone-600"
+                className="text-lg font-medium text-[#886762]"
               >
                 {link.name}
               </a>
@@ -204,13 +204,13 @@ export default function App() {
       <section id="home" className="pt-32 pb-20 md:pt-48 md:pb-32 px-6">
         <div ref={heroRef} className="reveal max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1 space-y-6 text-center md:text-left">
-            <h2 className="text-teal-700 font-medium tracking-widest uppercase text-sm">
+            <h2 className="text-[#886762] font-medium tracking-widest uppercase text-sm">
               Bem-vinda(o)
             </h2>
-            <h1 className="text-4xl md:text-6xl font-serif text-stone-900 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-serif text-[#795650] leading-tight">
               Cuidar da mente é um ato de <span className="italic">coragem</span>.
             </h1>
-            <p className="text-lg text-stone-600 max-w-lg leading-relaxed">
+            <p className="text-lg text-[#886762] max-w-lg leading-relaxed">
               {psico.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start">
@@ -218,21 +218,21 @@ export default function App() {
                 href={`https://wa.me/${psico.whatsapp}?text=Olá%20Luana%2C%20gostaria%20de%20agendar%20uma%20consulta!`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-teal-700 text-white px-8 py-4 rounded-full font-medium hover:bg-teal-800 transition-all shadow-lg shadow-teal-700/20 text-center"
+                className="bg-[#795650] text-white px-8 py-4 rounded-full font-medium hover:bg-[#886762] transition-all shadow-lg shadow-[#795650]/20 text-center"
               >
                 Agendar Consulta
               </a>
               <a
                 href="#about"
-                className="border border-stone-300 px-8 py-4 rounded-full font-medium hover:bg-stone-100 transition-all text-center"
+                className="border border-[#BDAFAC] px-8 py-4 rounded-full font-medium hover:bg-[#DFDEDC] transition-all text-center"
               >
                 Conheça meu trabalho
               </a>
             </div>
           </div>
           <div className="flex-1 relative flex justify-center">
-            <div className="w-64 h-80 md:w-80 md:h-[480px] bg-teal-100 rounded-[40px] rotate-6 absolute -z-10"></div>
-            <div className="w-64 h-80 md:w-80 md:h-[480px] bg-stone-200 rounded-[40px] overflow-hidden shadow-2xl">
+            <div className="w-64 h-80 md:w-80 md:h-[480px] bg-[#BDAFAC] rounded-[40px] rotate-6 absolute -z-10"></div>
+            <div className="w-64 h-80 md:w-80 md:h-[480px] bg-[#BDAFAC] rounded-[40px] overflow-hidden shadow-2xl">
               <img
                 src="/luana-livro.png"
                 alt="Luana Sakovicz — Psicóloga Clínica"
@@ -247,8 +247,8 @@ export default function App() {
       <section id="services" className="py-24 bg-white px-6">
         <div ref={servicesRef} className="reveal max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-serif text-stone-900 mb-4">Áreas de Atuação</h2>
-            <p className="text-stone-600 max-w-2xl mx-auto leading-relaxed">
+            <h2 className="text-3xl font-serif text-[#795650] mb-4">Áreas de Atuação</h2>
+            <p className="text-[#886762] max-w-2xl mx-auto leading-relaxed">
               Sou psicóloga com atuação clínica, oferecendo atendimento para crianças, adolescentes e adultos.
               Acredito em uma escuta sensível, ética e acolhedora, respeitando o tempo e a singularidade de cada pessoa.
             </p>
@@ -258,15 +258,15 @@ export default function App() {
             {specialties.map((spec, index) => (
               <div
                 key={index}
-                className="p-8 rounded-3xl bg-stone-50 hover:bg-teal-50 border border-stone-100 transition-all group"
+                className="p-8 rounded-3xl bg-[#DFDEDC] hover:bg-[#DFDEDC] border border-[#BDAFAC] transition-all group"
               >
-                <h3 className="text-xl font-semibold mb-3 text-stone-800">{spec.title}</h3>
-                <p className="text-stone-600 leading-relaxed mb-6">{spec.description}</p>
+                <h3 className="text-xl font-semibold mb-3 text-[#795650]">{spec.title}</h3>
+                <p className="text-[#886762] leading-relaxed mb-6">{spec.description}</p>
                 <a
                   href={`https://wa.me/${psico.whatsapp}?text=Olá%20Luana%2C%20tenho%20interesse%20em%20atendimento%20para%20${encodeURIComponent(spec.title)}!`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-teal-700 font-medium flex items-center gap-2 text-sm uppercase tracking-wider group-hover:gap-3 transition-all"
+                  className="text-[#886762] font-medium flex items-center gap-2 text-sm uppercase tracking-wider group-hover:gap-3 transition-all"
                 >
                   Saiba mais <ChevronRight className="w-4 h-4" />
                 </a>
@@ -280,8 +280,8 @@ export default function App() {
       <section id="about" className="py-24 px-6 overflow-hidden">
         <div ref={aboutRef} className="reveal max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
           <div className="flex-1 order-2 md:order-1">
-            <h2 className="text-3xl font-serif text-stone-900 mb-6">Sobre Mim</h2>
-            <div className="space-y-4 text-stone-600 leading-relaxed">
+            <h2 className="text-3xl font-serif text-[#795650] mb-6">Sobre Mim</h2>
+            <div className="space-y-4 text-[#886762] leading-relaxed">
               <p>
                 Olá! Sou a <strong>{psico.name}</strong>, psicóloga clínica apaixonada por
                 compreender a complexidade humana e promover o bem-estar emocional.
@@ -298,11 +298,11 @@ export default function App() {
             </div>
             <div className="pt-8 grid grid-cols-2 gap-6">
               <div>
-                <h4 className="font-bold text-stone-900 text-2xl">Formação</h4>
-                <p className="text-stone-500 text-sm">Bacharel em Psicologia</p>
+                <h4 className="font-bold text-[#795650] text-2xl">Formação</h4>
+                <p className="text-[#9D8480] text-sm">Bacharel em Psicologia</p>
               </div>
               <div>
-                <h4 className="font-bold text-stone-900 text-lg">{psico.crp}</h4>
+                <h4 className="font-bold text-[#795650] text-lg">{psico.crp}</h4>
               </div>
             </div>
           </div>
@@ -320,11 +320,11 @@ export default function App() {
       <section className="py-24 bg-white px-6">
         <div ref={approachRef} className="reveal max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-serif text-stone-900 mb-4">Minha Abordagem</h2>
-            <p className="text-teal-700 font-medium tracking-widest uppercase text-sm mb-4">
+            <h2 className="text-3xl font-serif text-[#795650] mb-4">Minha Abordagem</h2>
+            <p className="text-[#886762] font-medium tracking-widest uppercase text-sm mb-4">
               Terapia cognitivo-comportamental
             </p>
-            <p className="text-stone-500 max-w-2xl mx-auto">
+            <p className="text-[#9D8480] max-w-2xl mx-auto">
               A terapia é um espaço de acolhimento, reflexão e transformação. Estes são os
               princípios que guiam o meu trabalho.
             </p>
@@ -333,11 +333,11 @@ export default function App() {
           <div className="grid md:grid-cols-3 gap-8">
             {approaches.map((item, index) => (
               <div key={index} className="text-center p-8">
-                <div className="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 mx-auto text-teal-600">
+                <div className="w-16 h-16 bg-[#DFDEDC] rounded-2xl flex items-center justify-center mb-6 mx-auto text-[#886762]">
                   {item.icon}
                 </div>
-                <h3 className="text-xl font-semibold mb-3 text-stone-800">{item.title}</h3>
-                <p className="text-stone-500 leading-relaxed">{item.description}</p>
+                <h3 className="text-xl font-semibold mb-3 text-[#795650]">{item.title}</h3>
+                <p className="text-[#9D8480] leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
@@ -345,11 +345,11 @@ export default function App() {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-24 bg-stone-100 px-6">
+      <section id="faq" className="py-24 bg-[#DFDEDC] px-6">
         <div ref={faqRef} className="reveal max-w-3xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-serif text-stone-900 mb-4">Perguntas Frequentes</h2>
-            <p className="text-stone-500">
+            <h2 className="text-3xl font-serif text-[#795650] mb-4">Perguntas Frequentes</h2>
+            <p className="text-[#9D8480]">
               Tire suas dúvidas sobre o processo terapêutico antes de dar o primeiro passo.
             </p>
           </div>
@@ -358,14 +358,14 @@ export default function App() {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl overflow-hidden border border-stone-100 shadow-sm"
+                className="bg-white rounded-2xl overflow-hidden border border-[#BDAFAC] shadow-sm"
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="w-full flex justify-between items-center p-6 text-left hover:bg-stone-50 transition-colors"
+                  className="w-full flex justify-between items-center p-6 text-left hover:bg-[#DFDEDC] transition-colors"
                 >
-                  <span className="font-semibold text-stone-800 pr-4">{faq.question}</span>
-                  <span className="flex-shrink-0 text-teal-600">
+                  <span className="font-semibold text-[#795650] pr-4">{faq.question}</span>
+                  <span className="flex-shrink-0 text-[#886762]">
                     {openFaq === index ? (
                       <Minus className="w-5 h-5" />
                     ) : (
@@ -375,7 +375,7 @@ export default function App() {
                 </button>
                 {openFaq === index && (
                   <div className="px-6 pb-6">
-                    <p className="text-stone-600 leading-relaxed">{faq.answer}</p>
+                    <p className="text-[#886762] leading-relaxed">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -388,39 +388,39 @@ export default function App() {
       <section className="py-24 bg-white px-6">
         <div ref={locationRef} className="reveal max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-serif text-stone-900 mb-4">Onde Fica</h2>
-            <p className="text-stone-500">
+            <h2 className="text-3xl font-serif text-[#795650] mb-4">Onde Fica</h2>
+            <p className="text-[#9D8480]">
               Atendimento presencial em Campo Largo (PR) e online para todo o Brasil.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="space-y-6">
-              <div className="flex items-start gap-4 p-6 bg-stone-50 rounded-2xl">
-                <div className="p-3 bg-teal-100 text-teal-700 rounded-xl flex-shrink-0">
+              <div className="flex items-start gap-4 p-6 bg-[#DFDEDC] rounded-2xl">
+                <div className="p-3 bg-[#BDAFAC] text-[#886762] rounded-xl flex-shrink-0">
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-stone-800 mb-1">Atendimento Presencial</h4>
-                  <p className="text-stone-500 text-sm">Campo Largo, PR</p>
+                  <h4 className="font-semibold text-[#795650] mb-1">Atendimento Presencial</h4>
+                  <p className="text-[#9D8480] text-sm">Campo Largo, PR</p>
                   <a
                     href={psico.mapsLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-teal-600 text-sm font-medium hover:underline mt-2 inline-flex items-center gap-1"
+                    className="text-[#886762] text-sm font-medium hover:underline mt-2 inline-flex items-center gap-1"
                   >
                     Ver no Google Maps <ChevronRight className="w-3 h-3" />
                   </a>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-6 bg-stone-50 rounded-2xl">
-                <div className="p-3 bg-teal-100 text-teal-700 rounded-xl flex-shrink-0">
+              <div className="flex items-start gap-4 p-6 bg-[#DFDEDC] rounded-2xl">
+                <div className="p-3 bg-[#BDAFAC] text-[#886762] rounded-xl flex-shrink-0">
                   <Navigation className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-stone-800 mb-1">Atendimento Online</h4>
-                  <p className="text-stone-500 text-sm">
+                  <h4 className="font-semibold text-[#795650] mb-1">Atendimento Online</h4>
+                  <p className="text-[#9D8480] text-sm">
                     Para todo o Brasil, via plataforma segura de videochamada.
                   </p>
                 </div>
@@ -430,7 +430,7 @@ export default function App() {
                 href={`https://wa.me/${psico.whatsapp}?text=Olá%20Luana%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20atendimento!`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-teal-700 text-white px-6 py-3 rounded-full font-medium hover:bg-teal-800 transition-all shadow-lg shadow-teal-700/20"
+                className="inline-flex items-center gap-2 bg-[#795650] text-white px-6 py-3 rounded-full font-medium hover:bg-[#886762] transition-all shadow-lg shadow-[#795650]/20"
               >
                 <MessageCircle className="w-5 h-5" />
                 Consultar disponibilidade
@@ -454,10 +454,10 @@ export default function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 bg-teal-900 text-white px-6">
+      <section id="contact" className="py-24 bg-[#795650] text-white px-6">
         <div ref={contactRef} className="reveal max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-serif mb-8">Vamos conversar?</h2>
-          <p className="text-teal-100 mb-12 text-lg">
+          <p className="text-[#DFDEDC] mb-12 text-lg">
             Sinta-se à vontade para entrar em contato. Responderei o mais breve possível.
           </p>
 
@@ -466,13 +466,13 @@ export default function App() {
               href={`https://wa.me/${psico.whatsapp}?text=Olá%20Luana%2C%20gostaria%20de%20agendar%20uma%20consulta!`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-4 bg-teal-800/50 p-6 rounded-2xl text-left border border-teal-700 hover:bg-teal-800 transition-all"
+              className="flex items-center gap-4 bg-[#886762]/50 p-6 rounded-2xl text-left border border-[#9D8480] hover:bg-[#886762] transition-all"
             >
-              <div className="p-3 bg-teal-700 rounded-xl">
+              <div className="p-3 bg-[#795650] rounded-xl">
                 <MessageCircle className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-teal-200 text-xs uppercase tracking-widest font-bold">
+                <p className="text-[#DFDEDC] text-xs uppercase tracking-widest font-bold">
                   WhatsApp
                 </p>
                 <p className="font-medium">{psico.whatsappDisplay}</p>
@@ -480,13 +480,13 @@ export default function App() {
             </a>
             <a
               href={`mailto:${psico.email}`}
-              className="flex items-center gap-4 bg-teal-800/50 p-6 rounded-2xl text-left border border-teal-700 hover:bg-teal-800 transition-all"
+              className="flex items-center gap-4 bg-[#886762]/50 p-6 rounded-2xl text-left border border-[#9D8480] hover:bg-[#886762] transition-all"
             >
-              <div className="p-3 bg-teal-700 rounded-xl">
+              <div className="p-3 bg-[#795650] rounded-xl">
                 <Mail className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-teal-200 text-xs uppercase tracking-widest font-bold">E-mail</p>
+                <p className="text-[#DFDEDC] text-xs uppercase tracking-widest font-bold">E-mail</p>
                 <p className="font-medium">{psico.email}</p>
               </div>
             </a>
@@ -496,14 +496,14 @@ export default function App() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-stone-50 border-t border-stone-200 px-6">
+      <footer className="py-12 bg-[#DFDEDC] border-t border-[#BDAFAC] px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div>
-            <h3 className="text-xl font-serif text-teal-800 font-bold">Psic. {psico.name}</h3>
-            <p className="text-stone-500 text-sm mt-1">
+            <h3 className="text-xl font-serif text-[#795650] font-bold">Psic. {psico.name}</h3>
+            <p className="text-[#9D8480] text-sm mt-1">
               {psico.crp} | Atendimento Online e Presencial
             </p>
-            <p className="text-stone-400 text-xs mt-1 flex items-center gap-1">
+            <p className="text-[#9D8480] text-xs mt-1 flex items-center gap-1">
               <MapPin className="w-3 h-3" /> {psico.city}
             </p>
           </div>
@@ -513,7 +513,7 @@ export default function App() {
               href={psico.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 bg-white shadow-sm rounded-full text-stone-600 hover:text-teal-600 hover:shadow-md transition-all"
+              className="p-3 bg-white shadow-sm rounded-full text-[#886762] hover:text-[#886762] hover:shadow-md transition-all"
               aria-label="Instagram"
             >
               <Instagram className="w-5 h-5" />
@@ -522,7 +522,7 @@ export default function App() {
               href={psico.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 bg-white shadow-sm rounded-full text-stone-600 hover:text-teal-600 hover:shadow-md transition-all"
+              className="p-3 bg-white shadow-sm rounded-full text-[#886762] hover:text-[#886762] hover:shadow-md transition-all"
               aria-label="LinkedIn"
             >
               <Linkedin className="w-5 h-5" />
@@ -531,7 +531,7 @@ export default function App() {
               href={`https://wa.me/${psico.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 bg-white shadow-sm rounded-full text-stone-600 hover:text-teal-600 hover:shadow-md transition-all"
+              className="p-3 bg-white shadow-sm rounded-full text-[#886762] hover:text-[#886762] hover:shadow-md transition-all"
               aria-label="WhatsApp"
             >
               <svg
@@ -544,7 +544,7 @@ export default function App() {
             </a>
           </div>
 
-          <p className="text-stone-400 text-xs text-center md:text-right">
+          <p className="text-[#9D8480] text-xs text-center md:text-right">
             © {new Date().getFullYear()} Luana Sakovicz. Todos os direitos reservados.
           </p>
         </div>
@@ -552,3 +552,5 @@ export default function App() {
     </div>
   );
 }
+
+
