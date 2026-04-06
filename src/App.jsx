@@ -234,7 +234,7 @@ export default function App() {
             <div className="w-64 h-80 md:w-80 md:h-[480px] bg-[#BDAFAC] rounded-[40px] rotate-6 absolute -z-10"></div>
             <div className="w-64 h-80 md:w-80 md:h-[480px] bg-[#BDAFAC] rounded-[40px] overflow-hidden shadow-2xl">
               <img
-                src="/luana-livro.png"
+                src="/luana.png"
                 alt="Luana Sakovicz — Psicóloga Clínica"
                 className="w-full h-full object-cover object-center"
               />
@@ -552,5 +552,6 @@ export default function App() {
     </div>
   );
 }
+
 
 

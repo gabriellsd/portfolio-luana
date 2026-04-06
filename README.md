@@ -59,7 +59,7 @@ Copie o arquivo `.env.example`, renomeie para `.env` e preencha as chaves necess
 portfolio-luana/
 ├── public/
 │   ├── favicon.svg          # Ícone da aba do navegador
-│   ├── luana-livro.png      # Foto do Hero (retrato, jaleco, braços cruzados)
+│   ├── luana.png      # Foto do Hero (retrato, jaleco, braços cruzados)
 │   └── luana-retrato.png    # Foto do Sobre Mim (segurando livro)
 ├── src/
 │   ├── App.jsx              # Componente principal — toda a UI está aqui
@@ -86,7 +86,7 @@ Todos os dados ficam no objeto `psico` no topo de `src/App.jsx`. Para atualizar 
 
 ## Seções do Site (em ordem)
 
-1. **Hero** — título, descrição e foto (`luana-livro.png`)
+1. **Hero** — título, descrição e foto (`luana.png`)
 2. **Serviços** — 3 cards de áreas de atuação
 3. **Sobre Mim** — bio, formação, CRP e foto (`luana-retrato.png`)
 4. **Minha Abordagem** — 3 pilares: escuta, ética e evidências
@@ -156,3 +156,4 @@ git checkout v1.1
 ## Repositório GitHub
 
 https://github.com/gabriellsd/portfolio-luana
+
